@@ -1,6 +1,7 @@
 # Seguimiento niños, niñas y jóvenes estudiando TICs
 
-Application to be awesome
+Web application that allows to do a follow up on kids and teenagers that took part on summer camps and/or
+ICT workshops. The aim of this project is to do a follow up on all of these people to be able to determine if those activities had some sort of inpact on their lifes by helping them pursue a career on such field.
 
 ## Table of contents
 
@@ -29,7 +30,7 @@ Application to be awesome
 | --------------                  | -----------------  | -----------         |
 | Hugo Oswaldo García Perez       | A00815354@itesm.mx | Product Owner Proxy |
 | Karla Alexandra Robledo Bandala | A01334885@itesm.mx | Scrum Master        |
-| Juan Pablo García Sánchez       | A01281698@itesm.mx | Proyect Administrator|
+| Juan Pablo García Sánchez       | A01281698@itesm.mx | Project Administrator|
 
 ### Management tools
 
