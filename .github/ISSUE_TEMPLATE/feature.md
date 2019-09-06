@@ -7,10 +7,6 @@ about: Plantilla que describe una nueva funcionalidad
 
 Como < tipo de usuario > puedo < descripción de la funcionalidad > para < objetivo >
 
-### Número de prioridad
-
-< # de prioridad de la historia >
-
 ### Conversación
 
 Este bloque de texto debe ser utilizado para dar un poco más de contexto para la funcionalidad. Asi mismo puedes
