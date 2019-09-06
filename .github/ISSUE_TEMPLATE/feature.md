@@ -1,5 +1,5 @@
 ---
-name: Historia de usuario
+name: User story
 about: Plantilla que describe una nueva funcionalidad
 ---
 
@@ -7,9 +7,9 @@ about: Plantilla que describe una nueva funcionalidad
 
 Como < tipo de usuario > puedo < descripción de la funcionalidad > para < objetivo >
 
-### Puntos de complejidad
+### Número de prioridad
 
-< # de puntos de complejidad >
+< # de prioridad de la historia >
 
 ### Conversación
 
@@ -24,14 +24,9 @@ mencionar la existencia o uso de un plugin o solución de algún tercero que se 
 
 ### Definition of Done
 
-- [ ] ¿Las pruebas están pasando?
+- [ ] Pruebas manuales y/o de código pasaron correctamente
 - [ ] ¿Recibiste revisión de código?
 
-### Definition of Ready
+## Issues relacionados
 
-- [ ] Elemento 1
-- [ ] Elemento 2
-
-## Issues relacionados, Pull Requests y/o recursos
-
-Un listado de referencias dentro del código que puedan ser valiosas para otro desarrollador, alguna liga, plugin, referencia de diseño. 
+- # < id del issue >
