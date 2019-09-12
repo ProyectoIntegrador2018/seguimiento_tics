@@ -1,0 +1,19 @@
+{
+  "name": "seguimiento-tics",
+  "version": "1.0.0",
+  "description": "Backend for Seguimiento niños, niñas y jóvenes estudiando TICs",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ProyectoIntegrador2018/seguimiento_tics.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ProyectoIntegrador2018/seguimiento_tics/issues"
+  },
+  "homepage": "https://github.com/ProyectoIntegrador2018/seguimiento_tics#readme"
+}
