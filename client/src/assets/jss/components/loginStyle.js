@@ -60,24 +60,10 @@ const buttonWrapper = {
     justifyContent: 'center',
 }
 
-const buttonBackground = {
-    position: 'absolute',
-    zIndex: '-1',
-    width: '300%',
-    height: '100%',
-    background: '#a64bf4',
-    background: '-webkit-linear-gradient(right, #00dbde, #fc00ff, #00dbde, #fc00ff)',
-    background: '-o-linear-gradient(right, #00dbde, #fc00ff, #00dbde, #fc00ff)',
-    background: '-moz-linear-gradient(right, #00dbde, #fc00ff, #00dbde, #fc00ff)',
-    background: 'linear-gradient(right, #00dbde, #fc00ff, #00dbde, #fc00ff)',
-    top: '0',
-    left: '-100%',
-}
-
 const button100 = {
     fontFamily: 'Poppins',
     fontSize: '16px',
-    color: '#fff',
+    backgroundColor: '#bd59d4',
     lineHeight: '1.2',
     textTransform: 'uppercase',
     display: '-webkit-box',
@@ -90,17 +76,25 @@ const button100 = {
     padding: '0 20px',
     width: '100%',
     height: '50px',
+    color: 'white',
+    borderColor: 'transparent'
 }
 
 const button100Wrapper = {
-    width: '100%',
+    width: '50%',
     display: 'block',
     position: 'relative',
     zIndex: '1',
     borderRadius: '25px',
     overflow: 'hidden',
     margin: '0 auto',
-    boxShadow: '0 5px 30px 0px rgba(3, 216, 222, 0.2)',
+    boxShadow: '0 10px 30px 0px rgba(189, 89, 212, 0.5)',
+    marginTop: '6%',
+    marginBottom: '50px'
 }
 
-export { limiter, loginContainer, loginWrapper, loginTitle, inputWrapper, buttonWrapper, buttonBackground, button100, button100Wrapper };
+const inputStyle = {
+    marginBottom: '10px'
+}
+
+export { limiter, loginContainer, loginWrapper, loginTitle, inputWrapper, buttonWrapper, button100, button100Wrapper, inputStyle };

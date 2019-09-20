@@ -1,7 +1,8 @@
 import React from 'react';
-import { Form } from 'react-bootstrap';
-import { limiter, loginContainer, loginWrapper, loginTitle, inputWrapper, 
-        buttonWrapper, buttonBackground, button100, button100Wrapper } from '../../assets/jss/components/loginStyle';
+import { Form, Button } from 'react-bootstrap';
+import { limiter, loginContainer, loginWrapper, loginTitle, 
+        inputWrapper, buttonWrapper, button100, 
+        button100Wrapper, inputStyle } from '../../assets/jss/components/loginStyle';
 
 class Login extends React.Component {
     render() {
@@ -16,20 +17,19 @@ class Login extends React.Component {
 
                             <div style={inputWrapper}>
                                 <Form.Label>Correo electrónico</Form.Label>
-                                <Form.Control type="email" placeholder="Ingrese su correo"/>
+                                <Form.Control type="email" style={inputStyle} placeholder="Ingrese su correo"/>
                             </div>
 
                             <div style={inputWrapper}>
                                 <Form.Label>Contraseña</Form.Label>
-                                <Form.Control type="password" placeholder="Ingrese su contraseña"></Form.Control>
+                                <Form.Control type="password" style={inputStyle} placeholder="Ingrese su contraseña"></Form.Control>
                             </div>
                             
                             <div style={buttonWrapper}>
                                 <div style={button100Wrapper}>
-                                    <div style={buttonBackground}></div>
-                                    <button style={button100}>
-                                        Login
-                                    </button>
+                                    <Button style={button100}>
+                                        Iniciar sesión
+                                    </Button>
                                 </div>
                             </div>
                         </Form>
