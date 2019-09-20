@@ -1,0 +1,6 @@
+# Configuration
+server/.env
+# Dependencies
+server/node_modules
+# Misc
+.DS_Store
