@@ -8,7 +8,7 @@ User.findByEmail(ADMIN_EMAIL)
      if(!record) {
          var admin = new User();
          admin.email = ADMIN_EMAIL;
-         admin.password = ADMIN_PASS;
+         admin.password = User.hashPassword(ADMIN_PASS);
          admin.admin = true;
          admin.verified = true;
          
