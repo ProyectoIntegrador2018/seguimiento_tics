@@ -3,6 +3,8 @@
 Web application that allows to do a follow up on kids and teenagers that took part on summer camps and/or
 ICT workshops. The aim of this project is to do a follow up on all of these people to be able to determine if those activities had some sort of inpact on their lifes by helping them pursue a career on such field.
 
+[![Maintainability](https://api.codeclimate.com/v1/badges/b95e9be3744b147c51dc/maintainability)](https://codeclimate.com/github/ProyectoIntegrador2018/seguimiento_tics/maintainability)
+
 ## Table of contents
 
 * [Client Details](#client-details)
