@@ -1,8 +1,11 @@
 import React from "react";
-import { Form, Button } from "react-bootstrap";
 import { Redirect } from "react-router-dom";
 import { AUTHENTICATED, ADMIN } from "../../constants/sessionstorage";
-import {} from "../../assets/jss/components/searchStyle";
+import {
+  limiter,
+  searchContainer
+} from "../../assets/jss/components/searchStyle";
+import DataTable from "./DataTable";
 
 class Search extends React.Component {
   render() {
@@ -13,9 +16,70 @@ class Search extends React.Component {
       return <Redirect to="/" />;
     }
 
+    const headings = [
+      "ID",
+      "Nombre",
+      "Edad",
+      "Cursos",
+      "Escuela actual",
+      "Grado actual",
+      "Carrera iniciada",
+      "Carrera TIC",
+      "Correo"
+    ];
+
+    const rows = [
+      [
+        1,
+        "Pepe Madero",
+        28,
+        3,
+        "Secundaria",
+        "Segundo año",
+        0,
+        1,
+        "pepe@madero.com"
+      ],
+      [
+        1,
+        "Pepe Madero",
+        28,
+        3,
+        "Secundaria",
+        "Segundo año",
+        0,
+        1,
+        "pepe@madero.com"
+      ],
+      [
+        1,
+        "Pepe Madero",
+        28,
+        3,
+        "Secundaria",
+        "Segundo año",
+        0,
+        1,
+        "pepe@madero.com"
+      ],
+      [
+        1,
+        "Pepe Madero",
+        28,
+        3,
+        "Secundaria",
+        "Segundo año",
+        0,
+        1,
+        "pepe@madero.com"
+      ]
+    ];
+
     return (
-      <div>
-        <h1>Search</h1>
+      <div style={limiter}>
+        <div style={searchContainer}>
+          <DataTable headings={headings} rows={rows} />
+        </div>
       </div>
     );
   }
