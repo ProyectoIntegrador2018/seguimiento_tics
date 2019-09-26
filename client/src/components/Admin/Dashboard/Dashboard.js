@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { AUTHENTICATED, ADMIN } from '../../constants/sessionstorage';
+import { AUTHENTICATED, ADMIN } from '../../../constants/sessionstorage';
 
 class Dashboard extends React.Component {
 

@@ -97,4 +97,10 @@ const inputStyle = {
     marginBottom: '10px'
 }
 
-export { limiter, loginContainer, loginWrapper, loginTitle, inputWrapper, buttonWrapper, button100, button100Wrapper, inputStyle };
+const invalidInput = {
+    color: '#dc3545',
+    fontSize: '70%',
+    textTransform: 'uppercase'
+}
+
+export { limiter, loginContainer, loginWrapper, loginTitle, inputWrapper, buttonWrapper, button100, button100Wrapper, inputStyle, invalidInput };
