@@ -1,18 +1,4 @@
 import React from 'react';
-<<<<<<< HEAD
-import { Form, Button } from 'react-bootstrap';
-import { Redirect } from 'react-router-dom';
-import { AUTHENTICATED, ADMIN } from '../../constants/sessionstorage';
-import { limiter, loginContainer, loginWrapper, loginTitle, 
-        inputWrapper, buttonWrapper, button100, 
-        button100Wrapper, inputStyle } from '../../assets/jss/components/loginStyle';
-
-
-const testData = {
-    email: '12@12.com',
-    pass: '12'
-};
-=======
 import axios from 'axios';
 import { Form, Button } from 'react-bootstrap';
 import { Redirect } from 'react-router-dom';
@@ -21,7 +7,6 @@ import { API_URL } from '../../constants/apiurl';
 import { limiter, loginContainer, loginWrapper, loginTitle, 
         inputWrapper, buttonWrapper, button100, 
         button100Wrapper, inputStyle, invalidInput } from '../../assets/jss/components/loginStyle';
->>>>>>> autenticacion_usuario
 
 class Login extends React.Component {
 
