@@ -3,6 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const cors = require('cors');
 
 const port = process.env.PORT || 3001;
 const database = process.env.DATABASE || 'mongodb://localhost:27017/seguimientotic';
@@ -14,6 +15,7 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(bodyParser.json());
+app.use(cors());
 
 // Initial Configuration
 require('./config/admin');
