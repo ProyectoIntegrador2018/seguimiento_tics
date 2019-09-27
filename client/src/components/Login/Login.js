@@ -29,8 +29,8 @@ class Login extends React.Component {
 
     render() {
 
-        if( this.state.redirect || sessionStorage.getItem(AUTHENTICATED)) {
-            if(this.state.user.admin || sessionStorage.getItem(ADMIN)) return <Redirect to='/admin'/>
+        if(sessionStorage.getItem(AUTHENTICATED)) {
+            if(sessionStorage.getItem(ADMIN)) return <Redirect to='/admin'/>
             return <Redirect to='/home'/>
         }
 
