@@ -25,6 +25,8 @@ class Login extends React.Component {
         this.onLoginClick = this.onLoginClick.bind(this);
         
         this.loginAPIRequest = this.loginAPIRequest.bind(this);
+
+        this.renderInputSection = this.renderInputSection.bind(this);
     }
 
     render() {
@@ -39,30 +41,14 @@ class Login extends React.Component {
                 <div style={loginContainer}>
                     <div style={loginWrapper}>
                         <Form>
-                            <span style={loginTitle}>
-                                Iniciar sesión
-                            </span>
-
+                            <span style={loginTitle}> Iniciar sesión </span>
+                            
                             {this.state.isInvalid ? this.renderWrongDataMessage(): null}
 
-                            <div style={inputWrapper}>
-                                <Form.Label>Correo electrónico</Form.Label>
-                                <Form.Control   type="email" 
-                                                style={inputStyle} 
-                                                placeholder="Ingrese su correo"
-                                                isInvalid={this.state.isInvalid}
-                                                onChange={this.handleEmailChange}/>
-                            </div>
+                            {this.renderInputSection("Correo electrónico", "email", "Ingrese su  correo", this.handleEmailChange)}
 
-                            <div style={inputWrapper}>
-                                <Form.Label>Contraseña</Form.Label>
-                                <Form.Control   type="password" 
-                                                style={inputStyle} 
-                                                placeholder="Ingrese su contraseña"
-                                                isInvalid={this.state.isInvalid}
-                                                onChange={this.handlePasswordChange}/>
-                            </div>
-                            
+                            {this.renderInputSection("Contraseña", "password", "Ingrese su  contraseña", this.handlePasswordChange)}
+
                             <div style={buttonWrapper}>
                                 <div style={button100Wrapper}>
                                     <Button style={button100} onClick={this.onLoginClick}>
@@ -84,6 +70,19 @@ class Login extends React.Component {
             <Form.Text style={invalidInput}>
                 Correo y/o contraseña incorrecta
             </Form.Text>
+        );
+    }
+
+    renderInputSection(label, type, placeHolder, onChange) {
+        return(
+            <div style={inputWrapper}>
+                <Form.Label>{label}</Form.Label>
+                <Form.Control   type={type} 
+                                style={inputStyle} 
+                                placeholder={placeHolder}
+                                isInvalid={this.state.isInvalid}
+                                onChange={onChange}/>
+            </div>
         );
     }
 
