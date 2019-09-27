@@ -6,7 +6,7 @@ class UserDashboard extends React.Component {
 
     render() {
 
-        if( !sessionStorage.getItem(AUTHENTICATED) || 
+        if(!sessionStorage.getItem(AUTHENTICATED) || 
             sessionStorage.getItem(ADMIN)) {
                 return <Redirect to='/'/>
         }

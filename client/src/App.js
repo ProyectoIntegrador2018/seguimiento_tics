@@ -1,6 +1,6 @@
 import React from 'react';
 import Login from './components/Login/Login';
-import Dashboard from './components/Admin/Dashboard/Dashboard';
+import AdminDashboard from './components/Admin/Dashboard/AdminDashboard';
 import UserDashboard from './components/User/Dashboard/UserDashboard';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
@@ -18,7 +18,7 @@ function App() {
                   exact />
           
           <Route  path="/admin"
-                  component={Dashboard}
+                  component={AdminDashboard}
                   exact />
         </Switch>
       </BrowserRouter>

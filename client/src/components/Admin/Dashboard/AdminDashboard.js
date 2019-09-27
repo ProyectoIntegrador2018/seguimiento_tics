@@ -2,11 +2,11 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { AUTHENTICATED, ADMIN } from '../../../constants/sessionstorage';
 
-class Dashboard extends React.Component {
+class AdminDashboard extends React.Component {
 
     render() {
 
-        if( !sessionStorage.getItem(AUTHENTICATED) || 
+        if(!sessionStorage.getItem(AUTHENTICATED) || 
             !sessionStorage.getItem(ADMIN)) {
                 return <Redirect to='/'/>
         }
@@ -20,4 +20,4 @@ class Dashboard extends React.Component {
 
 }
 
-export default Dashboard;
+export default AdminDashboard;
