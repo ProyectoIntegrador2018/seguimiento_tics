@@ -7,7 +7,15 @@ class UserDashboard extends React.Component {
     render() {
         return(
             <div>
-                <h1>User Dashboard</h1>                
+                <table>
+                    <tr>
+                        <th>User Dashboard</th>
+                    </tr>
+                    <tr>
+                        <td>Records</td>
+                    </tr>
+                </table>
+                          
             </div>
         );
     }
