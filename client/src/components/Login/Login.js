@@ -1,16 +1,12 @@
 import React from 'react';
+import axios from 'axios';
 import { Form, Button } from 'react-bootstrap';
 import { Redirect } from 'react-router-dom';
 import { AUTHENTICATED, ADMIN } from '../../constants/sessionstorage';
+import { API_URL } from '../../constants/apiurl';
 import { limiter, loginContainer, loginWrapper, loginTitle, 
         inputWrapper, buttonWrapper, button100, 
-        button100Wrapper, inputStyle } from '../../assets/jss/components/loginStyle';
-
-
-const testData = {
-    email: '12@12.com',
-    pass: '12'
-};
+        button100Wrapper, inputStyle, invalidInput } from '../../assets/jss/components/loginStyle';
 
 class Login extends React.Component {
 
@@ -19,43 +15,38 @@ class Login extends React.Component {
         this.state = {
             email: '',
             password: '',
-            redirect: false
+            isInvalid: false,
+            user: {}
         };
 
         this.handleEmailChange = this.handleEmailChange.bind(this);
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
         this.onLoginClick = this.onLoginClick.bind(this);
+        
+        this.loginAPIRequest = this.loginAPIRequest.bind(this);
+
+        this.renderInputSection = this.renderInputSection.bind(this);
     }
 
     render() {
-
-        if(this.state.redirect) return <Redirect to='/home'/>
+        if(sessionStorage.getItem(AUTHENTICATED)) {
+            if(sessionStorage.getItem(ADMIN) === "true") return <Redirect to='/admin'/>
+            return <Redirect to='/home'/>
+        }
 
         return(
             <div style={limiter}>
                 <div style={loginContainer}>
                     <div style={loginWrapper}>
                         <Form>
-                            <span style={loginTitle}>
-                                Iniciar sesión
-                            </span>
-
-                            <div style={inputWrapper}>
-                                <Form.Label>Correo electrónico</Form.Label>
-                                <Form.Control   type="email" 
-                                                style={inputStyle} 
-                                                placeholder="Ingrese su correo"
-                                                onChange={this.handleEmailChange}/>
-                            </div>
-
-                            <div style={inputWrapper}>
-                                <Form.Label>Contraseña</Form.Label>
-                                <Form.Control   type="password" 
-                                                style={inputStyle} 
-                                                placeholder="Ingrese su contraseña"
-                                                onChange={this.handlePasswordChange}/>
-                            </div>
+                            <span style={loginTitle}> Iniciar sesión </span>
                             
+                            {this.state.isInvalid ? this.renderWrongDataMessage(): null}
+
+                            {this.renderInputSection("Correo electrónico", "email", "Ingrese su  correo", this.handleEmailChange)}
+
+                            {this.renderInputSection("Contraseña", "password", "Ingrese su  contraseña", this.handlePasswordChange)}
+
                             <div style={buttonWrapper}>
                                 <div style={button100Wrapper}>
                                     <Button style={button100} onClick={this.onLoginClick}>
@@ -70,6 +61,28 @@ class Login extends React.Component {
         );
     }
 
+
+    //      ADDITIONAL RENDERS
+    renderWrongDataMessage() {
+        return(
+            <Form.Text style={invalidInput}>
+                Correo y/o contraseña incorrecta
+            </Form.Text>
+        );
+    }
+
+    renderInputSection(label, type, placeHolder, onChange) {
+        return(
+            <div style={inputWrapper}>
+                <Form.Label>{label}</Form.Label>
+                <Form.Control   type={type} 
+                                style={inputStyle} 
+                                placeholder={placeHolder}
+                                isInvalid={this.state.isInvalid}
+                                onChange={onChange}/>
+            </div>
+        );
+    }
 
     //      INPUT HANDLING FUNCTIONS
 
@@ -86,15 +99,35 @@ class Login extends React.Component {
     }
 
     onLoginClick() {
-        if( this.state.email === testData.email &&
-            this.state.password === testData.pass) {
-                sessionStorage.setItem(AUTHENTICATED, true);
-                sessionStorage.setItem(ADMIN, true);
+        this.loginAPIRequest();
+    }
 
-                this.setState({
-                    redirect: true
-                });
-        }
+    //      API REQUEST FUNCTIONS
+
+    loginAPIRequest() {
+        var url = API_URL + '/auth/login';
+        const reqBody = {
+            email: this.state.email,
+            password: this.state.password
+        };
+        
+        axios.post(url, reqBody)
+         .then(response => {
+             var data = response.data;
+             console.log(data);
+             if(data.error) { this.setState({ isInvalid: true }); }
+             else {
+                sessionStorage.setItem(AUTHENTICATED, true);
+                sessionStorage.setItem(ADMIN, data.admin);
+                 this.setState({
+                     isInvalid: false,
+                     user: data,
+                 });
+             }
+         })
+         .catch(error => {
+             console.log(error);
+         });
     }
 
 }
