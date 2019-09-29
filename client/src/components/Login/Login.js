@@ -15,7 +15,6 @@ class Login extends React.Component {
         this.state = {
             email: '',
             password: '',
-            redirect: false,
             isInvalid: false,
             user: {}
         };
@@ -30,9 +29,8 @@ class Login extends React.Component {
     }
 
     render() {
-
         if(sessionStorage.getItem(AUTHENTICATED)) {
-            if(sessionStorage.getItem(ADMIN)) return <Redirect to='/admin'/>
+            if(sessionStorage.getItem(ADMIN) === "true") return <Redirect to='/admin'/>
             return <Redirect to='/home'/>
         }
 
@@ -124,7 +122,6 @@ class Login extends React.Component {
                  this.setState({
                      isInvalid: false,
                      user: data,
-                     redirect: true
                  });
              }
          })
