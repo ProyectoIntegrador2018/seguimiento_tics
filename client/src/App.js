@@ -1,16 +1,10 @@
-<<<<<<< HEAD
-import React from 'react';
-import Login from './components/Login/Login';
-import Dashboard from './components/Admin/Dashboard/Dashboard';
-import UserDashboard from './components/User/Dashboard/UserDashboard';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
-=======
 import React from "react";
 import Login from "./components/Login/Login";
-import Dashboard from "./components/AdminDashboard/Dashboard";
+import AdminDashboard from "./components/Admin/Dashboard/AdminDashboard";
+import UserDashboard from "./components/User/Dashboard/UserDashboard";
 import Search from "./components/Search/Search";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
->>>>>>> 525ae0c7933eebb405b1302b2ec6fa91a811e06c
+import { ProtectedRoute } from "./components/ProtectedRoute/ProtectedRoute";
 
 function App() {
   return (
@@ -19,9 +13,21 @@ function App() {
         <Switch>
           <Route path="/" component={Login} exact />
 
-          <Route path="/home" component={Dashboard} exact />
+          <ProtectedRoute path="/home" 
+                          component={UserDashboard}
+                          isAdmin={false}
+                          />
 
-          <Route path="/search" component={Search} exact />
+          <ProtectedRoute path="/admin" 
+                          component={AdminDashboard}
+                          isAdmin={true}
+                          />
+
+          <ProtectedRoute path="/search" 
+                          component={Search}
+                          isAdmin={false}
+                          />
+
         </Switch>
       </BrowserRouter>
     </div>

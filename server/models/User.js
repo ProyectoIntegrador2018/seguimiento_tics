@@ -41,21 +41,23 @@ schema.methods.generateAuthToken = function() {
 }
 
 /**
- * Hashes the given password in a sync way
- * @param {String} password Password to hash
- * @return {String} Hashed password
- */
-schema.methods.hashPassword = function(password) {
-    return bcrypt.hashSync(password, bcrypt.genSaltSync(10), null);
-}
-
-/**
  * Unhashes the given password in a sync way
  * @param {String} password Password to unhash
  * @return {Boolean} True or false if the password matches
  */
 schema.methods.unhashPassword = function(password) {
     return bcrypt.compareSync(password, this.password);
+}
+
+//      STATIC METHODS
+
+/**
+ * Hashes the given password in a sync way
+ * @param {String} password Password to hash
+ * @return {String} Hashed password
+ */
+schema.statics.hashPassword = function(password) {
+    return bcrypt.hashSync(password, bcrypt.genSaltSync(10), null);
 }
 
 //      STATIC METHODS FOR QUERIES
