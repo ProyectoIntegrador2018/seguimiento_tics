@@ -22,7 +22,10 @@ require('./config/admin');
 
 // Routers
 const authRouter = require('./routes/auth');
+const apiRouter = require('./routes/adminapi');
+
 app.use('/auth', authRouter);
+app.use('/admin', apiRouter);
 
 app.listen(port);
 console.log(`App listening on port ${port}`);

@@ -5,6 +5,7 @@ import UserDashboard from "./components/User/Dashboard/UserDashboard";
 import Search from "./components/Search/Search";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { ProtectedRoute } from "./components/ProtectedRoute/ProtectedRoute";
+import EventCreation from "./components/Admin/Event/Creation/EventCreation";
 
 function App() {
   return (
@@ -26,6 +27,11 @@ function App() {
           <ProtectedRoute path="/search" 
                           component={Search}
                           isAdmin={false}
+                          />
+
+          <ProtectedRoute path="/event"
+                          component={EventCreation}
+                          isAdmin={true}
                           />
 
         </Switch>
