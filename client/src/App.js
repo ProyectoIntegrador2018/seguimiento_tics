@@ -5,9 +5,10 @@ import UserDashboard from "./components/User/Dashboard/UserDashboard";
 import Search from "./components/Search/Search";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { ProtectedRoute } from "./components/ProtectedRoute/ProtectedRoute";
+import Forma from "./components/Form-Registro/Forma";
 
 function App() {
-  return (
+ return (
     <div className="App">
       <BrowserRouter>
         <Switch>
@@ -32,6 +33,8 @@ function App() {
       </BrowserRouter>
     </div>
   );
-}
+
+  
+} 
 
 export default App;
