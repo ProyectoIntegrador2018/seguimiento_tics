@@ -19,4 +19,15 @@ var schema = new mongoose.Schema({
     }]
 });
 
+//      STATIC METHODS FOR QUERIES
+
+/**
+ * Fetches the record that contains the given email
+ * @param {String} name Name of record to search
+ * @return {Promise} Promise that contains all the data related to that record
+ */
+schema.statics.findByName = function(name) {
+    return this.findOne({ name: name }).exec();
+}
+
 module.exports = mongoose.model('Event', schema);

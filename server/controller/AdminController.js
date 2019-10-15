@@ -21,7 +21,23 @@ AdminController.registerEvent = function(name, start_date, end_date, callback) {
      })
      .catch(function(error){
          console.log(error);
+     });
+}
+
+/**
+ *  Function that returns an error if the provided name is not available (already exists)
+ *  @param {String} name Name of the event
+ *  @param {Function} callback Function to perform after record has (or not) been found
+ */
+AdminController.fetchEventAvailability = function(name, callback) {
+    Event.findByName(name)
+     .then(function(record){
+         if(record) callback({error: true});
+         callback();
      })
+     .catch(function(error){
+        console.log(error);
+     });
 }
 
 module.exports = AdminController;
