@@ -1,18 +1,24 @@
 import React from "react";
-import { Form } from "react-bootstrap";
+import { Form, Button } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { isThisSecond } from "date-fns";
 
 class EventCreation extends React.Component {
 
     constructor(props) {
         super(props);
+        var current = new Date();
         this.state = {
-            startDate: new Date().setHours(0,0,0,0),
-            endDate: new Date().setHours(23,59,59,999)
+            name: "",
+            startDate: current,
+            endDate: new Date(current.getFullYear(), current.getMonth(), current.getDate()+1)
         };
+        // Input change
+        this.handleNameChange = this.handleNameChange.bind(this);
         this.handleStartDateChange = this.handleStartDateChange.bind(this);
+        this.handleEndDateChange = this.handleEndDateChange.bind(this);
+
+        this.onRegisterClick = this.onRegisterClick.bind(this);
     }
 
     render() {
@@ -21,12 +27,24 @@ class EventCreation extends React.Component {
                 <Form>
                     <Form.Group>
                         <Form.Label>Nombre del evento</Form.Label>
-                        <Form.Control type="text" placeholder="Nombre"/>
+                        <Form.Control   type="text" 
+                                        placeholder="Nombre" 
+                                        onChange={this.handleNameChange}
+                                        value={this.state.name}/>
                     </Form.Group>
                     <Form.Group>
-                        <DatePicker selected={this.state.startDate} onChange={this.handleStartDateChange}/>
-                        <DatePicker selected={this.state.endDate} />
+                        <Form.Label>Fecha de inicio</Form.Label>
+                        <DatePicker selected={this.state.startDate} 
+                                    onChange={this.handleStartDateChange}/>
                     </Form.Group>
+                    <Form.Group>
+                        <Form.Label>Fecha de fin</Form.Label>
+                        <DatePicker selected={this.state.endDate} 
+                                    onChange={this.handleEndDateChange}/>
+                    </Form.Group>
+                    <Button onClick={this.onRegisterClick}>
+                        Registrar
+                    </Button>
                 </Form>
             </div>
         );
@@ -34,10 +52,36 @@ class EventCreation extends React.Component {
 
     //      INPUT HANDLING FUNCTIONS
 
-    handleStartDateChange (date) {
+    handleNameChange(event) {
         this.setState({
-            startDate: date
+            name: event.target.value
         });
+    }
+
+    handleStartDateChange(date) {
+        this.setState({
+            startDate: date,
+            name: `${this.state.name} ${date.toString().split(" ")[3]}`
+        });
+    }
+
+    handleEndDateChange(date) {
+        this.setState({
+            endDate: date
+        });
+    }
+
+    onRegisterClick() {
+        var start = this.dateToString(this.state.startDate);
+        var end = this.dateToString(this.state.endDate);
+        console.log(start);
+        console.log(end);
+    }
+
+    // AUXILIAR FUNCTIONS
+
+    dateToString = function(date) {
+        return date.toString().split(" ").slice(1,4).join(' ');
     }
 
 }

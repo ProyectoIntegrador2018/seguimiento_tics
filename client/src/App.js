@@ -13,10 +13,10 @@ function App() {
       <BrowserRouter>
         <Switch>
           <Route path="/" component={Login} exact />
-
-          <ProtectedRoute path="/home" 
-                          component={UserDashboard}
-                          isAdmin={false}
+          
+          <ProtectedRoute path="/event"
+                          component={EventCreation}
+                          isAdmin={true}
                           />
 
           <ProtectedRoute path="/admin" 
@@ -24,16 +24,15 @@ function App() {
                           isAdmin={true}
                           />
 
+          <ProtectedRoute path="/home" 
+                          component={UserDashboard}
+                          isAdmin={false}
+                          />
+
           <ProtectedRoute path="/search" 
                           component={Search}
                           isAdmin={false}
                           />
-
-          <ProtectedRoute path="/event"
-                          component={EventCreation}
-                          isAdmin={true}
-                          />
-
         </Switch>
       </BrowserRouter>
     </div>
