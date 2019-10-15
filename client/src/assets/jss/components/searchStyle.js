@@ -29,6 +29,7 @@ const searchContainer = {
 };
 
 const dataTable = {
+  position: "relative",
   maxWidth: "100vw"
 };
 
@@ -42,7 +43,46 @@ const tableStyle = {
 const cell = {
   border: "1px solid #f4f6f8",
   padding: "4px",
-  textAlign: "left"
+  textAlign: "left",
+  verticalAlign: "top"
 };
 
-export { limiter, searchContainer, dataTable, tableStyle, cell };
+const header = {
+  extend: "cell"
+};
+
+const fixed = {
+  extend: "cell",
+  position: "absolute",
+  top: "auto",
+  left: "0",
+  width: "145px",
+  whiteSpace: "unset",
+  textAlign: "left",
+  backfaceVisibility: "hidden",
+  background: "#fff",
+  wordWrap: "break-word",
+  wordBreak: "break-word",
+  overflowWrap: "break-word"
+};
+
+const fixedHeader = {
+  extend: ["fixed", "header"]
+};
+
+const scrollContainer = {
+  overflowX: "auto",
+  marginLeft: "145px"
+};
+
+export {
+  limiter,
+  searchContainer,
+  dataTable,
+  tableStyle,
+  cell,
+  header,
+  fixed,
+  fixedHeader,
+  scrollContainer
+};

@@ -1,6 +1,10 @@
 import * as React from "react";
 import Cell from "./Cell";
-import { dataTable, tableStyle } from "../../assets/jss/components/searchStyle";
+import {
+  dataTable,
+  tableStyle,
+  scrollContainer
+} from "../../assets/jss/components/searchStyle";
 
 class DataTable extends React.Component {
   renderHeadingRow = (_cell, cellIndex) => {
@@ -10,7 +14,8 @@ class DataTable extends React.Component {
       <Cell
         key={`heading-${cellIndex}`}
         content={headers[cellIndex]}
-        header={true}
+        isHeader={true}
+        isFixed={cellIndex === 1}
       />
     );
   };
@@ -35,6 +40,8 @@ class DataTable extends React.Component {
             <Cell
               key={`${rowIndex}-${cellIndex}`}
               content={rows[rowIndex][cellIndex]}
+              isHeader={false}
+              isFixed={cellIndex === 1}
             />
           );
         })}
@@ -56,10 +63,12 @@ class DataTable extends React.Component {
 
     return (
       <div style={dataTable}>
-        <table style={tableStyle}>
-          <thead>{theadMarkup}</thead>
-          <tbody>{tbodyMarkup}</tbody>
-        </table>
+        <div style={scrollContainer}>
+          <table style={tableStyle} ref={this.setTable}>
+            <thead>{theadMarkup}</thead>
+            <tbody>{tbodyMarkup}</tbody>
+          </table>
+        </div>
       </div>
     );
   }
