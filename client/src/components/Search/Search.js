@@ -9,6 +9,10 @@ import SearchInput from "./SearchInput";
 class Search extends React.Component {
   constructor(props) {
     super(props);
+    this.setUpData();
+  }
+
+  setUpData = () => {
     this.state = {
       filterText: "",
       headers: [
@@ -90,18 +94,24 @@ class Search extends React.Component {
 
     this.state.names = names;
     this.state.curps = curps;
-  }
+  };
 
   handleUserInput(filterText) {
     this.setState({ filterText: filterText });
   }
 
-  handleTableUpdate(event) {
+  getItem = event => {
     var item = {
       id: event.target.id,
       name: event.target.name,
       value: event.target.value
     };
+
+    return item;
+  };
+
+  handleTableUpdate(event) {
+    var item = this.getItem(event);
 
     var newRows = this.state.rows.map(function(row) {
       for (var key in row) {
