@@ -13,23 +13,30 @@ const limiter = {
 const searchContainer = {
   width: "100%",
   minHeight: "100vh",
-  display: "-webkit-box",
-  display: "-webkit-flex",
-  display: "-moz-box",
-  display: "-ms-flexbox",
-  display: "flex",
-  flexWrap: "wrap",
   justifyContent: "center",
   paddingTop: "150px",
   backgroundRepeat: "no-repeat",
   backgroundPosition: "center",
-  backgroundSize: "cover"
+  backgroundSize: "cover",
+  flexWrap: "wrap",
+  display: "flex",
+  fallbacks: [
+    { display: "-webkit-box" },
+    { display: "-webkit-flex" },
+    { display: "-moz-box" },
+    { display: "-ms-flexbox" }
+  ]
+};
+
+const dataTable = {
+  maxWidth: "100vw"
 };
 
 const tableStyle = {
   borderSpacing: "0px",
   background: "#fff",
-  boxShadow: "0 1px 0 0 rgba(22, 29, 37, 0.05)"
+  boxShadow: "0 1px 0 0 rgba(22, 29, 37, 0.05)",
+  width: "100%"
 };
 
 const cell = {
@@ -38,4 +45,4 @@ const cell = {
   textAlign: "left"
 };
 
-export { limiter, searchContainer, tableStyle, cell };
+export { limiter, searchContainer, dataTable, tableStyle, cell };
