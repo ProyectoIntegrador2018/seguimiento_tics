@@ -100,32 +100,6 @@ class Search extends React.Component {
     this.setState({ filterText: filterText });
   }
 
-  getItem = event => {
-    var item = {
-      id: event.target.id,
-      name: event.target.name,
-      value: event.target.value
-    };
-
-    return item;
-  };
-
-  handleTableUpdate(event) {
-    var item = this.getItem(event);
-
-    var newRows = this.state.rows.map(function(row) {
-      for (var key in row) {
-        if (key === item.name && row.id === item.id) {
-          row[key] = item.value;
-        }
-      }
-
-      return row;
-    });
-
-    this.setState({ rows: newRows });
-  }
-
   render() {
     return (
       <div style={limiter}>
@@ -137,7 +111,6 @@ class Search extends React.Component {
           <DataTable
             headers={this.state.headers}
             rows={this.state.rows}
-            onTableUpdate={this.handleTableUpdate.bind(this)}
             names={this.state.names}
             curps={this.state.curps}
             filterText={this.state.filterText}

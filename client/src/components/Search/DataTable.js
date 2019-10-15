@@ -17,7 +17,6 @@ class DataTable extends React.Component {
 
   renderRow = (_row, rowIndex) => {
     const { rows } = this.props;
-    var onTableUpdate = this.props.onTableUpdate;
     var filterText = this.props.filterText;
     var names = this.props.names;
     var curps = this.props.curps;
@@ -36,7 +35,6 @@ class DataTable extends React.Component {
             <Cell
               key={`${rowIndex}-${cellIndex}`}
               content={rows[rowIndex][cellIndex]}
-              onTableUpdate={onTableUpdate}
             />
           );
         })}
