@@ -1,14 +1,20 @@
-import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
-import { AUTHENTICATED, ADMIN } from '../../constants/sessionstorage';
+import React from "react";
+import { Route, Redirect } from "react-router-dom";
+import { AUTHENTICATED, ADMIN } from "../../constants/sessionstorage";
 
-const ProtectedRoute = function({component: Component, isAdmin, ...rest}) {
-    return(
-        <Route {...rest} render = {(props) => (
-        (sessionStorage.getItem(AUTHENTICATED) && isAdmin == (sessionStorage.getItem(ADMIN) === "true"))
-            ? <Component {...props} />
-            : <Redirect to="/"/>
-         )}/>
-    );
-} 
+const ProtectedRoute = function({ component: Component, isAdmin, ...rest }) {
+  return (
+    <Route
+      {...rest}
+      render={props =>
+        (sessionStorage.getItem(AUTHENTICATED) && !isAdmin) ||
+        isAdmin == (sessionStorage.getItem(ADMIN) === "true") ? (
+          <Component {...props} />
+        ) : (
+          <Redirect to="/" />
+        )
+      }
+    />
+  );
+};
 export { ProtectedRoute };
