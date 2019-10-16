@@ -1,6 +1,6 @@
 # Configuration
-server/.env
+.env
 # Dependencies
-server/node_modules
+node_modules/
 # Misc
 .DS_Store
