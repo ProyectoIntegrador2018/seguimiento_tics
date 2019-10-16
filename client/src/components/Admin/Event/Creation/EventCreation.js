@@ -5,6 +5,12 @@ import "react-datepicker/dist/react-datepicker.css";
 import { TOKEN } from "../../../../constants/sessionstorage";
 import { API_URL } from "../../../../constants/apiurl";
 import Axios from "axios";
+import { title, 
+        button100, 
+        buttonWrapper, 
+        button100Wrapper,
+        invalidInput } from "../../../../assets/jss/sharedStyling";
+import { eventContainer, eventForm, calendarSpacing } from "../../../../assets/jss/components/eventStyle";
 
 class EventCreation extends React.Component {
 
@@ -22,17 +28,21 @@ class EventCreation extends React.Component {
         this.handleStartDateChange = this.handleStartDateChange.bind(this);
         this.handleEndDateChange = this.handleEndDateChange.bind(this);
         // Button click
-        this.onRegisterClick = this.onRegisterClick.bind(this);
+        this.onRegisterSubmit = this.onRegisterSubmit.bind(this);
         // API Requests
         this.checkNameAvailabilityAPI = this.checkNameAvailabilityAPI.bind(this);
     }
 
     render() {
         return(
-            <div>
-                <Form>
+            <div style={eventContainer}>
+                <span style={title}>Crear nuevo evento</span>
+                <Form style={eventForm} onSubmit={this.onRegisterSubmit}>
                     <Form.Group>
                         <Form.Label>Nombre del evento</Form.Label>
+                        {this.state.isInvalid 
+                            ? <Form.Text style={invalidInput}> Ya existe un evento con ese nombre </Form.Text>
+                            : null}
                         <Form.Control   type="text" 
                                         placeholder="Nombre" 
                                         onChange={this.handleNameChange}
@@ -43,20 +53,26 @@ class EventCreation extends React.Component {
                                         value={this.state.name}/>
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label>Fecha de inicio</Form.Label>
-                        <DatePicker selected={this.state.startDate} 
+                        <Form.Label style={calendarSpacing}>Fecha de inicio</Form.Label>
+                        <DatePicker selected={this.state.startDate}
                                     onChange={this.handleStartDateChange}/>
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label>Fecha de fin</Form.Label>
+                        <Form.Label style={calendarSpacing}>Fecha de fin</Form.Label>
                         <DatePicker selected={this.state.endDate} 
                                     onChange={this.handleEndDateChange}/>
                     </Form.Group>
-                    <Button type="submit"
-                            onClick={this.onRegisterClick}
-                            disabled={this.state.isInvalid || this.state.name === ""}>
-                        Registrar
-                    </Button>
+
+                    <div style={buttonWrapper}>
+                        <div style={button100Wrapper}>
+                            <Button type="submit"
+                                style={button100}
+                                disabled={this.state.isInvalid || this.state.name === ""}>
+                                Registrar
+                            </Button>
+                        </div>
+                    </div>
+                    
                 </Form>
             </div>
         );
@@ -82,7 +98,7 @@ class EventCreation extends React.Component {
         });
     }
 
-    onRegisterClick() {
+    onRegisterSubmit() {
         this.storeEventAPI();
     }
 
