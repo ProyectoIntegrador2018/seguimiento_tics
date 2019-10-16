@@ -1,6 +1,4 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
-import { AUTHENTICATED, ADMIN } from '../../../constants/sessionstorage';
 
 class UserDashboard extends React.Component {
 

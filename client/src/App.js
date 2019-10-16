@@ -5,6 +5,7 @@ import UserDashboard from "./components/User/Dashboard/UserDashboard";
 import Search from "./components/Search/Search";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { ProtectedRoute } from "./components/ProtectedRoute/ProtectedRoute";
+import EventCreation from "./components/Admin/Event/Creation/EventCreation";
 
 function App() {
   return (
@@ -12,10 +13,10 @@ function App() {
       <BrowserRouter>
         <Switch>
           <Route path="/" component={Login} exact />
-
-          <ProtectedRoute path="/home" 
-                          component={UserDashboard}
-                          isAdmin={false}
+          
+          <ProtectedRoute path="/event"
+                          component={EventCreation}
+                          isAdmin={true}
                           />
 
           <ProtectedRoute path="/admin" 
@@ -23,11 +24,15 @@ function App() {
                           isAdmin={true}
                           />
 
+          <ProtectedRoute path="/home" 
+                          component={UserDashboard}
+                          isAdmin={false}
+                          />
+
           <ProtectedRoute path="/search" 
                           component={Search}
                           isAdmin={false}
                           />
-
         </Switch>
       </BrowserRouter>
     </div>
