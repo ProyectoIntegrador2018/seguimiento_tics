@@ -21,11 +21,11 @@ router.post('/register-event', adminmw, function(req, res) {
 
 /**
  *  Route for checking if the name of an event is available
- * @implements {AdminMiddleware} Makes sure that the admin is the one making the get request
- * @param {Object} req Request of get with name of event in the body
- * @param {Object} res Response of get
+ * @implements {AdminMiddleware} Makes sure that the admin is the one making the post request
+ * @param {Object} req Request of post with name of event in the body
+ * @param {Object} res Response of post
  */
-router.get('/availability-event', adminmw, function(req, res) {
+router.post('/availability-event', adminmw, function(req, res) {
     var name = req.body.name;
     AdminController.fetchEventAvailability(name, function(response) {
         res.send(response);
