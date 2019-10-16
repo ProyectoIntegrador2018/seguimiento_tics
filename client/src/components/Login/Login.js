@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import { Form, Button } from "react-bootstrap";
 import { Redirect } from "react-router-dom";
-import { AUTHENTICATED, ADMIN } from "../../constants/sessionstorage";
+import { AUTHENTICATED, ADMIN, TOKEN } from "../../constants/sessionstorage";
 import { API_URL } from "../../constants/apiurl";
 import {
   limiter,
@@ -141,6 +141,7 @@ class Login extends React.Component {
         } else {
           sessionStorage.setItem(AUTHENTICATED, true);
           sessionStorage.setItem(ADMIN, data.admin);
+          sessionStorage.setItem(TOKEN, data.token);
           this.setState({
             isInvalid: false,
             user: data
