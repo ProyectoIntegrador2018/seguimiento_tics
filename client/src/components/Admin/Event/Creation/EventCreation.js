@@ -38,31 +38,13 @@ class EventCreation extends React.Component {
             <div style={eventContainer}>
                 <span style={title}>Crear nuevo evento</span>
                 <Form style={eventForm} onSubmit={this.onRegisterSubmit}>
-                    <Form.Group>
-                        <Form.Label>Nombre del evento</Form.Label>
-                        {this.state.isInvalid 
-                            ? <Form.Text style={invalidInput}> Ya existe un evento con ese nombre </Form.Text>
-                            : null}
-                        <Form.Control   type="text" 
-                                        placeholder="Nombre" 
-                                        onChange={this.handleNameChange}
-                                        isInvalid={this.state.isInvalid}
-                                        onBlur={this.checkNameAvailabilityAPI}
-                                        minLength={3}
-                                        required={true}
-                                        value={this.state.name}/>
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label style={calendarSpacing}>Fecha de inicio</Form.Label>
-                        <DatePicker selected={this.state.startDate}
-                                    onChange={this.handleStartDateChange}/>
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label style={calendarSpacing}>Fecha de fin</Form.Label>
-                        <DatePicker selected={this.state.endDate} 
-                                    onChange={this.handleEndDateChange}/>
-                    </Form.Group>
+                    
+                    {this.renderNameFormGroup()}
 
+                    {this.renderDateFormGroup("Fecha de inicio", this.state.startDate, this.handleStartDateChange)}
+
+                    {this.renderDateFormGroup("Fecha de fin", this.state.endDate, this.handleEndDateChange)}
+                    
                     <div style={buttonWrapper}>
                         <div style={button100Wrapper}>
                             <Button type="submit"
@@ -72,9 +54,39 @@ class EventCreation extends React.Component {
                             </Button>
                         </div>
                     </div>
-                    
                 </Form>
             </div>
+        );
+    }
+
+    //      RENDER FUNCTIONS
+
+    renderNameFormGroup() {
+        return(
+            <Form.Group>
+                <Form.Label>Nombre del evento</Form.Label>
+                {this.state.isInvalid 
+                    ? <Form.Text style={invalidInput}> Ya existe un evento con ese nombre </Form.Text>
+                    : null}
+                <Form.Control   type="text" 
+                                placeholder="Nombre" 
+                                onChange={this.handleNameChange}
+                                isInvalid={this.state.isInvalid}
+                                onBlur={this.checkNameAvailabilityAPI}
+                                minLength={3}
+                                required={true}
+                                value={this.state.name}/>
+            </Form.Group>
+        );
+    }
+
+    renderDateFormGroup(label, state, changeFunction) {
+        return(
+            <Form.Group>
+                <Form.Label style={calendarSpacing}>{label}</Form.Label>
+                <DatePicker selected={state} 
+                            onChange={changeFunction}/>
+            </Form.Group>
         );
     }
 
