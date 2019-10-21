@@ -5,7 +5,7 @@ import UserDashboard from "./components/User/Dashboard/UserDashboard";
 import Search from "./components/Search/Search";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { ProtectedRoute } from "./components/ProtectedRoute/ProtectedRoute";
-import Forma from "./components/Form-Registro/Forma";
+import Forma from "./components/User/Form-Registro/Forma";
 
 function App() {
  return (
