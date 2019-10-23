@@ -2,20 +2,10 @@ import React from "react";
 import axios from "axios";
 import { Form, Button } from "react-bootstrap";
 import { Redirect } from "react-router-dom";
-import { AUTHENTICATED, ADMIN } from "../../constants/sessionstorage";
+import { AUTHENTICATED, ADMIN, TOKEN } from "../../constants/sessionstorage";
 import { API_URL } from "../../constants/apiurl";
-import {
-  limiter,
-  loginContainer,
-  loginWrapper,
-  loginTitle,
-  inputWrapper,
-  buttonWrapper,
-  button100,
-  button100Wrapper,
-  inputStyle,
-  invalidInput
-} from "../../assets/jss/components/loginStyle";
+import { title, button100, buttonWrapper, button100Wrapper, invalidInput } from "../../assets/jss/sharedStyling";
+import { limiter, loginContainer, loginWrapper, inputWrapper, inputStyle } from "../../assets/jss/components/loginStyle";
 
 class Login extends React.Component {
   constructor(props) {
@@ -48,7 +38,7 @@ class Login extends React.Component {
         <div style={loginContainer}>
           <div style={loginWrapper}>
             <Form>
-              <span style={loginTitle}> Iniciar sesión </span>
+              <span style={title}> Iniciar sesión </span>
 
               {this.state.isInvalid ? this.renderWrongDataMessage() : null}
 
@@ -141,6 +131,7 @@ class Login extends React.Component {
         } else {
           sessionStorage.setItem(AUTHENTICATED, true);
           sessionStorage.setItem(ADMIN, data.admin);
+          sessionStorage.setItem(TOKEN, data.token);
           this.setState({
             isInvalid: false,
             user: data
