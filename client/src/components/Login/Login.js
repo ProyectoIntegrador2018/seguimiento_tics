@@ -125,7 +125,6 @@ class Login extends React.Component {
       .post(url, reqBody)
       .then(response => {
         var data = response.data;
-        console.log(data);
         if (data.error) {
           this.setState({ isInvalid: true });
         } else {
