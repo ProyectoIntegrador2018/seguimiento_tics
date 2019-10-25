@@ -22,7 +22,7 @@ AdminController.registerEvent = function(name, start_date, end_date, callback) {
      .catch(function(error){
          console.log(error);
      });
-}
+};
 
 /**
  *  Function that returns an error if the provided name is not available (already exists)
@@ -37,6 +37,16 @@ AdminController.fetchEventAvailability = function(name, callback) {
      })
      .catch(function(error){
         console.log(error);
+     });
+};
+
+AdminController.fetchAllRecords = function(callback) {
+    Event.fetchAll()
+     .then(function(records) {
+         callback(records);
+     })
+     .catch(function(error) {
+         console.log(error);
      });
 }
 

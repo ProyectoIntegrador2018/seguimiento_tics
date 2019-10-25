@@ -1,5 +1,5 @@
 const container = {
-    marginLeft:'200px',
+    marginLeft:'300px',
 };
 
 export { container };

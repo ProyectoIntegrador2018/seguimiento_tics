@@ -9,6 +9,7 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { ProtectedRoute } from "./components/ProtectedRoute/ProtectedRoute";
 import { AUTHENTICATED, ADMIN } from "./constants/sessionstorage";
 import { container } from "./assets/jss/components/appStyle";
+import Questions from "./components/Admin/Questions/Questions";
 
 class App extends React.Component {
   render(){
@@ -29,6 +30,10 @@ class App extends React.Component {
                               component={AdminDashboard}
                               isAdmin={true}
                               />
+
+              <ProtectedRoute path="/questions"
+                              component={Questions} 
+                              isAdmin={true}/>
     
               <ProtectedRoute path="/home" 
                               component={UserDashboard}
@@ -49,7 +54,7 @@ class App extends React.Component {
   renderAdminNav() {
     var navItems = [
       {url: "/event", name: "Eventos"}, 
-      {url: "", name: "Preguntas"}, 
+      {url: "/questions", name: "Preguntas"}, 
       {url: "", name: "Usuarios"},
     ]
     if(sessionStorage.getItem(AUTHENTICATED) && sessionStorage.getItem(ADMIN)) return(<Navigation navitems={navItems}/>);
