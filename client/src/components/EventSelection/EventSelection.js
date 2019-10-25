@@ -4,6 +4,7 @@ import { API_URL } from "../../constants/apiurl";
 import Axios from "axios";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import { TOKEN } from "../../constants/sessionstorage";
+import { title } from "../../assets/jss/sharedStyling";
 class EventSelection extends React.Component {
 
     constructor(props) {
@@ -23,10 +24,11 @@ class EventSelection extends React.Component {
     render() {
         return(
             <Form>
+                <span style={title}>Selecciona el evento</span>
                 <LoadingSpinner showSpinner={this.state.isFetching}/>
-                <select>
+                <Form.Control as="select">
                     {this.createPicklistItems()}
-                </select>
+                </Form.Control>
                 <Button type="submit">Siguiente</Button>
             </Form>
         );

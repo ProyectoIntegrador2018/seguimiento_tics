@@ -5,6 +5,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { TOKEN } from "../../../../constants/sessionstorage";
 import { API_URL } from "../../../../constants/apiurl";
 import Axios from "axios";
+import {Redirect} from "react-router-dom";
 import { title, 
         button100, 
         buttonWrapper, 
@@ -21,8 +22,12 @@ class EventCreation extends React.Component {
             name: "",
             startDate: current,
             endDate: new Date(current.getFullYear(), current.getMonth(), current.getDate()+1),
-            isInvalid: false
+            isInvalid: false,
+            redirect: false,
+            errorMsg: ""
         };
+        // Render
+        this.renderRedirect = this.renderRedirect.bind(this);
         // Input change
         this.handleNameChange = this.handleNameChange.bind(this);
         this.handleStartDateChange = this.handleStartDateChange.bind(this);
@@ -36,15 +41,14 @@ class EventCreation extends React.Component {
     render() {
         return(
             <div style={eventContainer}>
+                {this.renderRedirect()}
                 <span style={title}>Crear nuevo evento</span>
                 <Form style={eventForm} onSubmit={this.onRegisterSubmit}>
-                    
                     {this.renderNameFormGroup()}
 
                     {this.renderDateFormGroup("Fecha de inicio", this.state.startDate, this.handleStartDateChange)}
 
                     {this.renderDateFormGroup("Fecha de fin", this.state.endDate, this.handleEndDateChange)}
-                    
                     <div style={buttonWrapper}>
                         <div style={button100Wrapper}>
                             <Button type="submit"
@@ -65,9 +69,7 @@ class EventCreation extends React.Component {
         return(
             <Form.Group>
                 <Form.Label>Nombre del evento</Form.Label>
-                {this.state.isInvalid 
-                    ? <Form.Text style={invalidInput}> Ya existe un evento con ese nombre </Form.Text>
-                    : null}
+                {this.renderErrorMessage()}
                 <Form.Control   type="text" 
                                 placeholder="Nombre" 
                                 onChange={this.handleNameChange}
@@ -80,6 +82,14 @@ class EventCreation extends React.Component {
         );
     }
 
+    renderErrorMessage() {
+        if(this.state.isInvalid) {
+            return(
+                <Form.Text style={invalidInput}> {this.state.errorMsg} </Form.Text>
+            );
+        }
+    }
+
     renderDateFormGroup(label, state, changeFunction) {
         return(
             <Form.Group>
@@ -88,6 +98,12 @@ class EventCreation extends React.Component {
                             onChange={changeFunction}/>
             </Form.Group>
         );
+    }
+
+    renderRedirect() {
+        if(this.state.redirect) {
+            return <Redirect to='/questions'/>
+        };
     }
 
     //      INPUT HANDLING FUNCTIONS
@@ -99,18 +115,25 @@ class EventCreation extends React.Component {
     }
 
     handleStartDateChange(date) {
+        var invalid = date > this.state.endDate;
         this.setState({
-            startDate: date,
-        });
-    }
-
-    handleEndDateChange(date) {
-        this.setState({
+            isInvalid: invalid,
+            errorMsg: "Fecha de inicio debe de ser antes de la fecha de fin",
             endDate: date
         });
     }
 
-    onRegisterSubmit() {
+    handleEndDateChange(date) {
+        var invalid = date < this.state.startDate;
+        this.setState({
+            isInvalid: invalid,
+            errorMsg: "Fecha de fin debe de ser después de la fecha de inicio",
+            endDate: date
+        });
+    }
+
+    onRegisterSubmit(event) {
+        event.preventDefault();
         this.storeEventAPI();
     }
 
@@ -125,7 +148,7 @@ class EventCreation extends React.Component {
         Axios.post(body.url, body.body, body.headers)
          .then(response => {
              var data = response.data;
-             if(data.error) this.setState({ isInvalid: true });
+             if(data.error) this.setState({ isInvalid: true, errorMsg: "Ya existe un evento con ese nombre" });
              else this.setState({ isInvalid: false });
          })
          .catch(error => {
@@ -144,7 +167,9 @@ class EventCreation extends React.Component {
         
         Axios.post(body.url, body.body, body.headers)
          .then(response => {
-             console.log(response);
+             this.setState({
+                 redirect: true
+             });
          })
          .catch(error => {
              console.log(error);
