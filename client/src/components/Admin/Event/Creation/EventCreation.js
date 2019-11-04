@@ -140,9 +140,7 @@ class EventCreation extends React.Component {
     // API FUNCTIONS
 
     checkNameAvailabilityAPI() {
-        const reqBody = {
-            name : this.state.name,
-        };
+        const reqBody = { name : this.state.name };
         var body = this.buildBodyAndHeaders("/admin/availability-event", reqBody);
 
         Axios.post(body.url, body.body, body.headers)
@@ -157,7 +155,6 @@ class EventCreation extends React.Component {
     }
 
     storeEventAPI() {
-        console.log(this.state.name);
         const reqBody = {
             name : this.state.name,
             start_date: this.dateToString(this.state.startDate),
