@@ -4,7 +4,7 @@ import {
     limiter, loginContainer, loginWrapper, loginTitle,
     inputWrapper, buttonWrapper, button100,
     button100Wrapper, inputStyle, invalidInput
-} from './style';
+} from '../../../assets/jss/components/loginStyle';
 import initialState from './initialState';
 import { questions, eventQuestions } from './questions';
 
