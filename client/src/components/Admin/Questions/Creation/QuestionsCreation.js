@@ -1,11 +1,25 @@
 import React from "react";
-import { Form } from "react-bootstrap";
+import { Form, Button } from "react-bootstrap";
+import QuestionItem from "./QuestionItem";
 
 class QuestionsCreation extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            questions: []
+        };
+        this.onAddQuestions = this.onAddQuestions.bind(this);
+        this.renderQuestionItems = this.renderQuestionItems.bind(this);
+        this.questionChange = this.questionChange.bind(this);
+        this.removeQuestion = this.removeQuestion.bind(this);
+    }
+
     render() {
         return(
             <div>
                 {this.renderRequiredQuestions()}
+                {this.renderQuestionItems()}
+                <Button onClick={this.onAddQuestions}>Agregar pregunta</Button>
             </div>
         );
     }
@@ -43,6 +57,47 @@ class QuestionsCreation extends React.Component {
                 </Form.Group>
             </div>
         );
+    }
+
+    renderQuestionItems() {
+        return(
+            <div>
+                {this.state.questions.map((question, idx) => {
+                    return(
+                        <QuestionItem   key={idx}
+                                        idx={idx}
+                                        questionChange={this.questionChange}
+                                        removeItem={this.removeQuestion}/>
+                    );
+                })}
+            </div>
+        );
+    }
+
+    //  INPUT FUNCTIONS
+    onAddQuestions() {
+        var temp = this.state.questions;
+        temp.push("");
+        this.setState({
+            questions: temp
+        });
+    }
+
+    //  AUXILIAR FUNCTIONS
+    questionChange(txt, idx) {
+        var temp = this.state.questions;
+        temp[idx] = txt;
+        this.setState({
+            questions: temp
+        });
+    }
+
+    removeQuestion(idx) {
+        var temp = this.state.questions;
+        temp.splice(idx,1);
+        this.setState({
+            questions: temp
+        });
     }
 }
 export default QuestionsCreation;
