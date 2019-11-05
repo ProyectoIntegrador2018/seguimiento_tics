@@ -1,12 +1,7 @@
 import * as React from "react";
-import {
-  cell,
-  header,
-  fixed,
-  fixedHeader
-} from "../../assets/jss/components/searchStyle";
+import { cell, fixed } from "../../assets/jss/components/searchStyle";
 
-export default function Cell({ content, isHeader, isFixed }) {
+export default function Cell({ content, isHeader, isFixed, height }) {
   var className = cell;
   if (isHeader && isFixed) {
     className = fixed;
@@ -14,6 +9,10 @@ export default function Cell({ content, isHeader, isFixed }) {
     className = cell;
   } else if (isFixed) {
     className = fixed;
+  }
+
+  if (height) {
+    className = { ...className, ...cell, height: height };
   }
 
   const cellMarkup = isHeader ? (

@@ -9,10 +9,6 @@ import SearchInput from "./SearchInput";
 class Search extends React.Component {
   constructor(props) {
     super(props);
-    this.setUpData();
-  }
-
-  setUpData = () => {
     this.state = {
       filterText: "",
       headers: [
@@ -24,7 +20,8 @@ class Search extends React.Component {
         "Grado actual",
         "Carrera iniciada",
         "Carrera TIC",
-        "Correo"
+        "Correo",
+        "Seleccionado"
       ],
       rows: [
         [
@@ -36,7 +33,8 @@ class Search extends React.Component {
           "Segundo año",
           0,
           1,
-          "pepe@madero.com"
+          "pepe@madero.com",
+          "checkbox"
         ],
         [
           1,
@@ -47,7 +45,8 @@ class Search extends React.Component {
           "Segundo año",
           0,
           1,
-          "pepe@madero.com"
+          "pepe@madero.com",
+          "checkbox"
         ],
         [
           1,
@@ -58,7 +57,8 @@ class Search extends React.Component {
           "Segundo año",
           0,
           1,
-          "pepe@madero.com"
+          "pepe@madero.com",
+          "checkbox"
         ],
         [
           1,
@@ -69,7 +69,8 @@ class Search extends React.Component {
           "Segundo año",
           0,
           1,
-          "pepe@madero.com"
+          "pepe@madero.com",
+          "checkbox"
         ],
         [
           1,
@@ -80,7 +81,8 @@ class Search extends React.Component {
           "Segundo año",
           0,
           1,
-          "pepe@madero.com"
+          "pepe@madero.com",
+          "checkbox"
         ]
       ]
     };
@@ -94,7 +96,7 @@ class Search extends React.Component {
 
     this.state.names = names;
     this.state.curps = curps;
-  };
+  }
 
   handleUserInput(filterText) {
     this.setState({ filterText: filterText });

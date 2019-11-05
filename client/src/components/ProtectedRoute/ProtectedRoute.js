@@ -8,7 +8,7 @@ const ProtectedRoute = function({ component: Component, isAdmin, ...rest }) {
       {...rest}
       render={props =>
         (sessionStorage.getItem(AUTHENTICATED) && !isAdmin) ||
-        isAdmin == (sessionStorage.getItem(ADMIN) === "true") ? (
+        isAdmin === (sessionStorage.getItem(ADMIN) === "true") ? (
           <Component {...props} />
         ) : (
           <Redirect to="/" />
