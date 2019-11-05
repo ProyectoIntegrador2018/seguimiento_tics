@@ -11,80 +11,8 @@ class Search extends React.Component {
     super(props);
     this.state = {
       filterText: "",
-      headers: [
-        "ID",
-        "Nombre",
-        "Edad",
-        "Cursos",
-        "Escuela actual",
-        "Grado actual",
-        "Carrera iniciada",
-        "Carrera TIC",
-        "Correo",
-        "Seleccionado"
-      ],
-      rows: [
-        [
-          1,
-          "Pepe Madero",
-          28,
-          3,
-          "Secundaria",
-          "Segundo año",
-          0,
-          1,
-          "pepe@madero.com",
-          "checkbox"
-        ],
-        [
-          1,
-          "Pepe Madero",
-          28,
-          3,
-          "Secundaria",
-          "Segundo año",
-          0,
-          1,
-          "pepe@madero.com",
-          "checkbox"
-        ],
-        [
-          1,
-          "Pepe Madero",
-          28,
-          3,
-          "Secundaria",
-          "Segundo año",
-          0,
-          1,
-          "pepe@madero.com",
-          "checkbox"
-        ],
-        [
-          1,
-          "Pepe Madero",
-          28,
-          3,
-          "Secundaria",
-          "Segundo año",
-          0,
-          1,
-          "pepe@madero.com",
-          "checkbox"
-        ],
-        [
-          1,
-          "Oscar Juarez",
-          28,
-          3,
-          "Secundaria",
-          "Segundo año",
-          0,
-          1,
-          "pepe@madero.com",
-          "checkbox"
-        ]
-      ]
+      headers: this.getHeaders(),
+      rows: this.getRows()
     };
 
     var names = [];
@@ -96,6 +24,86 @@ class Search extends React.Component {
 
     this.state.names = names;
     this.state.curps = curps;
+  }
+
+  getHeaders() {
+    return [
+      "ID",
+      "Nombre",
+      "Edad",
+      "Cursos",
+      "Escuela actual",
+      "Grado actual",
+      "Carrera iniciada",
+      "Carrera TIC",
+      "Correo",
+      "Seleccionado"
+    ];
+  }
+
+  getRows() {
+    return [
+      [
+        1,
+        "Pepe Madero",
+        28,
+        3,
+        "Secundaria",
+        "Segundo año",
+        0,
+        1,
+        "pepe@madero.com",
+        "checkbox"
+      ],
+      [
+        1,
+        "Pepe Madero",
+        28,
+        3,
+        "Secundaria",
+        "Segundo año",
+        0,
+        1,
+        "pepe@madero.com",
+        "checkbox"
+      ],
+      [
+        1,
+        "Pepe Madero",
+        28,
+        3,
+        "Secundaria",
+        "Segundo año",
+        0,
+        1,
+        "pepe@madero.com",
+        "checkbox"
+      ],
+      [
+        1,
+        "Pepe Madero",
+        28,
+        3,
+        "Secundaria",
+        "Segundo año",
+        0,
+        1,
+        "pepe@madero.com",
+        "checkbox"
+      ],
+      [
+        1,
+        "Oscar Juarez",
+        28,
+        3,
+        "Secundaria",
+        "Segundo año",
+        0,
+        1,
+        "pepe@madero.com",
+        "checkbox"
+      ]
+    ];
   }
 
   handleUserInput(filterText) {
