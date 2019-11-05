@@ -8,6 +8,10 @@ export default function Cell({ content, isHeader, isFixed, height }) {
     className = { ...className, ...cell, height: height };
   }
 
+  if (height) {
+    className = { ...className, ...cell, height: height };
+  }
+
   const cellMarkup = isHeader ? (
     <th style={className}>{content}</th>
   ) : (
