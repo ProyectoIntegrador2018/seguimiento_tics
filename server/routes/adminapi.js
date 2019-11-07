@@ -44,4 +44,9 @@ router.get('/all-events', adminmw, function(req, res) {
     });
 });
 
+
+router.post('/store-questions', adminmw, function(req, res) {
+    
+});
+
 module.exports = router;

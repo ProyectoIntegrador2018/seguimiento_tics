@@ -1,5 +1,6 @@
 const Admin = require('./../models/User');
 const Event = require('./../models/Event');
+const Question = require('./../models/Question');
 
 var AdminController = {};
 
@@ -25,7 +26,7 @@ AdminController.registerEvent = function(name, start_date, end_date, callback) {
 };
 
 /**
- *  Function that returns an error if the provided name is not available (already exists)
+ *  Function that returns an error if the provided Event name is not available (already exists)
  *  @param {String} name Name of the event
  *  @param {Function} callback Function to perform after record has (or not) been found
  */
@@ -40,6 +41,10 @@ AdminController.fetchEventAvailability = function(name, callback) {
      });
 };
 
+/**
+ *  Function that fetches all the Event records from the database
+ *  @param {Function} callback Function to perform after the records were fetched
+ */
 AdminController.fetchAllRecords = function(callback) {
     Event.fetchAll()
      .then(function(records) {
@@ -48,6 +53,10 @@ AdminController.fetchAllRecords = function(callback) {
      .catch(function(error) {
          console.log(error);
      });
+}
+
+AdminController.storeQuestionsForEvent = function(questions, callback) {
+    
 }
 
 module.exports = AdminController;

@@ -1,6 +1,5 @@
 import React from "react";
 import { Form, Button } from "react-bootstrap";
-import QuestionItem from "./QuestionItem";
 
 class QuestionsCreation extends React.Component {
     constructor(props) {
@@ -10,8 +9,8 @@ class QuestionsCreation extends React.Component {
         };
         this.onAddQuestions = this.onAddQuestions.bind(this);
         this.renderQuestionItems = this.renderQuestionItems.bind(this);
-        this.questionChange = this.questionChange.bind(this);
-        this.removeQuestion = this.removeQuestion.bind(this);
+        this.onQuestionChange = this.onQuestionChange.bind(this);
+        this.onClickRemove = this.onClickRemove.bind(this);
     }
 
     render() {
@@ -64,10 +63,13 @@ class QuestionsCreation extends React.Component {
             <div>
                 {this.state.questions.map((question, idx) => {
                     return(
-                        <QuestionItem   key={idx}
-                                        idx={idx}
-                                        questionChange={this.questionChange}
-                                        removeItem={this.removeQuestion}/>
+                        <div>
+                            <Form.Control   type="text"
+                                            key={idx}
+                                            value={question}
+                                            onChange={(e) => this.onQuestionChange(e, idx)}/>
+                            <Button onClick={() => this.onClickRemove(idx)}>-</Button>
+                        </div>
                     );
                 })}
             </div>
@@ -83,16 +85,15 @@ class QuestionsCreation extends React.Component {
         });
     }
 
-    //  AUXILIAR FUNCTIONS
-    questionChange(txt, idx) {
+    onQuestionChange(event, idx) {
         var temp = this.state.questions;
-        temp[idx] = txt;
+        temp[idx] = event.target.value;
         this.setState({
             questions: temp
         });
     }
 
-    removeQuestion(idx) {
+    onClickRemove(idx) {
         var temp = this.state.questions;
         temp.splice(idx,1);
         this.setState({
