@@ -55,8 +55,58 @@ AdminController.fetchAllRecords = function(callback) {
      });
 }
 
-AdminController.storeQuestionsForEvent = function(questions, callback) {
-    
+AdminController.storeQuestionsForEvent = function(questions, event_id, callback) {
+    Question.findManyByText(questions)
+     .then(function(repeatedQuestions) {
+         var questionsToStore = fetchUniqueQuestionsFromQuestions(questions, repeatedQuestions);
+
+         Question.insertMany(questionsToStore)
+          .then(function(newlyStoredQuestions){
+              var allQuestions = repeatedQuestions.concat(newlyStoredQuestions);
+              var questionsId = recordsToIdArray(allQuestions);
+
+              Event.update({ _id: event_id },{ $set: {questions: questionsId}}, callback);
+          })
+          .catch(function(error) {
+              console.log(error);
+          });
+     })
+     .catch(function(error) {
+         console.log(error);
+     });
+}
+
+/**
+ * ************************************************************************
+ *                              AUXILIAR FUNCTIONS
+ * ************************************************************************
+ */
+
+fetchUniqueQuestionsFromQuestions = function(questions, repeatedQuestions) {
+    var nonRepeatedQuestions = [];
+    questions.forEach(function(question) {
+        var isRepeated = false;
+        for(var i = 0 ; i < repeatedQuestions.length ; i++) {
+            if(repeatedQuestions[i].text == question) {
+                isRepeated = true;
+                break;
+            }
+        }
+        if(!isRepeated) {
+            var record = new Question();
+            record.text = question;
+            nonRepeatedQuestions.push(record);
+        }
+    });
+    return nonRepeatedQuestions;
+}
+
+recordsToIdArray = function(records) {
+    var ids = [];
+    for(var i = 0; i < records.length; i++) {
+        ids.push(records[i]._id);
+    }
+    return ids;
 }
 
 module.exports = AdminController;

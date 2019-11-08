@@ -46,7 +46,11 @@ router.get('/all-events', adminmw, function(req, res) {
 
 
 router.post('/store-questions', adminmw, function(req, res) {
-    
+    var questions = req.body.event_questions;
+    var event = req.body.event_id;
+    AdminController.storeQuestionsForEvent(questions, event, function(error, documents){
+        if(!error) res.send({ succes:true });
+    });
 });
 
 module.exports = router;
