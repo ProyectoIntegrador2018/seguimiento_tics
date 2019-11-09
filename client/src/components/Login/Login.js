@@ -29,7 +29,7 @@ class Login extends React.Component {
   render() {
     if (sessionStorage.getItem(AUTHENTICATED)) {
       if (sessionStorage.getItem(ADMIN) === "true")
-        return <Redirect to="/admin" />;
+        return <Redirect to="/event" />;
       return <Redirect to="/home" />;
     }
 
@@ -125,7 +125,6 @@ class Login extends React.Component {
       .post(url, reqBody)
       .then(response => {
         var data = response.data;
-        console.log(data);
         if (data.error) {
           this.setState({ isInvalid: true });
         } else {
