@@ -22,7 +22,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // Initial Configuration
-require("./server/config/admin");
+app.use(express.static('./server/config/admin'))
 
 // Routers
 const authRouter = require('./server/routes/auth');
