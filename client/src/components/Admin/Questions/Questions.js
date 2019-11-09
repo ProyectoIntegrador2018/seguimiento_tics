@@ -16,7 +16,7 @@ class Questions extends React.Component {
             <div>
                 { this.state.event === "" ? <EventSelection routeURL="/admin/all-events"
                                                             selectedEvent={this.selectedEvent}/>
-                                          : <QuestionsCreation/> }
+                                          : <QuestionsCreation eventId={this.state.event}/> }
             </div>
         );
     }
