@@ -1,10 +1,11 @@
 import React from "react";
-import {Form, Button, InputGroup} from "react-bootstrap";
-import { API_URL } from "../../constants/apiurl";
+import {Form, Button} from "react-bootstrap";
 import Axios from "axios";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import { TOKEN } from "../../constants/sessionstorage";
-import { title } from "../../assets/jss/sharedStyling";
+import { API_URL } from "../../constants/apiurl";
+import {title, button100, buttonWrapper, button100Wrapper} from "../../assets/jss/sharedStyling";
+import {pickerWidth, sectionContainer, submitBttn, mainContainter} from "../../assets/jss/components/selectEventStyle";
 
 class EventSelection extends React.Component {
 
@@ -27,16 +28,25 @@ class EventSelection extends React.Component {
 
     render() {
         return(
-            <Form onSubmit={this.onFormSubmit}>
+            <div style={mainContainter}>
                 <span style={title}>Selecciona el evento</span>
-                <LoadingSpinner showSpinner={this.state.isFetching}/>
-                <Form.Control   as="select"
-                                defaultValue={this.state.selected}
-                                onChange={this.onSelectPicklistChange}>
-                    {this.createPicklistItems()}
-                </Form.Control>
-                <Button type="submit">Siguiente</Button>
-            </Form>
+                <Form onSubmit={this.onFormSubmit} style={sectionContainer}>
+                    <LoadingSpinner showSpinner={this.state.isFetching}/>
+                    <Form.Control   as="select"
+                                    defaultValue={this.state.selected}
+                                    onChange={this.onSelectPicklistChange}
+                                    style={pickerWidth}
+                                    >
+                        {this.createPicklistItems()}
+                    </Form.Control>
+
+                    <div style={buttonWrapper}>
+                        <div style={button100Wrapper, submitBttn}>
+                            <Button type="submit" style={button100}>Siguiente</Button>
+                        </div>
+                    </div>
+                </Form>
+            </div>
         );
     }
 

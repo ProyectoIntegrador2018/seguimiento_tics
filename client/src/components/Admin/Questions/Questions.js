@@ -1,6 +1,6 @@
 import React from "react";
 import EventSelection from "../../EventSelection/EventSelection";
-import QuestionsCreation from "./Creation/QuestionsCreation";
+import QuestionsCreation from "./QuestionsCreation";
 
 class Questions extends React.Component {
     constructor(props) {

@@ -1,8 +1,11 @@
 import React from "react";
 import { Form, Button } from "react-bootstrap";
-import { TOKEN } from "../../../../constants/sessionstorage";
-import { API_URL } from "../../../../constants/apiurl";
+import { TOKEN } from "../../../constants/sessionstorage";
+import { API_URL } from "../../../constants/apiurl";
 import Axios from "axios";
+import { title, invalidInput } from "../../../assets/jss/sharedStyling";
+import { addQuestionBttn, storeQuestionBttn, deleteBttn, toolBar, inputQuestion, questionContainer, textSpan } from "../../../assets/jss/components/questionsStyle";
+import remove from "../../../assets/img/remove.png";
 
 class QuestionsCreation extends React.Component {
     constructor(props) {
@@ -20,11 +23,12 @@ class QuestionsCreation extends React.Component {
     render() {
         return(
             <div>
+                <span style={title}>Preguntas del evento</span>
                 {this.renderRequiredQuestions()}
                 <Form onSubmit={this.onQuestionsSubmission}>
                     {this.renderQuestionItems()}
-                    <Button onClick={this.onAddQuestions}>Agregar pregunta</Button>
-                    <Button type="submit">Guardar</Button>
+                    <Button onClick={this.onAddQuestions} style={addQuestionBttn}>+ Agregar pregunta</Button>
+                    <Button type="submit" style={storeQuestionBttn}>Guardar</Button>
                 </Form>
             </div>
         );
@@ -34,21 +38,38 @@ class QuestionsCreation extends React.Component {
     renderRequiredQuestions() {
         return(
             <Form.Group>
-                <Form.Label>Nombre(s)</Form.Label>
-                <Form.Control   type="text"
-                                disabled/>
-                <Form.Label>Apellido paterno</Form.Label>
-                <Form.Control   type="text"
-                                disabled/>
-                <Form.Label>Apellido materno</Form.Label>
-                <Form.Control   type="text"
-                                disabled/>
-                <Form.Label>Fecha de nacimiento</Form.Label>
-                <Form.Control   type="text"
-                                disabled/>
-                <Form.Label>Lugar de nacimiento</Form.Label>
-                <Form.Control   type="text"
-                                disabled/>
+                <span style={invalidInput}>  * Preguntas requeridas</span>
+                <div className="row">
+                    <div className="col">
+                        <Form.Label>Nombre(s)</Form.Label>
+                        <Form.Control   type="text"
+                                        disabled/>
+                    </div>
+                    <div className="col">
+                        <Form.Label>Apellido paterno</Form.Label>
+                        <Form.Control   type="text"
+                                        disabled/>
+                    </div>
+                    <div className="col">
+                        <Form.Label>Apellido materno</Form.Label>
+                        <Form.Control   type="text"
+                                        disabled/>
+                    </div>
+                </div>
+
+                <div className="row">
+                    <div className="col">
+                        <Form.Label>Fecha de nacimiento</Form.Label>
+                        <Form.Control   type="text"
+                                        disabled/>
+                    </div>
+                    <div className="col">
+                        <Form.Label>Lugar de nacimiento</Form.Label>
+                        <Form.Control   type="text"
+                                        disabled/>
+                    </div>
+                </div>
+                
                 <Form.Label>Genero</Form.Label>
                 <Form.Check     type="radio"
                                 label="Hombre"
@@ -58,6 +79,7 @@ class QuestionsCreation extends React.Component {
                                 disabled/>
                 <Form.Label>Correo electrónico</Form.Label>
                 <Form.Control   type="email"
+                                style={{width:'35%'}}
                                 disabled/>
             </Form.Group>
         );
@@ -68,12 +90,20 @@ class QuestionsCreation extends React.Component {
             <Form.Group>
                 {this.state.questions.map((question, idx) => {
                     return(
-                        <div key={idx}>
+                        <div key={idx} style={questionContainer}>
+                            <div style={toolBar}>
+                                <span style={textSpan}>{idx+1}</span>
+                                <Button style={deleteBttn}
+                                        onClick={() => this.onClickRemove(idx)}>
+                                    <img src={remove} style={{height: '20px'}}/>
+                                </Button>
+                            </div>
                             <Form.Control   type="text"
                                             value={question}
                                             minLength={5}
+                                            style={inputQuestion}
                                             onChange={(e) => this.onQuestionChange(e, idx)}/>
-                            <Button onClick={() => this.onClickRemove(idx)}>-</Button>
+                            
                         </div>
                     );
                 })}
