@@ -1,3 +1,3 @@
-const API_URL = 'http://localhost:3001';
+const API_URL = 'https://seguimientotic.herokuapp.com/3001';
 
 export { API_URL };
