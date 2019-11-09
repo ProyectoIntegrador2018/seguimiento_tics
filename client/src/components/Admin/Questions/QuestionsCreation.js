@@ -39,7 +39,18 @@ class QuestionsCreation extends React.Component {
         return(
             <Form.Group>
                 <span style={invalidInput}>  * Preguntas requeridas</span>
-                <div className="row">
+                {this.renderFirstChunk()}
+
+                {this.renderSecondChunk()}                
+                
+                {this.renderThirdChunk()}
+            </Form.Group>
+        );
+    }
+
+    renderFirstChunk() {
+        return(
+            <div className="row">
                     <div className="col">
                         <Form.Label>Nombre(s)</Form.Label>
                         <Form.Control   type="text"
@@ -55,9 +66,13 @@ class QuestionsCreation extends React.Component {
                         <Form.Control   type="text"
                                         disabled/>
                     </div>
-                </div>
+            </div>
+        );
+    }
 
-                <div className="row">
+    renderSecondChunk() {
+        return(
+            <div className="row">
                     <div className="col">
                         <Form.Label>Fecha de nacimiento</Form.Label>
                         <Form.Control   type="text"
@@ -68,8 +83,13 @@ class QuestionsCreation extends React.Component {
                         <Form.Control   type="text"
                                         disabled/>
                     </div>
-                </div>
-                
+            </div>
+        );
+    }
+
+    renderThirdChunk() {
+        return(
+            <Form.Group>
                 <Form.Label>Genero</Form.Label>
                 <Form.Check     type="radio"
                                 label="Hombre"
