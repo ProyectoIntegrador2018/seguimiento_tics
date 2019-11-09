@@ -7,6 +7,7 @@ const cors = require("cors");
 const path = require("path");
 
 const port = process.env.PORT || 3001;
+console.log(process.env.DATABASE,'!!!!!');
 const database =
   process.env.DATABASE || "mongodb://localhost:27017/seguimientotic";
 
