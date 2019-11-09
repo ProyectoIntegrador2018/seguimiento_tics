@@ -28,6 +28,7 @@ const loginContainer = {
 
 const loginWrapper = {
     width: '500px',
+    marginLeft:'-300px',
     background: '#fff',
     borderRadius: '10px',
     overflow: 'hidden'

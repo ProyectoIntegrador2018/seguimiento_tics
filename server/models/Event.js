@@ -28,6 +28,14 @@ var schema = new mongoose.Schema({
  */
 schema.statics.findByName = function(name) {
     return this.findOne({ name: name }).exec();
-}
+};
+
+/**
+ * Fetches all stored records
+ * @return {Promise} Promise that cointains every record stored in the database
+ */
+schema.statics.fetchAll = function() {
+    return this.find().exec();
+};
 
 module.exports = mongoose.model('Event', schema);

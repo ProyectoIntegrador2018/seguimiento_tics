@@ -32,4 +32,25 @@ router.post('/availability-event', adminmw, function(req, res) {
     });
 });
 
+/**
+ *  Route that fetches all the stored events
+ * @implements {AdminMiddleware} Makes sure that the admin is the one making the get request
+ * @param {Object} req Contains nothing
+ * @param {Object} res Response of get
+ */
+router.get('/all-events', adminmw, function(req, res) {
+    AdminController.fetchAllRecords(function(response) {
+        res.send(response);
+    });
+});
+
+
+router.post('/store-questions', adminmw, function(req, res) {
+    var questions = req.body.event_questions;
+    var event = req.body.event_id;
+    AdminController.storeQuestionsForEvent(questions, event, function(error, documents){
+        if(!error) res.send({ succes:true });
+    });
+});
+
 module.exports = router;
