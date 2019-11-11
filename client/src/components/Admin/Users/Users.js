@@ -63,7 +63,7 @@ class Users extends React.Component {
                     </div>
                     {this.state.users.map(user =>{
                         return(
-                            <div style={cell}>
+                            <div style={cell} key={user.email}>
                                 {user.email}
                             </div>
                         )
@@ -83,9 +83,9 @@ class Users extends React.Component {
                     <Form onSubmit={this.onStoreRecordSubmit} >
                         <Form.Group>
                             <Form.Label>Correo electrónico</Form.Label>
-                            <Form.Control type="email" onChange={this.handleEmailChange}/>
+                            <Form.Control type="email" onChange={this.handleEmailChange} required={true}/>
                             <Form.Label>Contraseña</Form.Label>
-                            <Form.Control type="password" onChange={this.handlePasswordChange}/>
+                            <Form.Control type="password" onChange={this.handlePasswordChange} required={true} minLength={4}/>
                         </Form.Group>
                         <Button type="submit" style={formBttn}>Guardar</Button>
                     </Form>
@@ -105,7 +105,9 @@ class Users extends React.Component {
 
     toggleDisplayForm() {
         this.setState({
-            displayForm: false
+            displayForm: false,
+            email: "",
+            password: ""
         })
     }
 
