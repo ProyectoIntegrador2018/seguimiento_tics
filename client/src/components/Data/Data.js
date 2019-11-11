@@ -89,56 +89,64 @@ class Data extends PureComponent {
     this.state = {};
   }
 
+  getAgeGenderGraph = () => {
+    return (
+      <div style={dataContainer}>
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart
+            data={data1}
+            margin={{
+              top: 5,
+              right: 30,
+              left: 20,
+              bottom: 5
+            }}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="age" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="hombres" fill="#4459e3" />
+            <Bar dataKey="mujeres" fill="#f569f0" />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+    );
+  };
+
+  getYesNoITGraph = () => {
+    return (
+      <div style={dataContainer}>
+        <p>Personas que estudiaron TI</p>
+        <ResponsiveContainer width="100%" height={400}>
+          <PieChart onMouseEnter={this.onPieEnter}>
+            <Pie
+              data={data2}
+              cx={150}
+              cy={150}
+              labelLine={false}
+              label={renderCustomizedLabel}
+              outerRadius={80}
+              fill="#8884d8"
+            >
+              {data2.map((entry, index) => (
+                <Cell fill={COLORS[index % COLORS.length]} />
+              ))}
+            </Pie>
+          </PieChart>
+        </ResponsiveContainer>
+      </div>
+    );
+  };
+
   render() {
     return (
       <div style={limiter}>
         <Row>
-          <Col md={{ span: 5, offset: 1 }}>
-            <div style={dataContainer}>
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart
-                  data={data1}
-                  margin={{
-                    top: 5,
-                    right: 30,
-                    left: 20,
-                    bottom: 5
-                  }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="age" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Bar dataKey="hombres" fill="#4459e3" />
-                  <Bar dataKey="mujeres" fill="#f569f0" />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          </Col>
+          <Col md={{ span: 5, offset: 1 }}>{this.getAgeGenderGraph()}</Col>
 
-          <Col md={{ span: 5 }}>
-            <div style={dataContainer}>
-              <p>Personas que estudiaron TI</p>
-              <ResponsiveContainer width="100%" height={400}>
-                <PieChart onMouseEnter={this.onPieEnter}>
-                  <Pie
-                    data={data2}
-                    cx={150}
-                    cy={150}
-                    labelLine={false}
-                    label={renderCustomizedLabel}
-                    outerRadius={80}
-                    fill="#8884d8"
-                  >
-                    {data2.map((entry, index) => (
-                      <Cell fill={COLORS[index % COLORS.length]} />
-                    ))}
-                  </Pie>
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
-          </Col>
+          <Col md={{ span: 5 }}>{this.getYesNoITGraph()}</Col>
         </Row>
       </div>
     );

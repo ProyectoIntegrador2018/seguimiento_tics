@@ -3,12 +3,8 @@ import Login from "./components/Login/Login";
 import AdminDashboard from "./components/Admin/Dashboard/AdminDashboard";
 import UserDashboard from "./components/User/Dashboard/UserDashboard";
 import Search from "./components/Search/Search";
-<<<<<<< HEAD
 import EventCreation from "./components/Admin/Event/Creation/EventCreation";
 import Navigation from "./components/Navigation/Navigation";
-=======
-import Data from "./components/Data/Data";
->>>>>>> a2052264fa2accdc117c30552610844d62044033
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { ProtectedRoute } from "./components/ProtectedRoute/ProtectedRoute";
 import { AUTHENTICATED, ADMIN } from "./constants/sessionstorage";
