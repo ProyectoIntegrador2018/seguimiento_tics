@@ -1,44 +1,48 @@
-import '../fonts/fonts.css';
+import "../fonts/fonts.css";
 
 const title = {
-    display: 'block',
-    fontFamily: 'Poppins',
-    fontSize: '39px',
-    fontWeight:'700',
-    color: '#333333',
-    lineHeight: '1.2',
-    textAlign: 'center',
-}
+  display: "block",
+  fontFamily: "Poppins",
+  fontSize: "39px",
+  fontWeight: "700",
+  color: "#333333",
+  lineHeight: "1.2",
+  textAlign: "center"
+};
 
 const buttonWrapper = {
-    display: '-webkit-box',
-    display: '-webkit-flex',
-    display: '-moz-box',
-    display: '-ms-flexbox',
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-}
+  display: "flex",
+  fallbacks: [
+    { display: "-webkit-box" },
+    { display: "-webkit-flex" },
+    { display: "-moz-box" },
+    { display: "-ms-flexbox" }
+  ],
+  flexWrap: "wrap",
+  justifyContent: "center"
+};
 
 const button100 = {
-    fontFamily: 'Poppins',
-    fontSize: '16px',
-    backgroundColor: '#bd59d4',
-    lineHeight: '1.2',
-    textTransform: 'uppercase',
-    display: '-webkit-box',
-    display: '-webkit-flex',
-    display: '-moz-box',
-    display: '-ms-flexbox',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: '0 20px',
-    width: '100%',
-    height: '50px',
-    color: 'white',
-    borderColor: 'transparent'
-}
+  fontFamily: "Poppins",
+  fontSize: "16px",
+  backgroundColor: "#bd59d4",
+  lineHeight: "1.2",
+  textTransform: "uppercase",
+  display: "flex",
+  fallbacks: [
+    { display: "-webkit-box" },
+    { display: "-webkit-flex" },
+    { display: "-moz-box" },
+    { display: "-ms-flexbox" }
+  ],
+  justifyContent: "center",
+  alignItems: "center",
+  padding: "0 20px",
+  width: "100%",
+  height: "50px",
+  color: "white",
+  borderColor: "transparent"
+};
 
 const button100Wrapper = {
     width: '50%',
@@ -53,9 +57,9 @@ const button100Wrapper = {
 }
 
 const invalidInput = {
-    color: '#dc3545',
-    fontSize: '70%',
-    textTransform: 'uppercase'
-}
+  color: "#dc3545",
+  fontSize: "70%",
+  textTransform: "uppercase"
+};
 
 export { title, button100, buttonWrapper, button100Wrapper, invalidInput };
