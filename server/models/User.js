@@ -78,7 +78,7 @@ schema.statics.findByEmail = function(email) {
  * @return {Promise} Promise that cointains every record stored in the database
  */
 schema.statics.fetchAll = function() {
-  return this.find().exec();
+  return this.find({ admin: {$ne: true } }).exec();
 }
 
 module.exports = mongoose.model("User", schema);

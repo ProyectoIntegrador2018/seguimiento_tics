@@ -78,7 +78,7 @@ router.post('/store-user', adminmw, function(req, res) {
     var email = req.body.email;
     var password = req.body.password;
     AdminController.storeUser(email, password, function(document){
-
+        res.send(document);
     });
 });
 
