@@ -1,7 +1,7 @@
 const tableContainer = {
     width: '100%',
     minHeight: '100vh',
-    background: '#c4d3f6',
+    // background: '#c4d3f6',
     display: '-webkit-box',
     display: '-webkit-flex',
     display: '-moz-box',
@@ -17,6 +17,7 @@ const tableWrapper = {
     width: '960px',
     borderRadius: '10px',
     overflow: 'hidden',
+    marginRight: "2%"
 }
 
 const table = {
@@ -40,15 +41,36 @@ const cellHeader = {
 }
 
 const cell = {
-    fontSize: '12px',
+    fontSize: '16px',
     color: '#808080',
     lineHeight: '3',
     marginBottom: '-7px',
-    height: '35px',
+    height: '45px',
     display: 'block',
     background: '#fff',
     paddingLeft: '40px',
-    borderRadius: '0 0 10px 10px'
+    borderRadius: '0 0 10px 10px',
+    background: '#c4d3f6',
+}
+
+const roundedBttn = {
+    borderRadius: "50%",
+    height: "40px",
+    width: "40px",
+    backgroundColor: "#b565c8",
+    borderColor: "#b565c8",
+    fontWeight: "bold"
+}
+
+const formStyle = {
+    width: "50%",
+    textAlign: "center"
+}
+
+const formBttn = {
+    backgroundColor: '#b565c8',
+    borderColor: '#b565c8',
+    fontWeight: 'bold'
 }
 
 export {
@@ -57,5 +79,8 @@ export {
     table,
     header,
     cellHeader,
-    cell
+    cell,
+    roundedBttn,
+    formStyle,
+    formBttn
 };

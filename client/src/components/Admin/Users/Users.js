@@ -1,9 +1,11 @@
 import React from "react";
 import Axios from "axios";
-import { tableContainer, tableWrapper, table, header, cellHeader, cell } from "../../../assets/jss/components/usersStyle";
+import LoadingSpinner from "./../../LoadingSpinner/LoadingSpinner";
+import { tableContainer, tableWrapper, table, header, cellHeader, cell, roundedBttn, formStyle, formBttn } from "../../../assets/jss/components/usersStyle";
 import { API_URL } from "../../../constants/apiurl";
 import { TOKEN } from "../../../constants/sessionstorage";
-import { Button, Form } from "react-bootstrap";
+import { Button, Form, Toast } from "react-bootstrap";
+import { title } from "../../../assets/jss/sharedStyling";
 
 
 class Users extends React.Component {
@@ -13,7 +15,8 @@ class Users extends React.Component {
             users: [],
             displayForm: false,
             email: "",
-            password: ""
+            password: "",
+            isFetching: true
         }
         this.renderRegistrationForm = this.renderRegistrationForm.bind(this);
         this.fetchUsersAPI = this.fetchUsersAPI.bind(this);
@@ -21,6 +24,8 @@ class Users extends React.Component {
         this.onStoreRecordSubmit = this.onStoreRecordSubmit.bind(this);
         this.handleEmailChange = this.handleEmailChange.bind(this);
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
+        this.toggleDisplayForm = this.toggleDisplayForm.bind(this);
+        this.renderTable = this.renderTable.bind(this);
     }
 
     componentDidMount() {
@@ -30,42 +35,62 @@ class Users extends React.Component {
     render() {
         return(
            <div>
+               <span style={title}>Usuarios registrados</span>
+               <LoadingSpinner showSpinner={this.state.isFetching}/>
                 <div style={tableContainer}>
-                    {this.state.displayForm ? this.renderRegistrationForm() : null }
-                    <div style={tableWrapper}>
-                        <div style={table}>
-                            <div style={header}>
-                                <div style={cellHeader}>
-                                    Correo electrónico
-                                </div>
-                            </div>
-                            {this.state.users.map(user =>{
-                                return(
-                                    <div style={cell}>
-                                        {user.email}
-                                    </div>
-                                )
-                            })}
-                        </div>
-                    </div>
+                
+                {this.state.displayForm ? this.renderRegistrationForm() : null }
+                    {this.state.users.length == 0 ? <span style={title}>No hay usuarios registrados</span> :
+                                                this.renderTable()}
+                    
                 <Button onClick={this.onDisplayFormClick}
-                        disabled={this.state.displayForm}>Agregar</Button>
+                         style={roundedBttn}
+                        disabled={this.state.displayForm}>+</Button>
+                        
                 </div>
            </div>
         );
     }
 
+    renderTable() {
+        return(
+            <div style={tableWrapper}>
+                <div style={table}>
+                    <div style={header}>
+                        <div style={cellHeader}>
+                            Correo electrónico
+                        </div>
+                    </div>
+                    {this.state.users.map(user =>{
+                        return(
+                            <div style={cell}>
+                                {user.email}
+                            </div>
+                        )
+                    })}
+                </div>
+            </div>
+        );
+    }
+
     renderRegistrationForm() {
         return(
-            <Form onSubmit={this.onStoreRecordSubmit}>
-                <Form.Group>
-                    <Form.Label>Correo electrónico</Form.Label>
-                    <Form.Control type="email" onChange={this.handleEmailChange}/>
-                    <Form.Label>Contraseña</Form.Label>
-                    <Form.Control type="password" onChange={this.handlePasswordChange}/>
-                </Form.Group>
-                <Button type="submit">Guardar</Button>
-            </Form>
+            <Toast style={formStyle} onClose={this.toggleDisplayForm}>
+                <Toast.Header>
+                    <strong className="mr-auto">Registrar nuevo usuario</strong>
+                </Toast.Header>
+                <Toast.Body>
+                    <Form onSubmit={this.onStoreRecordSubmit} >
+                        <Form.Group>
+                            <Form.Label>Correo electrónico</Form.Label>
+                            <Form.Control type="email" onChange={this.handleEmailChange}/>
+                            <Form.Label>Contraseña</Form.Label>
+                            <Form.Control type="password" onChange={this.handlePasswordChange}/>
+                        </Form.Group>
+                        <Button type="submit" style={formBttn}>Guardar</Button>
+                    </Form>
+                </Toast.Body>
+            </Toast>
         )
     }
 
@@ -76,6 +101,12 @@ class Users extends React.Component {
 
     handlePasswordChange(event) {
         this.setState({ password: event.target.value });
+    }
+
+    toggleDisplayForm() {
+        this.setState({
+            displayForm: false
+        })
     }
 
     onDisplayFormClick() {
@@ -89,14 +120,14 @@ class Users extends React.Component {
     }
 
     //  API
-
     fetchUsersAPI() {
         var url = API_URL + '/admin/all-users';
         
         Axios.get(url, this.buildHeaders())
          .then(data => {
              this.setState({
-                 users: data.data
+                 users: data.data,
+                 isFetching: false
              });
          })
          .catch(error => {
@@ -117,7 +148,7 @@ class Users extends React.Component {
             this.setState({
                 displayForm: false,
                 email: "",
-                password: ""
+                password: "",
             });
          })
          .catch(error => {
