@@ -1,8 +1,8 @@
 const mainContainter = {
     width: '50%',
     margin: '0px auto',
-    top: '50%',
-    transform: 'translateY(90%)'
+    marginTop: '20%',
+    
 }
 
 const pickerWidth = {

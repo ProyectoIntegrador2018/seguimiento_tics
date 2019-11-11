@@ -1,4 +1,4 @@
-const Admin = require('./../models/User');
+const User = require('./../models/User');
 const Event = require('./../models/Event');
 const Question = require('./../models/Question');
 
@@ -45,7 +45,7 @@ AdminController.fetchEventAvailability = function(name, callback) {
  *  Function that fetches all the Event records from the database
  *  @param {Function} callback Function to perform after the records were fetched
  */
-AdminController.fetchAllRecords = function(callback) {
+AdminController.fetchAllEventRecords = function(callback) {
     Event.fetchAll()
      .then(function(records) {
          callback(records);
@@ -55,6 +55,12 @@ AdminController.fetchAllRecords = function(callback) {
      });
 }
 
+/**
+ * Function that stores all the questions corresponding to an event and checks that the questions havent been created before
+ * @param {Array} questions Array of Strings that represent the questions
+ * @param {String} event_id String of the event's id
+ * @param {Function} callback Function to perform after the questions have been stored
+ */
 AdminController.storeQuestionsForEvent = function(questions, event_id, callback) {
     Question.findManyByText(questions)
      .then(function(repeatedQuestions) {
@@ -77,11 +83,52 @@ AdminController.storeQuestionsForEvent = function(questions, event_id, callback)
 }
 
 /**
+ * Function that fetches all the User records
+ * @param {Object} callback Function to perform after the records were fetched
+ */
+AdminController.fetchAllUserRecords = function(callback) {
+    User.fetchAll()
+     .then(function(documents){
+         callback(documents);
+     })
+     .catch(function(error){
+         console.log(error);
+     });
+}
+
+/**
+ * Function that stores a new User
+ * @param {String} email Email of the user
+ * @param {String} password Password of the user
+ * @param {Function} callback Function to perform after the record is stored
+ */
+AdminController.storeUser = function(email, password, callback) {
+    var user = new User();
+    user.email = email;
+    user.password = password;
+
+    user.save()
+     .then(function(record) {
+         callback(record);
+     })
+     .catch(function(error){
+         console.log(error);
+     });
+}
+
+/**
  * ************************************************************************
  *                              AUXILIAR FUNCTIONS
  * ************************************************************************
  */
 
+/**
+ * Function that removes the already existing questions with the questions corresponding to the event
+ * Useful for when the user wants to register questions to an event that have been previously created for other event(s)
+ * @param {Array} questions Array of Strings that represent the questions of the event
+ * @param {Array} repeatedQuestions Array of Question object that represent the repeated questions that the user wants to store to the event
+ * @return {Array} Array with all the unique questions
+ */
 fetchUniqueQuestionsFromQuestions = function(questions, repeatedQuestions) {
     var nonRepeatedQuestions = [];
     questions.forEach(function(question) {

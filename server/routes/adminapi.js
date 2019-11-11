@@ -39,17 +39,46 @@ router.post('/availability-event', adminmw, function(req, res) {
  * @param {Object} res Response of get
  */
 router.get('/all-events', adminmw, function(req, res) {
-    AdminController.fetchAllRecords(function(response) {
+    AdminController.fetchAllEventRecords(function(response) {
         res.send(response);
     });
 });
 
-
+/**
+ *  Route that stores all given questions to an event given its id
+ * @implements {AdminMiddleware} Makes sure that the admin is the one making the get request
+ * @param {Object} req Contains an array of questions and an event id
+ * @param {Object} res Sends a success if everything went smoothly
+ */
 router.post('/store-questions', adminmw, function(req, res) {
     var questions = req.body.event_questions;
     var event = req.body.event_id;
     AdminController.storeQuestionsForEvent(questions, event, function(error, documents){
         if(!error) res.send({ succes:true });
+    });
+});
+
+/**
+ *  Route that fetches all the users
+ * @param {Object} req Contains nothing
+ * @param {Object} res Response of get
+ */
+router.get('/all-users', adminmw, function(req, res) {
+    AdminController.fetchAllUserRecords(function(documents){
+        res.send(documents);
+    });
+});
+
+/**
+ *  Route that stores a user
+ * @param {Object} req Contains the email and the password of the user to store
+ * @param {Object} res Response of post
+ */
+router.post('/store-user', adminmw, function(req, res) {
+    var email = req.body.email;
+    var password = req.body.password;
+    AdminController.storeUser(email, password, function(document){
+
     });
 });
 

@@ -10,6 +10,7 @@ import { ProtectedRoute } from "./components/ProtectedRoute/ProtectedRoute";
 import { AUTHENTICATED, ADMIN } from "./constants/sessionstorage";
 import { container } from "./assets/jss/components/appStyle";
 import Questions from "./components/Admin/Questions/Questions";
+import Users from "./components/Admin/Users/Users";
 
 class App extends React.Component {
   render(){
@@ -20,14 +21,19 @@ class App extends React.Component {
           <div style={container}>
             <Switch>
               <Route path="/" component={Login} exact />
-              
+
+              <ProtectedRoute path="/admin" 
+                              component={AdminDashboard}
+                              isAdmin={true}
+                              />
+
               <ProtectedRoute path="/event"
                               component={EventCreation}
                               isAdmin={true}
                               />
     
-              <ProtectedRoute path="/admin" 
-                              component={AdminDashboard}
+              <ProtectedRoute path="/users" 
+                              component={Users}
                               isAdmin={true}
                               />
 
@@ -55,7 +61,7 @@ class App extends React.Component {
     var navItems = [
       {url: "/event", name: "Eventos"}, 
       {url: "/questions", name: "Preguntas"}, 
-      {url: "", name: "Usuarios"},
+      {url: "/users", name: "Usuarios"},
     ]
     if(sessionStorage.getItem(AUTHENTICATED) && sessionStorage.getItem(ADMIN)) return(<Navigation navitems={navItems}/>);
   }
