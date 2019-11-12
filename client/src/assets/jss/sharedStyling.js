@@ -45,16 +45,17 @@ const button100 = {
 };
 
 const button100Wrapper = {
-    width: '50%',
-    display: 'block',
-    position: 'relative',
-    borderRadius: '25px',
-    overflow: 'hidden',
-    margin: '0 auto',
-    boxShadow: '0 10px 30px 0px rgba(189, 89, 212, 0.5)',
-    marginTop: '6%',
-    marginBottom: '50px'
-}
+  width: "50%",
+  display: "block",
+  position: "relative",
+  zIndex: "1",
+  borderRadius: "25px",
+  overflow: "hidden",
+  margin: "0 auto",
+  boxShadow: "0 10px 30px 0px rgba(189, 89, 212, 0.5)",
+  marginTop: "6%",
+  marginBottom: "50px"
+};
 
 const invalidInput = {
   color: "#dc3545",
