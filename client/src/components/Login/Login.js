@@ -29,7 +29,7 @@ class Login extends React.Component {
   render() {
     if (sessionStorage.getItem(AUTHENTICATED)) {
       if (sessionStorage.getItem(ADMIN) === "true")
-        return <Redirect to="/event" />;
+        return <Redirect to="/" />;
       return <Redirect to="/home" />;
     }
 

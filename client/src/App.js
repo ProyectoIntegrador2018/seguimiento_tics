@@ -10,6 +10,7 @@ import { ProtectedRoute } from "./components/ProtectedRoute/ProtectedRoute";
 import { AUTHENTICATED, ADMIN } from "./constants/sessionstorage";
 import { container } from "./assets/jss/components/appStyle";
 import Questions from "./components/Admin/Questions/Questions";
+import Users from "./components/Admin/Users/Users";
 import Data from "./components/Data/Data";
 
 class App extends React.Component {
@@ -22,34 +23,34 @@ class App extends React.Component {
             <Switch>
               <Route path="/" component={Login} exact />
 
-              <ProtectedRoute
-                path="/event"
-                component={EventCreation}
-                isAdmin={true}
+              <ProtectedRoute path="/admin" 
+                              component={AdminDashboard}
+                              isAdmin={true}
+                              />
+
+              <ProtectedRoute path="/event"
+                              component={EventCreation}
+                              isAdmin={true}
+                              />
+    
+              <ProtectedRoute path="/users" 
+                              component={Users}
+                              isAdmin={true}
+                              />
+
+              <ProtectedRoute path="/questions"
+                              component={Questions}
+                              isAdmin={true}
               />
 
-              <ProtectedRoute
-                path="/admin"
-                component={AdminDashboard}
-                isAdmin={true}
+              <ProtectedRoute path="/home"
+                              component={UserDashboard}
+                              isAdmin={false}
               />
 
-              <ProtectedRoute
-                path="/questions"
-                component={Questions}
-                isAdmin={true}
-              />
-
-              <ProtectedRoute
-                path="/home"
-                component={UserDashboard}
-                isAdmin={false}
-              />
-
-              <ProtectedRoute
-                path="/search"
-                component={Search}
-                isAdmin={false}
+              <ProtectedRoute path="/search"
+                              component={Search}
+                              isAdmin={false}
               />
 
               <ProtectedRoute path="/data" component={Data} isAdmin={false} />
@@ -62,12 +63,11 @@ class App extends React.Component {
 
   renderAdminNav() {
     var navItems = [
-      { url: "/event", name: "Eventos" },
-      { url: "/questions", name: "Preguntas" },
-      { url: "", name: "Usuarios" }
-    ];
-    if (sessionStorage.getItem(AUTHENTICATED) && sessionStorage.getItem(ADMIN))
-      return <Navigation navitems={navItems} />;
+      {url: "/event", name: "Eventos"}, 
+      {url: "/questions", name: "Preguntas"}, 
+      {url: "/users", name: "Usuarios"},
+    ]
+    if(sessionStorage.getItem(AUTHENTICATED) && sessionStorage.getItem(ADMIN)) return(<Navigation navitems={navItems}/>);
   }
 }
 

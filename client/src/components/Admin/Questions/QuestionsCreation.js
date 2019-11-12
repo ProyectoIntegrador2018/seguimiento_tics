@@ -145,6 +145,7 @@ class QuestionsCreation extends React.Component {
 
         Axios.post(requestUrl, body, {headers})
          .then(data => {
+             this.props.afterStoreRecords(true, "Preguntas guardadas con éxito");
              console.log(data.data);
          })
          .catch(error => console.log(error));

@@ -14,11 +14,13 @@ class EventSelection extends React.Component {
         this.state = {
             selected: "",
             isFetching: true,
-            events: []
+            events: [],
+            hasRecords: true,
         };
         this.fetchPickListValues = this.fetchPickListValues.bind(this);
         this.createPicklistItems = this.createPicklistItems.bind(this);
         this.onSelectPicklistChange = this.onSelectPicklistChange.bind(this);
+        this.renderEventPicklist = this.renderEventPicklist.bind(this);
         this.onFormSubmit = this.onFormSubmit.bind(this);
     }
 
@@ -29,6 +31,16 @@ class EventSelection extends React.Component {
     render() {
         return(
             <div style={mainContainter}>
+                {this.state.hasRecords ?    this.renderEventPicklist() : 
+                                            <span style={title}>No hay eventos registrados</span>}
+            </div>
+        );
+    }
+
+    //  RENDER FUNCTIONS
+    renderEventPicklist() {
+        return(
+            <div>
                 <span style={title}>Selecciona el evento</span>
                 <Form onSubmit={this.onFormSubmit} style={sectionContainer}>
                     <LoadingSpinner showSpinner={this.state.isFetching}/>
@@ -70,11 +82,20 @@ class EventSelection extends React.Component {
         };
         Axios.get(url, {headers})
          .then(response => {
-             this.setState({
-                 events: response.data,
-                 isFetching: false,
-                 selected: response.data[0]._id
-             });
+             if(response.data.length == 0) {
+                 this.setState({
+                     hasRecords: false,
+                     isFetching: false
+                 });
+                 
+             }
+             else {
+                this.setState({
+                    events: response.data,
+                    isFetching: false,
+                    selected: response.data[0]._id
+                });
+             }
          });
     }
 

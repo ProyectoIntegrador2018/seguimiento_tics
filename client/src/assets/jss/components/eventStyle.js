@@ -3,8 +3,7 @@ import './../../fonts/fonts.css';
 const eventContainer = {
     width: '50%',
     margin: '0 auto',
-    top: '50%',
-    transform: 'translateY(50%)',
+    marginTop: '10%',
     fontFamily: 'Poppins'
 }
 
