@@ -11,9 +11,10 @@ import { AUTHENTICATED, ADMIN } from "./constants/sessionstorage";
 import { container } from "./assets/jss/components/appStyle";
 import Questions from "./components/Admin/Questions/Questions";
 import Users from "./components/Admin/Users/Users";
+import Data from "./components/Data/Data";
 
 class App extends React.Component {
-  render(){
+  render() {
     return (
       <div className="App">
         <BrowserRouter>
@@ -38,18 +39,21 @@ class App extends React.Component {
                               />
 
               <ProtectedRoute path="/questions"
-                              component={Questions} 
-                              isAdmin={true}/>
-    
-              <ProtectedRoute path="/home" 
+                              component={Questions}
+                              isAdmin={true}
+              />
+
+              <ProtectedRoute path="/home"
                               component={UserDashboard}
                               isAdmin={false}
-                              />
-    
-              <ProtectedRoute path="/search" 
+              />
+
+              <ProtectedRoute path="/search"
                               component={Search}
                               isAdmin={false}
-                              />
+              />
+
+              <ProtectedRoute path="/data" component={Data} isAdmin={false} />
             </Switch>
           </div>
         </BrowserRouter>
