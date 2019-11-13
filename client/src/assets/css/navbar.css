@@ -1,0 +1,28 @@
+.nav-item:hover {
+    border-bottom: 0.25rem solid #FF5A5F;
+    width: 65%;
+    text-decoration: none;
+    color: #484848;
+}
+
+.nav-item {
+    color: #1d1d1d;
+    line-height: 44px;
+    display: block;
+    margin-bottom: 15px;
+}
+
+.logo {
+    font-weight: bold;
+    font-size: 2.2rem;
+    color: #484848;
+    letter-spacing: -2px;
+}
+
+ul {
+    padding-top: 55px;
+}
+
+h1 {
+    text-align: center;
+}

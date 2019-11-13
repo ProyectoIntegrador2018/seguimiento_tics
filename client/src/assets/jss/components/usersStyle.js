@@ -1,7 +1,6 @@
 const tableContainer = {
     width: '100%',
     minHeight: '100vh',
-    // background: '#c4d3f6',
     display: '-webkit-box',
     display: '-webkit-flex',
     display: '-moz-box',
@@ -44,13 +43,11 @@ const cell = {
     fontSize: '16px',
     color: '#808080',
     lineHeight: '3',
-    marginBottom: '-7px',
     height: '45px',
     display: 'block',
     background: '#fff',
     paddingLeft: '40px',
-    borderRadius: '0 0 10px 10px',
-    background: '#c4d3f6',
+    borderBottom: '1px solid rgba(0,0,0,0.14)'
 }
 
 const roundedBttn = {
