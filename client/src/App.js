@@ -14,6 +14,14 @@ import Users from "./components/Admin/Users/Users";
 import Data from "./components/Data/Data";
 
 class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      shouldRerender: false
+    }
+    this.rerenderAfterLogin = this.rerenderAfterLogin.bind(this);
+  }
+
   render() {
     return (
       <div className="App">
@@ -21,7 +29,10 @@ class App extends React.Component {
           {this.renderAdminNav()}
           <div style={container}>
             <Switch>
-              <Route path="/" component={Login} exact />
+              <Route  path="/" 
+                      component={() => <Login rerender={this.rerenderAfterLogin}/>} 
+                      exact 
+                      />
 
               <ProtectedRoute path="/admin" 
                               component={AdminDashboard}
@@ -68,6 +79,12 @@ class App extends React.Component {
       {url: "/users", name: "Usuarios"},
     ]
     if(sessionStorage.getItem(AUTHENTICATED) && sessionStorage.getItem(ADMIN)) return(<Navigation navitems={navItems}/>);
+  }
+
+  rerenderAfterLogin(value) {
+    this.setState({
+      shouldRerender: value
+    });
   }
 }
 

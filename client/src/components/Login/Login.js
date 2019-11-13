@@ -29,7 +29,7 @@ class Login extends React.Component {
   render() {
     if (sessionStorage.getItem(AUTHENTICATED)) {
       if (sessionStorage.getItem(ADMIN) === "true")
-        return <Redirect to="/" />;
+        return <Redirect to="/event" />;
       return <Redirect to="/home" />;
     }
 
@@ -37,7 +37,7 @@ class Login extends React.Component {
       <div style={limiter}>
         <div style={loginContainer}>
           <div style={loginWrapper}>
-            <Form>
+            <Form onSubmit={this.onLoginClick}>
               <span style={title}> Iniciar sesión </span>
 
               {this.state.isInvalid ? this.renderWrongDataMessage() : null}
@@ -58,7 +58,7 @@ class Login extends React.Component {
 
               <div style={buttonWrapper}>
                 <div style={button100Wrapper}>
-                  <Button style={button100} onClick={this.onLoginClick}>
+                  <Button  type="submit" style={button100}>
                     Iniciar sesión
                   </Button>
                 </div>
@@ -108,7 +108,8 @@ class Login extends React.Component {
     });
   }
 
-  onLoginClick() {
+  onLoginClick(event) {
+    event.preventDefault();
     this.loginAPIRequest();
   }
 
@@ -135,6 +136,7 @@ class Login extends React.Component {
             isInvalid: false,
             user: data
           });
+          this.props.rerender();
         }
       })
       .catch(error => {
