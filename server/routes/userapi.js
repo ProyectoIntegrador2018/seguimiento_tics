@@ -1,5 +1,5 @@
 const express = require('express');
-cosnt umw = require('../middleware/UserMiddleware');
+const umw = require('../middleware/UserMiddleware');
 const UserController = require('../controller/UserController');
 
 const router = express.Router();
