@@ -1,4 +1,6 @@
-const User = require("../models/User");
+const User = require('../models/User');
+const Event = require('../models/Event')
+const Question = require('../models/Question');
 
 var UserController = {};
 
@@ -26,5 +28,25 @@ UserController.passwordLogin = function(email, password, callback) {
     callback(user);
   });
 };
+
+/**
+ *  Function that fetches the Questions records corresponding to an event given its id
+ *  @param {String} eventId Id corresponding to the event whose questions we are trying to fetch
+ *  @param {Function} callback Function to perform after records have been fetched
+ */
+UserController.fetchEventQuestions = function(eventId, callback) {
+  console.log(typeof(eventId));
+  Event.fetchQuestions(eventId)
+   .then(function(eventDocuments) {
+    var questionsIds = eventDocuments[0].questions;
+     Question.findManyInIds(questionsIds)
+      .then(function(questionsDocuments) {
+        callback(questionsDocuments);
+      })
+   })
+   .catch(function(error) {
+     console.log(error);
+   });
+}
 
 module.exports = UserController;
