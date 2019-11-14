@@ -24,7 +24,7 @@ router.get('/questions/:id', umw, function(req, res) {
  * @param {Object} req Request of get with the id of the event stored in its parameters
  * @param {Object} res Response of get
  */
-router.get('/csv-template/:id', function(req, res) {
+router.get('/csv-template/:id', umw, function(req, res) {
     var event = req.params.id;
     UserController.createCSVTemplate(event, function() {
         const csvpath = path.join(__dirname, `../public/templates/${event}.csv`);
