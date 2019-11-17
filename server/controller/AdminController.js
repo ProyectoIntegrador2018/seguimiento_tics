@@ -105,7 +105,7 @@ AdminController.fetchAllUserRecords = function(callback) {
 AdminController.storeUser = function(email, password, callback) {
     var user = new User();
     user.email = email;
-    user.password = password;
+    user.password = User.hashPassword(password);
 
     user.save()
      .then(function(record) {
