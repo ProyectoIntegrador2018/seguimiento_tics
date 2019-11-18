@@ -11,19 +11,21 @@ var UserController = {};
  */
 UserController.passwordLogin = function(email, password, callback) {
   User.findByEmail(email).then(function(record) {
+    var authError = {};
     if (!record || !record.unhashPassword(password)) {
-      var authError = {
+      authError = {
         error: true,
         message: "Contraseña y/o correo incorrecto"
       };
       callback(authError);
     }
-    var token = record.generateAuthToken();
-    var user = record.toJSON();
-    user.token = token;
-    delete user.password;
-
-    callback(user);
+    else {
+      var token = record.generateAuthToken();
+      var user = record.toJSON();
+      user.token = token;
+      delete user.password;
+      callback(user, authError);
+    }
   });
 };
 
