@@ -15,6 +15,7 @@ var UserController = {};
  *  @param {String} password Password of the record
  *  @param {Function} callback Function to perform after record has (or not) been found
  */
+
 UserController.passwordLogin = function (email, password, callback) {
   User.findByEmail(email).then(function (record) {
     if (!record || !record.unhashPassword(password)) {
