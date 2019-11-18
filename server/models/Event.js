@@ -15,7 +15,8 @@ var schema = new mongoose.Schema({
         required: true
     },
     questions: [{
-        type: String
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Question',
     }]
 });
 
@@ -37,5 +38,13 @@ schema.statics.findByName = function(name) {
 schema.statics.fetchAll = function() {
     return this.find().exec();
 };
+
+/**
+ * Fetches only the Id of the questions related to the given event 
+ * @return {Promise} Promise that contains the records that were fetched
+ */
+schema.statics.fetchQuestions = function(eventId) {
+    return this.find({ _id: eventId }).select({'questions': 1, '_id': 0}).exec();
+}
 
 module.exports = mongoose.model('Event', schema);

@@ -27,9 +27,11 @@ var adminconfig = require("./server/config/admin");
 // Routers
 const authRouter = require('./server/routes/auth');
 const apiRouter = require('./server/routes/adminapi');
+const userRouter = require('./server/routes/userapi');
 
 app.use('/auth', authRouter);
 app.use('/admin', apiRouter);
+app.use('/user', userRouter);
 
 // Front-end production configuration
 if(process.env.NODE_ENV === 'production'){
