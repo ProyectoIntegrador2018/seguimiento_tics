@@ -82,4 +82,18 @@ router.post('/store-user', adminmw, function(req, res) {
     });
 });
 
+
+/**
+ *  Route for fetching the questions of an event
+ * @implements {AdminMiddleware} Middleware to make sure the user is the one making the request
+ * @param {Object} req Request of get with the id of the event stored in its parameters
+ * @param {Object} res Response of get
+ */
+router.get('/questions/:id', adminmw, function(req, res) {
+    var event = req.params.id;
+    AdminController.fetchEventQuestions(event, function(questions) {
+        res.send(questions);
+    });
+});
+
 module.exports = router;
