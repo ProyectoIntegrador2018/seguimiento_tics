@@ -52,7 +52,7 @@ class Questions extends React.Component {
         });
         setTimeout(function() {
             this.setState({displaySuccess: false});
-        }.bind(this),3500)
+        }.bind(this), 1500)
     } 
 
 }
