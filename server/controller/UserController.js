@@ -15,10 +15,16 @@ var UserController = {};
  *  @param {String} password Password of the record
  *  @param {Function} callback Function to perform after record has (or not) been found
  */
+<<<<<<< HEAD
 UserController.passwordLogin = function (email, password, callback) {
   User.findByEmail(email).then(function (record) {
+=======
+UserController.passwordLogin = function(email, password, callback) {
+  User.findByEmail(email).then(function(record) {
+    var authError = {};
+>>>>>>> aafca3469983122c9d2ce1f69f02abb867fbc464
     if (!record || !record.unhashPassword(password)) {
-      var authError = {
+      authError = {
         error: true,
         message: "Contraseña y/o correo incorrecto"
       };
@@ -29,7 +35,11 @@ UserController.passwordLogin = function (email, password, callback) {
       var user = record.toJSON();
       user.token = token;
       delete user.password;
+<<<<<<< HEAD
       callback(user);
+=======
+      callback(user, authError);
+>>>>>>> aafca3469983122c9d2ce1f69f02abb867fbc464
     }
   });
 };
