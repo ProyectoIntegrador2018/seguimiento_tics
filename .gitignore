@@ -3,5 +3,4 @@
 # Dependencies
 node_modules/
 # Misc
-server/public/templates/
 .DS_Store
