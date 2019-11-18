@@ -27,7 +27,7 @@ class App extends React.Component {
     return (
       <div className="App">
         <BrowserRouter>
-          {this.renderAdminNav()}
+          {this.renderNav()}
           <div style={container}>
             <Switch>
               <Route  path="/" 
@@ -77,13 +77,22 @@ class App extends React.Component {
     );
   }
 
-  renderAdminNav() {
-    var navItems = [
+  renderNav() {
+    const adminNavItems = [
       {url: "/event", name: "Eventos"}, 
       {url: "/questions", name: "Preguntas"}, 
       {url: "/users", name: "Usuarios"},
-    ]
-    if(sessionStorage.getItem(AUTHENTICATED) && sessionStorage.getItem(ADMIN)) return(<Navigation navitems={navItems}/>);
+    ];
+    const userNavItems = [
+      {url: "/form", name: "Formulario"},
+      {url: "/search", name: "Busqueda"},
+      {url: "/", name: "Análisis"}
+    ];
+
+    if(sessionStorage.getItem(AUTHENTICATED)) {
+      if(sessionStorage.getItem(ADMIN === "true")) return(<Navigation navitems={adminNavItems}/>);
+      return(<Navigation navitems={userNavItems} />);
+    }
   }
 
   rerenderAfterLogin(value) {
