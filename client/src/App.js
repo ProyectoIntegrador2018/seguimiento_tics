@@ -12,6 +12,7 @@ import { container } from "./assets/jss/components/appStyle";
 import Questions from "./components/Admin/Questions/Questions";
 import Users from "./components/Admin/Users/Users";
 import Data from "./components/Data/Data";
+import FormQuestions from "./components/User/Form/Form";
 
 class App extends React.Component {
   constructor(props) {
@@ -61,6 +62,10 @@ class App extends React.Component {
 
               <ProtectedRoute path="/search"
                               component={Search}
+                              isAdmin={false}
+              />
+              <ProtectedRoute path="/form"
+                              component={FormQuestions}
                               isAdmin={false}
               />
 

@@ -105,7 +105,7 @@ AdminController.fetchAllUserRecords = function(callback) {
 AdminController.storeUser = function(email, password, callback) {
     var user = new User();
     user.email = email;
-    user.password = password;
+    user.password = User.hashPassword(password);
 
     user.save()
      .then(function(record) {
@@ -115,6 +115,28 @@ AdminController.storeUser = function(email, password, callback) {
          console.log(error);
      });
 }
+
+
+
+//BORRAR ESTO
+/**
+ *  Function that fetches the Questions records corresponding to an event given its id
+ *  @param {String} eventId Id corresponding to the event whose questions we are trying to fetch
+ *  @param {Function} callback Function to perform after records have been fetched
+ */
+AdminController.fetchEventQuestions = function(eventId, callback) {
+    Event.fetchQuestions(eventId)
+     .then(function(eventDocuments) {
+      var questionsIds = eventDocuments[0].questions;
+       Question.findManyInIds(questionsIds)
+        .then(function(questionsDocuments) {
+          callback(questionsDocuments);
+        })
+     })
+     .catch(function(error) {
+       console.log(error);
+     });
+  }
 
 /**
  * ************************************************************************

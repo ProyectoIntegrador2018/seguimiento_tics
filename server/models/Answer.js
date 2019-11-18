@@ -10,7 +10,7 @@ var schema = new mongoose.Schema({
         ref: 'Question',
         required: true
     },
-    question_id: {
+    student_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Student',
         required: true
