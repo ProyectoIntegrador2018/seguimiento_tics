@@ -16,10 +16,10 @@ class SearchInput extends React.Component {
     return (
       <div>
         <TextInput
-          name="search-bar"
+          name="Buscar por nombre o CURP"
           value={this.props.filterText}
           changeHandler={this.handleChange}
-          placeholder="Search..."
+          placeholder="Buscar por nombre o CURP"
         />
       </div>
     );

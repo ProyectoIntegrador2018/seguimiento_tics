@@ -5,6 +5,7 @@ import {
 } from "../../assets/jss/components/searchStyle";
 import DataTable from "./DataTable";
 import SearchInput from "./SearchInput";
+import { Row, Col } from "antd";
 
 class Search extends React.Component {
   constructor(props) {
@@ -114,17 +115,25 @@ class Search extends React.Component {
     return (
       <div style={limiter}>
         <div style={searchContainer}>
-          <SearchInput
-            filterText={this.state.filtertext}
-            onUserInput={this.handleUserInput.bind(this)}
-          />
-          <DataTable
-            headers={this.state.headers}
-            rows={this.state.rows}
-            names={this.state.names}
-            curps={this.state.curps}
-            filterText={this.state.filterText}
-          />
+          <Row>
+            <Col xs={{ span: 5 }}>
+              <SearchInput
+                filterText={this.state.filtertext}
+                onUserInput={this.handleUserInput.bind(this)}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={{ span: 1 }}>
+              <DataTable
+                headers={this.state.headers}
+                rows={this.state.rows}
+                names={this.state.names}
+                curps={this.state.curps}
+                filterText={this.state.filterText}
+              />
+            </Col>
+          </Row>
         </div>
       </div>
     );
