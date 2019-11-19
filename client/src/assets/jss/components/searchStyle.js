@@ -12,9 +12,9 @@ const limiter = {
 
 const searchContainer = {
   width: "100%",
-  minHeight: "100vh",
+  minHeight: "60vh",
   justifyContent: "center",
-  paddingTop: "150px",
+  paddingTop: "50px",
   backgroundRepeat: "no-repeat",
   backgroundPosition: "center",
   backgroundSize: "cover",
