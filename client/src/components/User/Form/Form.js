@@ -10,7 +10,6 @@ import initialState from './InitialState';
 import { basicQuestions } from './BasicQuestions';
 import { API_URL } from '../../../constants/apiurl';
 import { TOKEN, ADMIN } from '../../../constants/sessionstorage';
-
 const headers = {
     "Content-Type": "application/json",
     "x-auth-token": sessionStorage.getItem(TOKEN)

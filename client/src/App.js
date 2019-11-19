@@ -20,7 +20,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       shouldRerender: false
-    }
+    };
     this.rerenderAfterLogin = this.rerenderAfterLogin.bind(this);
   }
 
@@ -28,46 +28,54 @@ class App extends React.Component {
     return (
       <div className="App">
         <BrowserRouter>
+<<<<<<< HEAD
           {this.renderNav()}
+=======
+          {this.renderAdminNav()}
+>>>>>>> master
           <div style={container}>
             <Switch>
-              <Route  path="/" 
-                      component={() => <Login rerender={this.rerenderAfterLogin}/>} 
-                      exact 
-                      />
-
-              <ProtectedRoute path="/admin" 
-                              component={AdminDashboard}
-                              isAdmin={true}
-                              />
-
-              <ProtectedRoute path="/event"
-                              component={EventCreation}
-                              isAdmin={true}
-                              />
-    
-              <ProtectedRoute path="/users" 
-                              component={Users}
-                              isAdmin={true}
-                              />
-
-              <ProtectedRoute path="/questions"
-                              component={Questions}
-                              isAdmin={true}
+              <Route
+                path="/"
+                component={() => <Login rerender={this.rerenderAfterLogin} />}
+                exact
               />
 
-              <ProtectedRoute path="/home"
-                              component={UserDashboard}
-                              isAdmin={false}
+              <ProtectedRoute
+                path="/admin"
+                component={AdminDashboard}
+                isAdmin={true}
               />
 
-              <ProtectedRoute path="/search"
-                              component={Search}
-                              isAdmin={false}
+              <ProtectedRoute
+                path="/event"
+                component={EventCreation}
+                isAdmin={true}
               />
-              <ProtectedRoute path="/form"
-                              component={FormQuestions}
-                              isAdmin={false}
+
+              <ProtectedRoute path="/users" component={Users} isAdmin={true} />
+
+              <ProtectedRoute
+                path="/questions"
+                component={Questions}
+                isAdmin={true}
+              />
+
+              <ProtectedRoute
+                path="/home"
+                component={UserDashboard}
+                isAdmin={false}
+              />
+
+              <ProtectedRoute
+                path="/search"
+                component={Search}
+                isAdmin={false}
+              />
+              <ProtectedRoute
+                path="/form"
+                component={FormQuestions}
+                isAdmin={false}
               />
 
               <ProtectedRoute path="/file-upload"

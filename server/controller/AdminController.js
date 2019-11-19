@@ -1,6 +1,6 @@
-const User = require('./../models/User');
-const Event = require('./../models/Event');
-const Question = require('./../models/Question');
+const User = require("./../models/User");
+const Event = require("./../models/Event");
+const Question = require("./../models/Question");
 
 var AdminController = {};
 
@@ -12,17 +12,18 @@ var AdminController = {};
  *  @param {Function} callback Function to perform after record has (or not) been recorded
  */
 AdminController.registerEvent = function(name, start_date, end_date, callback) {
-    var event = new Event();
-    event.name = name;
-    event.start_date = start_date;
-    event.end_date = end_date;
-    event.save()
-     .then(function(record){
-         callback(record);
-     })
-     .catch(function(error){
-         console.log(error);
-     });
+  var event = new Event();
+  event.name = name;
+  event.start_date = start_date;
+  event.end_date = end_date;
+  event
+    .save()
+    .then(function(record) {
+      callback(record);
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
 };
 
 /**
@@ -31,14 +32,14 @@ AdminController.registerEvent = function(name, start_date, end_date, callback) {
  *  @param {Function} callback Function to perform after record has (or not) been found
  */
 AdminController.fetchEventAvailability = function(name, callback) {
-    Event.findByName(name)
-     .then(function(record){
-         if(record) callback({error: true});
-         callback();
-     })
-     .catch(function(error){
-        console.log(error);
-     });
+  Event.findByName(name)
+    .then(function(record) {
+      if (record) callback({ error: true });
+      callback();
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
 };
 
 /**
@@ -46,14 +47,14 @@ AdminController.fetchEventAvailability = function(name, callback) {
  *  @param {Function} callback Function to perform after the records were fetched
  */
 AdminController.fetchAllEventRecords = function(callback) {
-    Event.fetchAll()
-     .then(function(records) {
-         callback(records);
-     })
-     .catch(function(error) {
-         console.log(error);
-     });
-}
+  Event.fetchAll()
+    .then(function(records) {
+      callback(records);
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+};
 
 /**
  * Function that stores all the questions corresponding to an event and checks that the questions havent been created before
@@ -61,40 +62,51 @@ AdminController.fetchAllEventRecords = function(callback) {
  * @param {String} event_id String of the event's id
  * @param {Function} callback Function to perform after the questions have been stored
  */
-AdminController.storeQuestionsForEvent = function(questions, event_id, callback) {
-    Question.findManyByText(questions)
-     .then(function(repeatedQuestions) {
-         var questionsToStore = fetchUniqueQuestionsFromQuestions(questions, repeatedQuestions);
+AdminController.storeQuestionsForEvent = function(
+  questions,
+  event_id,
+  callback
+) {
+  Question.findManyByText(questions)
+    .then(function(repeatedQuestions) {
+      var questionsToStore = fetchUniqueQuestionsFromQuestions(
+        questions,
+        repeatedQuestions
+      );
 
-         Question.insertMany(questionsToStore)
-          .then(function(newlyStoredQuestions){
-              var allQuestions = repeatedQuestions.concat(newlyStoredQuestions);
-              var questionsId = recordsToIdArray(allQuestions);
+      Question.insertMany(questionsToStore)
+        .then(function(newlyStoredQuestions) {
+          var allQuestions = repeatedQuestions.concat(newlyStoredQuestions);
+          var questionsId = recordsToIdArray(allQuestions);
 
-              Event.update({ _id: event_id },{ $set: {questions: questionsId}}, callback);
-          })
-          .catch(function(error) {
-              console.log(error);
-          });
-     })
-     .catch(function(error) {
-         console.log(error);
-     });
-}
+          Event.update(
+            { _id: event_id },
+            { $set: { questions: questionsId } },
+            callback
+          );
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+};
 
 /**
  * Function that fetches all the User records
  * @param {Object} callback Function to perform after the records were fetched
  */
 AdminController.fetchAllUserRecords = function(callback) {
-    User.fetchAll()
-     .then(function(documents){
-         callback(documents);
-     })
-     .catch(function(error){
-         console.log(error);
-     });
-}
+  User.fetchAll()
+    .then(function(documents) {
+      callback(documents);
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+};
 
 /**
  * Function that stores a new User
@@ -103,20 +115,19 @@ AdminController.fetchAllUserRecords = function(callback) {
  * @param {Function} callback Function to perform after the record is stored
  */
 AdminController.storeUser = function(email, password, callback) {
-    var user = new User();
-    user.email = email;
-    user.password = User.hashPassword(password);
-
-    user.save()
-     .then(function(record) {
-         callback(record);
-     })
-     .catch(function(error){
-         console.log(error);
-     });
-}
-
-
+  var user = new User();
+  user.email = email;
+  user.password = User.hashPassword(password);
+  console.log(user.password);
+  user
+    .save()
+    .then(function(record) {
+      callback(record);
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+};
 
 //BORRAR ESTO
 /**
@@ -125,18 +136,17 @@ AdminController.storeUser = function(email, password, callback) {
  *  @param {Function} callback Function to perform after records have been fetched
  */
 AdminController.fetchEventQuestions = function(eventId, callback) {
-    Event.fetchQuestions(eventId)
-     .then(function(eventDocuments) {
+  Event.fetchQuestions(eventId)
+    .then(function(eventDocuments) {
       var questionsIds = eventDocuments[0].questions;
-       Question.findManyInIds(questionsIds)
-        .then(function(questionsDocuments) {
-          callback(questionsDocuments);
-        })
-     })
-     .catch(function(error) {
-       console.log(error);
-     });
-  }
+      Question.findManyInIds(questionsIds).then(function(questionsDocuments) {
+        callback(questionsDocuments);
+      });
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+};
 
 /**
  * ************************************************************************
@@ -152,30 +162,30 @@ AdminController.fetchEventQuestions = function(eventId, callback) {
  * @return {Array} Array with all the unique questions
  */
 fetchUniqueQuestionsFromQuestions = function(questions, repeatedQuestions) {
-    var nonRepeatedQuestions = [];
-    questions.forEach(function(question) {
-        var isRepeated = false;
-        for(var i = 0 ; i < repeatedQuestions.length ; i++) {
-            if(repeatedQuestions[i].text == question) {
-                isRepeated = true;
-                break;
-            }
-        }
-        if(!isRepeated) {
-            var record = new Question();
-            record.text = question;
-            nonRepeatedQuestions.push(record);
-        }
-    });
-    return nonRepeatedQuestions;
-}
+  var nonRepeatedQuestions = [];
+  questions.forEach(function(question) {
+    var isRepeated = false;
+    for (var i = 0; i < repeatedQuestions.length; i++) {
+      if (repeatedQuestions[i].text == question) {
+        isRepeated = true;
+        break;
+      }
+    }
+    if (!isRepeated) {
+      var record = new Question();
+      record.text = question;
+      nonRepeatedQuestions.push(record);
+    }
+  });
+  return nonRepeatedQuestions;
+};
 
 recordsToIdArray = function(records) {
-    var ids = [];
-    for(var i = 0; i < records.length; i++) {
-        ids.push(records[i]._id);
-    }
-    return ids;
-}
+  var ids = [];
+  for (var i = 0; i < records.length; i++) {
+    ids.push(records[i]._id);
+  }
+  return ids;
+};
 
 module.exports = AdminController;
