@@ -62,7 +62,6 @@ class Users extends React.Component {
           >
             +
           </Button>
-          <Search></Search>
         </div>
       </div>
     );
