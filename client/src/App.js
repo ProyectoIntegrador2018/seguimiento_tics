@@ -13,6 +13,7 @@ import Questions from "./components/Admin/Questions/Questions";
 import Users from "./components/Admin/Users/Users";
 import Data from "./components/Data/Data";
 import FormQuestions from "./components/User/Form/Form";
+import CSV from "./components/User/Csv/CSV";
 
 class App extends React.Component {
   constructor(props) {
@@ -27,7 +28,7 @@ class App extends React.Component {
     return (
       <div className="App">
         <BrowserRouter>
-          {this.renderAdminNav()}
+          {this.renderNav()}
           <div style={container}>
             <Switch>
               <Route
@@ -73,6 +74,11 @@ class App extends React.Component {
                 isAdmin={false}
               />
 
+              <ProtectedRoute path="/file-upload"
+                              component={CSV}
+                              isAdmin={false}
+              />
+
               <ProtectedRoute path="/data" component={Data} isAdmin={false} />
             </Switch>
           </div>
@@ -81,15 +87,22 @@ class App extends React.Component {
     );
   }
 
-  renderAdminNav() {
-    var navItems = [
-      { url: "/event", name: "Eventos" },
-      { url: "/questions", name: "Preguntas" },
-      { url: "/users", name: "Usuarios" },
-      { url: "/search", name: "Análisis de datos" }
+  renderNav() {
+    const adminNavItems = [
+      {url: "/event", name: "Eventos"}, 
+      {url: "/questions", name: "Preguntas"}, 
+      {url: "/users", name: "Usuarios"},
     ];
-    if (sessionStorage.getItem(AUTHENTICATED) && sessionStorage.getItem(ADMIN))
-      return <Navigation navitems={navItems} />;
+    const userNavItems = [
+      {url: "/form", name: "Formulario"},
+      {url: "/search", name: "Busqueda"},
+      {url: "/", name: "Análisis"}
+    ];
+
+    if(sessionStorage.getItem(AUTHENTICATED)) {
+      if(sessionStorage.getItem(ADMIN) == "true") return(<Navigation navitems={adminNavItems}/>);
+      return(<Navigation navitems={userNavItems} />);
+    }
   }
 
   rerenderAfterLogin(value) {

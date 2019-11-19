@@ -5,6 +5,8 @@ const Student = require('../models/Student');
 const Answer = require('../models/Answer');
 
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
+const fs = require('fs');
+const parser = require('csv-parser');
 
 var UserController = {};
 
@@ -35,7 +37,6 @@ UserController.passwordLogin = function (email, password, callback) {
   });
 };
 
-
 /**
  *  Function that fetches all the Event records from the database
  *  @param {Function} callback Function to perform after the records were fetched
@@ -49,7 +50,6 @@ UserController.fetchAllEventRecords = function (callback) {
       console.log(error);
     });
 }
-
 
 /**
  *  Function that fetches the Questions records corresponding to an event given its id
@@ -105,13 +105,89 @@ UserController.createCSVTemplate = function (eventId, callback) {
       })
 
   })
-};
+}
+
+/**
+ *  Function that reads a CVS file given the file itself
+ *  @param {File} file File object obtained from the frontend
+ *  @param {Function} callback Function to perform after the array of objects from the CVS file has been read
+ */
+UserController.readCSVFile = function (file, callback) {
+  var path = file.path;
+  var csvData = [];
+  fs.createReadStream(path)
+   .pipe(parser())
+   .on('data', function(row) {
+     csvData.push(row);
+   })
+   .on('end', () => {
+    callback(csvData);
+  });
+}
+
+/**
+ *  Function that stores in bulk each row corresponding to a student, student is composed by the required questions
+ *  @param {Array} fileData Array of Objects with each item representing each row in the csv and each object attribute corresponding to each csv column
+ *  @param {String} eventId Id of the event whose records are being stored
+ *  @param {Function} callback Function to perform after the objects have been inserted
+ */
+UserController.bulkCSVStudentStorage = function(fileData, eventId, callback) {
+  var students = [];
+  var requiredQuestions = fetchRequiredQuestions();
+  fileData.forEach(function(row) {
+    var student = buildUserFromCSVRow(row, requiredQuestions);
+    student.event = eventId;
+    students.push(student);
+  });
+
+  Student.insertMany(students)
+   .then(function(documents) {
+     callback(documents);
+   })
+   .catch(function(error){
+     console.log(error);
+   });
+}
+
+/**
+ *  Function that stores in bulk the answers of each question from each student
+ *  @param {Array} fileData Array of Objects with each item representing each row in the csv and each object attribute corresponding to each csv column
+ *  @param {Array} questions Questions corresponding to the event
+ *  @param {Function} callback Function to perform after the objects have been inserted
+ */
+UserController.bulkCSVAnswersStorage = async function(fileData, questions, callback) {
+  var answers = [];
+  var required = fetchRequiredQuestions();
+
+  for(const row of fileData) {
+    var student = buildUserFromCSVRow(row, required);
+    const studentRecord = await Student.findByCURP(student.curp);
+
+    questions.forEach(function(eventQuestion) {
+      var answertxt = row[eventQuestion.text];
+      var answer = new Answer();
+      answer.text = answertxt;
+      answer.question_id = eventQuestion._id;
+      answer.student_id = studentRecord._id;
+
+      answers.push(answer);
+    });
+  }
+
+  Answer.insertMany(answers)
+   .then(function(documents) {
+      callback({success: true});
+    })
+    .catch(function(error) {
+        console.log(error);
+    });
+}
 
 /**
  *  Function that fetches all the Event records from the database
  *  @param {Function} callback Function to perform after the records were fetched
  */
-UserController.fetchAllEventRecords = function (callback) {
+UserController.fetchAllEventRecords = function(callback) {
   Event.fetchAll()
     .then(function (records) {
       callback(records);
@@ -119,6 +195,18 @@ UserController.fetchAllEventRecords = function (callback) {
     .catch(function (error) {
       console.log(error);
     });
+}
+
+UserController.fetchAllStudents = function(callback) {
+  Student.find({})
+   .then(function(documents) {
+     callback(documents);
+   })
+   .catch(function(error){console.log(error)});
+}
+
+UserController.fetchStudentsAnswers = function(students, callback) {
+  console.log(students);
 }
 
 UserController.storeStudent = function (studentInfo, callback) {
@@ -129,7 +217,7 @@ UserController.storeStudent = function (studentInfo, callback) {
   student.birth_date = studentInfo.birth_date;
   student.birth_place = studentInfo.birth_place;
   student.gender = studentInfo.gender;
-  student.curp = calculateCurp(studentInfo.last_name, studentInfo.second_last_name, studentInfo.name, studentInfo.birth_date, studentInfo.gender, studentInfo.birth_place);
+  student.curp = student.generateCURP();
   student.email = studentInfo.email;
   student.event = studentInfo.event;
 
@@ -156,7 +244,6 @@ UserController.storeAnswer = function (questionId, text, studentId, callback) {
     });
 }
 
-
 /**
  * ************************************************************************
  *                              AUXILIAR FUNCTIONS
@@ -167,7 +254,7 @@ UserController.storeAnswer = function (questionId, text, studentId, callback) {
  * Function that creates an array, similar to a Question object, with all the required questions
  */
 fetchRequiredQuestions = function () {
-  var questions = ['Nombre(s)', 'Apellido paterno', 'Apellido materno', 'Fecha de nacimiento', 'Lugar de nacimiento', 'Sexo', 'Email'];
+  var questions = ['Nombre(s)', 'Apellido paterno', 'Apellido materno', 'Fecha de nacimiento', 'Lugar de nacimiento', 'Sexo ', 'Email '];
   var response = [];
 
   questions.forEach(question => {
@@ -180,84 +267,19 @@ fetchRequiredQuestions = function () {
   return response;
 }
 
-calculateCurp = function (lastName, secondLastName, name, birthDate, gender, state, ) {
-  const first = lastName[0];
-  const second = getFirstVocal(lastName.substring(1, lastName.length - 1));
-  const third = secondLastName[0];
-  if (name.length > 4) {
-    if (name.substring(0, 4) === 'Jose' || name.substring(0, 4) === 'jose' || name.substring(0, 4) === 'JOSE') {
-      name = name.substring(5);
-    }
-  }
-  const fourth = name[0];
-  const fifth = birthDate.replace(/-/g, '').substring(2);
-  console.log(gender);
-  const sixth = gender.toUpperCase();
-  const seventh = getStateCode(state);
-  const eighth = getFirstInternalConsonant(lastName);
-  const nineth = getFirstInternalConsonant(secondLastName);
-  const tenth = getFirstInternalConsonant(name);
-  return (first + second + third + fourth + fifth + sixth + seventh + eighth + nineth + tenth);
-}
-getFirstVocal = function (word) {
-  let vocal;
-  for (let i = 0; i < word.length; i++) {
-    if (word[i] === 'a' || word[i] === 'e' || word[i] === 'i' || word[i] === 'o' || word[i] === 'u') {
-      vocal = word[i];
-      break;
-    }
-  }
-  return vocal;
+buildUserFromCSVRow = function(row, requiredQuestions) {
+  var student = new Student();
+
+  student.name = row[requiredQuestions[0].text];
+  student.last_name = row[requiredQuestions[1].text];
+  student.second_last_name = row[requiredQuestions[2].text];
+  student.birth_date = row[requiredQuestions[3].text];
+  student.birth_place = row[requiredQuestions[4].text];
+  student.gender = row[requiredQuestions[5].text];
+  student.email = row[requiredQuestions[6].text];
+  student.curp = student.generateCURP();
+  
+  return student;
 }
 
-getFirstInternalConsonant = function (word) {
-  let consonant;
-  for (let i = 1; i < word.length - 1; i++) {
-    if (word[i] !== 'a' && word[i] !== 'e' && word[i] !== 'i' && word[i] !== 'o' && word[i] !== 'u') {
-      consonant = word[i];
-      break;
-    }
-  }
-  return consonant;
-}
-getStateCode = function (state) {
-  const states = {
-    aguascalientes: '51',
-    bajacalifornia: '52',
-    bajacaliforniasur: '53',
-    campeche: '54',
-    coahuila: '55',
-    colima: '56',
-    chiapas: '57',
-    chihuahua: '58',
-    distritofederal: '59',
-    durango: '60',
-    guanajuato: '61',
-    guerrero: '62',
-    hidalgo: '63',
-    jalisco: '64',
-    estadodemexico: '65',
-    michoacan: '66',
-    morelos: '67',
-    nayarit: '68',
-    nuevoleon: '69',
-    oaxaca: '70',
-    puebla: '71',
-    queretaro: '72',
-    quintanaroo: '73',
-    sanluispotosi: '74',
-    sinaloa: '75',
-    sonora: '76',
-    tabasco: '77',
-    tamaulipas: '78',
-    tlaxcala: '79',
-    veracruz: '80',
-    yucatan: '81',
-    zacatecas: '82'
-  }
-  let answer = states[state.replace(/ /g, '').toLowerCase()];
-  if (answer === undefined)
-    return '00';
-  else return answer;
-}
 module.exports = UserController;
