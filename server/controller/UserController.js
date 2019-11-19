@@ -118,35 +118,54 @@ UserController.readCSVFile = function (file, eventId, callback) {
      csvData.push(row);
    })
    .on('end', () => {
-    this.bulkCSVStorage(csvData, eventId, callback);
+    this.bulkCSVStudentStorage(csvData, eventId, callback);
   });
 }
 
-UserController.bulkCSVStorage = function(fileData, eventId, callback) {
+UserController.bulkCSVStudentStorage = function(fileData, eventId, callback) {
   var students = [];
   var requiredQuestions = fetchRequiredQuestions();
   fileData.forEach(function(row) {
-    var student = new Student();
-    student.name = row[requiredQuestions[0].text];
-    student.last_name = row[requiredQuestions[1].text];
-    student.second_last_name = row[requiredQuestions[2].text];
-    student.birth_date = row[requiredQuestions[3].text];
-    student.birth_place = row[requiredQuestions[4].text];
-    student.gender = row[requiredQuestions[5].text];
-    student.email = row[requiredQuestions[6].text];
-    student.curp = student.generateCURP();
+    var student = buildUserFromCSVRow(row, requiredQuestions);
     student.event = eventId;
-
     students.push(student);
   });
 
   Student.insertMany(students)
    .then(function(documents) {
-     console.log(documents);
+     callback(documents, fileData);
    })
    .catch(function(error){
      console.log(error);
    });
+}
+
+UserController.bulkCSVAnswersStorage = async function(fileData, questions, callback) {
+  var answers = [];
+  var required = fetchRequiredQuestions();
+
+  for(const row of fileData) {
+    var student = buildUserFromCSVRow(row, required);
+    const studentRecord = await Student.findByCURP(student.curp);
+
+    questions.forEach(function(eventQuestion) {
+      var answertxt = row[eventQuestion.text];
+      var answer = new Answer();
+      answer.text = answertxt;
+      answer.question_id = eventQuestion._id;
+      answer.student_id = studentRecord._id;
+
+      answers.push(answer);
+    });
+  }
+
+  Answer.insertMany(answers)
+   .then(function(documents) {
+      callback({success: true});
+    })
+    .catch(function(error) {
+        console.log(error);
+    });
 }
 
 /**
@@ -219,6 +238,21 @@ fetchRequiredQuestions = function () {
   });
 
   return response;
+}
+
+buildUserFromCSVRow = function(row, requiredQuestions) {
+  var student = new Student();
+
+  student.name = row[requiredQuestions[0].text];
+  student.last_name = row[requiredQuestions[1].text];
+  student.second_last_name = row[requiredQuestions[2].text];
+  student.birth_date = row[requiredQuestions[3].text];
+  student.birth_place = row[requiredQuestions[4].text];
+  student.gender = row[requiredQuestions[5].text];
+  student.email = row[requiredQuestions[6].text];
+  student.curp = student.generateCURP();
+  
+  return student;
 }
 
 module.exports = UserController;
