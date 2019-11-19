@@ -28,11 +28,7 @@ class App extends React.Component {
     return (
       <div className="App">
         <BrowserRouter>
-<<<<<<< HEAD
           {this.renderNav()}
-=======
-          {this.renderAdminNav()}
->>>>>>> master
           <div style={container}>
             <Switch>
               <Route
