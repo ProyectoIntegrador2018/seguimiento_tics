@@ -58,8 +58,9 @@ router.get('/csv-template/:id', function (req, res) {
     });
 });
 
-router.post('/upload-csv', umw, function(req, res) {
+router.post('/upload-csv/:id', umw, function(req, res) {
     var form = new IncomingForm();
+    var eventId = req.params.id;
     var storedFile;
     form.parse(req);
     form.on('fileBegin',function(field, file) {

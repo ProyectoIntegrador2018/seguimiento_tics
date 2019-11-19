@@ -47,7 +47,7 @@ class CSV extends React.Component {
     }
 
     onClickUpload() {
-        const url = API_URL + '/user/upload-csv';
+        const url = API_URL + '/user/upload-csv/5dd22389774d300f91d38644';
         const headers = {
             "Content-Type": "application/json",
             "x-auth-token": sessionStorage.getItem(TOKEN)
