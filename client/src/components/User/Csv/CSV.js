@@ -36,7 +36,7 @@ class CSV extends React.Component {
     }
 
     handleDownload = async function() {
-        const url = API_URL + '/user/csv-template/5dd22389774d300f91d38644'
+        const url = API_URL + '/user/csv-template/5dcd7fae1f357b4b66861629'
         const res = await fetch(url);
         const blob = await res.blob();
         download(blob, 'template.csv');
@@ -47,7 +47,7 @@ class CSV extends React.Component {
     }
 
     onClickUpload() {
-        const url = API_URL + '/user/upload-csv/5dd22389774d300f91d38644';
+        const url = API_URL + '/user/upload-csv/5dcd7fae1f357b4b66861629';
         const headers = {
             "Content-Type": "application/json",
             "x-auth-token": sessionStorage.getItem(TOKEN)

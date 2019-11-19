@@ -96,7 +96,7 @@ class App extends React.Component {
     ];
 
     if(sessionStorage.getItem(AUTHENTICATED)) {
-      if(sessionStorage.getItem(ADMIN === "true")) return(<Navigation navitems={adminNavItems}/>);
+      if(sessionStorage.getItem(ADMIN) == "true") return(<Navigation navitems={adminNavItems}/>);
       return(<Navigation navitems={userNavItems} />);
     }
   }

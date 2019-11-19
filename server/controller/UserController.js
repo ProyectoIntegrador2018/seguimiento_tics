@@ -105,7 +105,7 @@ UserController.createCSVTemplate = function (eventId, callback) {
       })
 
   })
-};
+}
 
 /**
  *  Function that reads a CVS file given the file itself
@@ -187,7 +187,7 @@ UserController.bulkCSVAnswersStorage = async function(fileData, questions, callb
  *  Function that fetches all the Event records from the database
  *  @param {Function} callback Function to perform after the records were fetched
  */
-UserController.fetchAllEventRecords = function (callback) {
+UserController.fetchAllEventRecords = function(callback) {
   Event.fetchAll()
     .then(function (records) {
       callback(records);
@@ -195,6 +195,18 @@ UserController.fetchAllEventRecords = function (callback) {
     .catch(function (error) {
       console.log(error);
     });
+}
+
+UserController.fetchAllStudents = function(callback) {
+  Student.find({})
+   .then(function(documents) {
+     callback(documents);
+   })
+   .catch(function(error){console.log(error)});
+}
+
+UserController.fetchStudentsAnswers = function(students, callback) {
+  console.log(students);
 }
 
 UserController.storeStudent = function (studentInfo, callback) {
