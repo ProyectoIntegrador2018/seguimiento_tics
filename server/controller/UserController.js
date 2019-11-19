@@ -109,7 +109,7 @@ UserController.createCSVTemplate = function (eventId, callback) {
   })
 };
 
-UserController.readCSVFile = function (file, callback) {
+UserController.readCSVFile = function (file, eventId, callback) {
   var path = file.path;
   var csvData = [];
   fs.createReadStream(path)
@@ -118,13 +118,12 @@ UserController.readCSVFile = function (file, callback) {
      csvData.push(row);
    })
    .on('end', () => {
-    this.bulkCSVStorage(csvData, function(){});
+    this.bulkCSVStorage(csvData, eventId, callback);
   });
 }
 
-UserController.bulkCSVStorage = function(fileData, callback) {
+UserController.bulkCSVStorage = function(fileData, eventId, callback) {
   var students = [];
-  console.log(fileData);
   var requiredQuestions = fetchRequiredQuestions();
   fileData.forEach(function(row) {
     var student = new Student();
@@ -135,8 +134,8 @@ UserController.bulkCSVStorage = function(fileData, callback) {
     student.birth_place = row[requiredQuestions[4].text];
     student.gender = row[requiredQuestions[5].text];
     student.email = row[requiredQuestions[6].text];
-    student.curp = "Test";
-    student.event = "5dd22389774d300f91d38644";
+    student.curp = student.generateCURP();
+    student.event = eventId;
 
     students.push(student);
   });
@@ -172,7 +171,7 @@ UserController.storeStudent = function (studentInfo, callback) {
   student.birth_date = studentInfo.birth_date;
   student.birth_place = studentInfo.birth_place;
   student.gender = studentInfo.gender;
-  student.curp = calculateCurp(studentInfo.last_name, studentInfo.second_last_name, studentInfo.name, studentInfo.birth_date, studentInfo.gender, studentInfo.birth_place);
+  student.curp = student.generateCURP();
   student.email = studentInfo.email;
   student.event = studentInfo.event;
 
@@ -199,7 +198,6 @@ UserController.storeAnswer = function (questionId, text, studentId, callback) {
     });
 }
 
-
 /**
  * ************************************************************************
  *                              AUXILIAR FUNCTIONS
@@ -223,84 +221,4 @@ fetchRequiredQuestions = function () {
   return response;
 }
 
-calculateCurp = function (lastName, secondLastName, name, birthDate, gender, state, ) {
-  const first = lastName[0];
-  const second = getFirstVocal(lastName.substring(1, lastName.length - 1));
-  const third = secondLastName[0];
-  if (name.length > 4) {
-    if (name.substring(0, 4) === 'Jose' || name.substring(0, 4) === 'jose' || name.substring(0, 4) === 'JOSE') {
-      name = name.substring(5);
-    }
-  }
-  const fourth = name[0];
-  const fifth = birthDate.replace(/-/g, '').substring(2);
-  console.log(gender);
-  const sixth = gender.toUpperCase();
-  const seventh = getStateCode(state);
-  const eighth = getFirstInternalConsonant(lastName);
-  const nineth = getFirstInternalConsonant(secondLastName);
-  const tenth = getFirstInternalConsonant(name);
-  return (first + second + third + fourth + fifth + sixth + seventh + eighth + nineth + tenth);
-}
-getFirstVocal = function (word) {
-  let vocal;
-  for (let i = 0; i < word.length; i++) {
-    if (word[i] === 'a' || word[i] === 'e' || word[i] === 'i' || word[i] === 'o' || word[i] === 'u') {
-      vocal = word[i];
-      break;
-    }
-  }
-  return vocal;
-}
-
-getFirstInternalConsonant = function (word) {
-  let consonant;
-  for (let i = 1; i < word.length - 1; i++) {
-    if (word[i] !== 'a' && word[i] !== 'e' && word[i] !== 'i' && word[i] !== 'o' && word[i] !== 'u') {
-      consonant = word[i];
-      break;
-    }
-  }
-  return consonant;
-}
-getStateCode = function (state) {
-  const states = {
-    aguascalientes: '51',
-    bajacalifornia: '52',
-    bajacaliforniasur: '53',
-    campeche: '54',
-    coahuila: '55',
-    colima: '56',
-    chiapas: '57',
-    chihuahua: '58',
-    distritofederal: '59',
-    durango: '60',
-    guanajuato: '61',
-    guerrero: '62',
-    hidalgo: '63',
-    jalisco: '64',
-    estadodemexico: '65',
-    michoacan: '66',
-    morelos: '67',
-    nayarit: '68',
-    nuevoleon: '69',
-    oaxaca: '70',
-    puebla: '71',
-    queretaro: '72',
-    quintanaroo: '73',
-    sanluispotosi: '74',
-    sinaloa: '75',
-    sonora: '76',
-    tabasco: '77',
-    tamaulipas: '78',
-    tlaxcala: '79',
-    veracruz: '80',
-    yucatan: '81',
-    zacatecas: '82'
-  }
-  let answer = states[state.replace(/ /g, '').toLowerCase()];
-  if (answer === undefined)
-    return '00';
-  else return answer;
-}
 module.exports = UserController;

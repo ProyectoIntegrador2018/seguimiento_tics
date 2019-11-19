@@ -69,7 +69,7 @@ router.post('/upload-csv/:id', umw, function(req, res) {
         storedFile = file;
     });
     form.on('end', function() {
-        UserController.readCSVFile(storedFile, function() {
+        UserController.readCSVFile(storedFile, eventId, function() {
 
         });
     });
