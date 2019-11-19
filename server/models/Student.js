@@ -14,7 +14,7 @@ var schema = new mongoose.Schema({
         required: true
     },
     birth_date: {
-        type: Date,
+        type: String,
         required: true
     },
     birth_place: {

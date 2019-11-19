@@ -1,2 +1,3 @@
-Nombre(s),Apellido paterno,Apellido materno,Fecha de nacimiento,Lugar de nacimiento,Sexo,Email,Pregunta 
-
+Nombre(s),Apellido paterno,Apellido materno,Fecha de nacimiento,Lugar de nacimiento,Sexo ,Email ,Pregunta 
+prueba,uno,dos,01/01/18,Nuevo Leon,cinco,seis,siete
+prueba,uno,dos,02/02/19,Aguascalientes,cinco,seis,siete

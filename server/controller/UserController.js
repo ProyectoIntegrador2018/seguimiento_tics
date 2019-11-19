@@ -111,14 +111,43 @@ UserController.createCSVTemplate = function (eventId, callback) {
 
 UserController.readCSVFile = function (file, callback) {
   var path = file.path;
+  var csvData = [];
   fs.createReadStream(path)
    .pipe(parser())
-   .on('data', (row) => {
-     console.log(row);
+   .on('data', function(row) {
+     csvData.push(row);
    })
    .on('end', () => {
-    console.log('CSV file successfully processed');
+    this.bulkCSVStorage(csvData, function(){});
   });
+}
+
+UserController.bulkCSVStorage = function(fileData, callback) {
+  var students = [];
+  console.log(fileData);
+  var requiredQuestions = fetchRequiredQuestions();
+  fileData.forEach(function(row) {
+    var student = new Student();
+    student.name = row[requiredQuestions[0].text];
+    student.last_name = row[requiredQuestions[1].text];
+    student.second_last_name = row[requiredQuestions[2].text];
+    student.birth_date = row[requiredQuestions[3].text];
+    student.birth_place = row[requiredQuestions[4].text];
+    student.gender = row[requiredQuestions[5].text];
+    student.email = row[requiredQuestions[6].text];
+    student.curp = "Test";
+    student.event = "5dd22389774d300f91d38644";
+
+    students.push(student);
+  });
+
+  Student.insertMany(students)
+   .then(function(documents) {
+     console.log(documents);
+   })
+   .catch(function(error){
+     console.log(error);
+   });
 }
 
 /**
@@ -181,7 +210,7 @@ UserController.storeAnswer = function (questionId, text, studentId, callback) {
  * Function that creates an array, similar to a Question object, with all the required questions
  */
 fetchRequiredQuestions = function () {
-  var questions = ['Nombre(s)', 'Apellido paterno', 'Apellido materno', 'Fecha de nacimiento', 'Lugar de nacimiento', 'Sexo', 'Email'];
+  var questions = ['Nombre(s)', 'Apellido paterno', 'Apellido materno', 'Fecha de nacimiento', 'Lugar de nacimiento', 'Sexo ', 'Email '];
   var response = [];
 
   questions.forEach(question => {
