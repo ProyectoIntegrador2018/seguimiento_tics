@@ -35,16 +35,12 @@ var schema = new mongoose.Schema({
         ref: 'Event',
         required: true
     },
-    answers: [{
-        type:mongoose.Schema.Types.ObjectId,
-        ref: 'Answer'
-    }]
 });
+
 
 schema.statics.findByCURP = function(curp) {
     return this.findOne({ curp: curp }).select({ '_id': 1 }).exec();
 }
-
 
 schema.methods.generateCURP = function() {
     const first = this.last_name[0];

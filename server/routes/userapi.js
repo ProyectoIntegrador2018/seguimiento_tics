@@ -99,5 +99,10 @@ router.post('/store-answer', umw, function (req, res) {
     })
 });
 
+router.get('/students-data', umw, function(req, res) {
+    UserController.fetchAllStudents(function(students) {
+        res.send(students);
+    });
+});
 
 module.exports = router;

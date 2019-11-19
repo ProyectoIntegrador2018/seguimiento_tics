@@ -28,17 +28,7 @@ class FormQuestions extends React.Component {
 
     componentWillMount() {
         // make the API call here...
-        let eventsUrl = sessionStorage.getItem(ADMIN) === "true" ? API_URL + '/admin/all-events' : API_URL + '/user/all-events';
-        axios.get(eventsUrl, { headers })
-            .then(eventsRes => {
-                let events = eventsRes.data;
-                this.setState({
-                    eventNames: events,
-                    selectedEvent: { ...events[0] },
-                    isLoading: false
-                })
-                this.fetchEventQuestions(events[0]._id)
-            }).catch(err => { console.log(err); });
+        this.fetchEventQuestions(this.props.location.state.eventId)
     }
 
     render() {
@@ -50,7 +40,6 @@ class FormQuestions extends React.Component {
                     <div style={loginWrapper}>
                         <Form>
                             <span style={loginTitle}> Forma </span>
-                            {this.renderSelectSection('eventos', 'selectedEvent', 'Evento', this.handleChange, this.state.eventNames)}
                             {renderedQuestions}
                             {this.state.eventQuestions === null ? <p>Loading...</p> : this.renderEventQuestions(this.state.eventQuestions)}
                             <div style={buttonWrapper}>
@@ -201,7 +190,7 @@ class FormQuestions extends React.Component {
                 birth_place: this.state.state,
                 gender: sex,
                 email: this.state.email,
-                event: this.state.selectedEvent._id
+                event: this.props.location.state.eventId
 
             }
             console.log(data)

@@ -29,8 +29,6 @@ const initialState = {
         false,
         false
     ],
-    selectedEvent: '',
-    eventNames: null,
     eventQuestions: null
 }
 

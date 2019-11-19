@@ -14,13 +14,15 @@ import Users from "./components/Admin/Users/Users";
 import Data from "./components/Data/Data";
 import FormQuestions from "./components/User/Form/Form";
 import CSV from "./components/User/Csv/CSV";
+import RegisterStudent from "./components/User/RegisterStudent/RegisterStudent";
+import UploadSelection from "./components/UploadSelection/UploadSelection";
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       shouldRerender: false
-    }
+    };
     this.rerenderAfterLogin = this.rerenderAfterLogin.bind(this);
   }
 
@@ -31,42 +33,61 @@ class App extends React.Component {
           {this.renderNav()}
           <div style={container}>
             <Switch>
-              <Route  path="/" 
-                      component={() => <Login rerender={this.rerenderAfterLogin}/>} 
-                      exact 
-                      />
-
-              <ProtectedRoute path="/admin" 
-                              component={AdminDashboard}
-                              isAdmin={true}
-                              />
-
-              <ProtectedRoute path="/event"
-                              component={EventCreation}
-                              isAdmin={true}
-                              />
-    
-              <ProtectedRoute path="/users" 
-                              component={Users}
-                              isAdmin={true}
-                              />
-
-              <ProtectedRoute path="/questions"
-                              component={Questions}
-                              isAdmin={true}
+              <Route
+                path="/"
+                component={() => <Login rerender={this.rerenderAfterLogin} />}
+                exact
               />
 
-              <ProtectedRoute path="/home"
-                              component={UserDashboard}
+              <ProtectedRoute
+                path="/admin"
+                component={AdminDashboard}
+                isAdmin={true}
+              />
+
+              <ProtectedRoute
+                path="/event"
+                component={EventCreation}
+                isAdmin={true}
+              />
+
+              <ProtectedRoute path="/users" component={Users} isAdmin={true} />
+
+              <ProtectedRoute
+                path="/questions"
+                component={Questions}
+                isAdmin={true}
+              />
+
+              <ProtectedRoute
+                path="/home"
+                component={UserDashboard}
+                isAdmin={false}
+              />
+
+              <ProtectedRoute
+                path="/search"
+                component={Search}
+                isAdmin={false}
+              />
+              <ProtectedRoute
+                path="/form"
+                component={FormQuestions}
+                isAdmin={false}
+              />
+
+              <ProtectedRoute path="/file-upload"
+                              component={CSV}
                               isAdmin={false}
               />
 
-              <ProtectedRoute path="/search"
-                              component={Search}
+              <ProtectedRoute path="/select-upload-method"
+                              component={UploadSelection}
                               isAdmin={false}
               />
-              <ProtectedRoute path="/form"
-                              component={FormQuestions}
+
+              <ProtectedRoute path="/select-event"
+                              component={RegisterStudent}
                               isAdmin={false}
               />
 
@@ -90,13 +111,13 @@ class App extends React.Component {
       {url: "/users", name: "Usuarios"},
     ];
     const userNavItems = [
-      {url: "/form", name: "Formulario"},
+      {url: "/select-upload-method", name: "Registro"},
       {url: "/search", name: "Busqueda"},
       {url: "/", name: "Análisis"}
     ];
 
     if(sessionStorage.getItem(AUTHENTICATED)) {
-      if(sessionStorage.getItem(ADMIN === "true")) return(<Navigation navitems={adminNavItems}/>);
+      if(sessionStorage.getItem(ADMIN) == "true") return(<Navigation navitems={adminNavItems}/>);
       return(<Navigation navitems={userNavItems} />);
     }
   }
