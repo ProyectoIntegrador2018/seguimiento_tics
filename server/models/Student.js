@@ -35,10 +35,6 @@ var schema = new mongoose.Schema({
         ref: 'Event',
         required: true
     },
-    answers: [{
-        type:mongoose.Schema.Types.ObjectId,
-        ref: 'Answer'
-    }]
 });
 
 
