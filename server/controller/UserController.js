@@ -5,6 +5,8 @@ const Student = require('../models/Student');
 const Answer = require('../models/Answer');
 
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
+const fs = require('fs');
+const parser = require('csv-parser');
 
 var UserController = {};
 
@@ -106,6 +108,18 @@ UserController.createCSVTemplate = function (eventId, callback) {
 
   })
 };
+
+UserController.readCSVFile = function (file, callback) {
+  var path = file.path;
+  fs.createReadStream(path)
+   .pipe(parser())
+   .on('data', (row) => {
+     console.log(row);
+   })
+   .on('end', () => {
+    console.log('CSV file successfully processed');
+  });
+}
 
 /**
  *  Function that fetches all the Event records from the database
