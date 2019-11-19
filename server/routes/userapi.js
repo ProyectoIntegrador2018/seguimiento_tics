@@ -69,13 +69,15 @@ router.post('/upload-csv/:id', umw, function(req, res) {
         storedFile = file;
     });
     form.on('end', function() {
-        UserController.readCSVFile(storedFile, eventId, function(storedStudents, fileData) {
-            UserController.fetchEventQuestions(eventId, function(eventQuestions) {
-                if(eventQuestions <= 0) res.send({success: true});
-                UserController.bulkCSVAnswersStorage(fileData, eventQuestions, function(response){
-                    res.send(response);
+        UserController.readCSVFile(storedFile, function(fileData) {
+            UserController.bulkCSVStudentStorage(fileData, eventId, function(_){
+                UserController.fetchEventQuestions(eventId, function(eventQuestions) {
+                    if(eventQuestions <= 0) res.send({success: true});
+                    UserController.bulkCSVAnswersStorage(fileData, eventQuestions, function(response){
+                        res.send(response);
+                    })
                 })
-            })
+            });
         });
     });
 });

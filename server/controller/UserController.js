@@ -37,7 +37,6 @@ UserController.passwordLogin = function (email, password, callback) {
   });
 };
 
-
 /**
  *  Function that fetches all the Event records from the database
  *  @param {Function} callback Function to perform after the records were fetched
@@ -51,7 +50,6 @@ UserController.fetchAllEventRecords = function (callback) {
       console.log(error);
     });
 }
-
 
 /**
  *  Function that fetches the Questions records corresponding to an event given its id
@@ -109,7 +107,12 @@ UserController.createCSVTemplate = function (eventId, callback) {
   })
 };
 
-UserController.readCSVFile = function (file, eventId, callback) {
+/**
+ *  Function that reads a CVS file given the file itself
+ *  @param {File} file File object obtained from the frontend
+ *  @param {Function} callback Function to perform after the array of objects from the CVS file has been read
+ */
+UserController.readCSVFile = function (file, callback) {
   var path = file.path;
   var csvData = [];
   fs.createReadStream(path)
@@ -118,10 +121,16 @@ UserController.readCSVFile = function (file, eventId, callback) {
      csvData.push(row);
    })
    .on('end', () => {
-    this.bulkCSVStudentStorage(csvData, eventId, callback);
+    callback(csvData);
   });
 }
 
+/**
+ *  Function that stores in bulk each row corresponding to a student, student is composed by the required questions
+ *  @param {Array} fileData Array of Objects with each item representing each row in the csv and each object attribute corresponding to each csv column
+ *  @param {String} eventId Id of the event whose records are being stored
+ *  @param {Function} callback Function to perform after the objects have been inserted
+ */
 UserController.bulkCSVStudentStorage = function(fileData, eventId, callback) {
   var students = [];
   var requiredQuestions = fetchRequiredQuestions();
@@ -133,13 +142,19 @@ UserController.bulkCSVStudentStorage = function(fileData, eventId, callback) {
 
   Student.insertMany(students)
    .then(function(documents) {
-     callback(documents, fileData);
+     callback(documents);
    })
    .catch(function(error){
      console.log(error);
    });
 }
 
+/**
+ *  Function that stores in bulk the answers of each question from each student
+ *  @param {Array} fileData Array of Objects with each item representing each row in the csv and each object attribute corresponding to each csv column
+ *  @param {Array} questions Questions corresponding to the event
+ *  @param {Function} callback Function to perform after the objects have been inserted
+ */
 UserController.bulkCSVAnswersStorage = async function(fileData, questions, callback) {
   var answers = [];
   var required = fetchRequiredQuestions();
