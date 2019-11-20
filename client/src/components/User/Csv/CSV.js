@@ -14,6 +14,11 @@ class CSV extends React.Component {
         };
         this.handleFileChange = this.handleFileChange.bind(this);
         this.onClickUpload = this.onClickUpload.bind(this);
+        this.handleDownload = this.handleFileChange.bind(this);
+    }
+
+    componentDidMount() {
+        console.log(this.props.location.state)
     }
 
     render() {
@@ -36,7 +41,7 @@ class CSV extends React.Component {
     }
 
     handleDownload = async function() {
-        const url = API_URL + '/user/csv-template/5dcd7fae1f357b4b66861629'
+        const url = API_URL + '/user/csv-template/' + this.props.location.state.eventId
         const res = await fetch(url);
         const blob = await res.blob();
         download(blob, 'template.csv');
@@ -47,7 +52,7 @@ class CSV extends React.Component {
     }
 
     onClickUpload() {
-        const url = API_URL + '/user/upload-csv/5dcd7fae1f357b4b66861629';
+        const url = API_URL + '/user/upload-csv/' + this.props.location.state.eventId;
         const headers = {
             "Content-Type": "application/json",
             "x-auth-token": sessionStorage.getItem(TOKEN)

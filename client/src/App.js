@@ -14,6 +14,8 @@ import Users from "./components/Admin/Users/Users";
 import Data from "./components/Data/Data";
 import FormQuestions from "./components/User/Form/Form";
 import CSV from "./components/User/Csv/CSV";
+import RegisterStudent from "./components/User/RegisterStudent/RegisterStudent";
+import UploadSelection from "./components/UploadSelection/UploadSelection";
 
 class App extends React.Component {
   constructor(props) {
@@ -79,6 +81,21 @@ class App extends React.Component {
                               isAdmin={false}
               />
 
+              <ProtectedRoute path="/select-upload-method"
+                              component={UploadSelection}
+                              isAdmin={false}
+              />
+
+              <ProtectedRoute path="/select-event"
+                              component={RegisterStudent}
+                              isAdmin={false}
+              />
+
+              <ProtectedRoute path="/file-upload"
+                              component={CSV}
+                              isAdmin={false}
+              />
+
               <ProtectedRoute path="/data" component={Data} isAdmin={false} />
             </Switch>
           </div>
@@ -94,7 +111,7 @@ class App extends React.Component {
       {url: "/users", name: "Usuarios"},
     ];
     const userNavItems = [
-      {url: "/form", name: "Formulario"},
+      {url: "/select-upload-method", name: "Registro"},
       {url: "/search", name: "Busqueda"},
       {url: "/", name: "Análisis"}
     ];
