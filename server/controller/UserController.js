@@ -1,12 +1,12 @@
-const User = require('../models/User');
-const Event = require('../models/Event')
-const Question = require('../models/Question');
-const Student = require('../models/Student');
-const Answer = require('../models/Answer');
+const User = require("../models/User");
+const Event = require("../models/Event");
+const Question = require("../models/Question");
+const Student = require("../models/Student");
+const Answer = require("../models/Answer");
 
-const createCsvWriter = require('csv-writer').createObjectCsvWriter;
-const fs = require('fs');
-const parser = require('csv-parser');
+const createCsvWriter = require("csv-writer").createObjectCsvWriter;
+const fs = require("fs");
+const parser = require("csv-parser");
 
 var UserController = {};
 
@@ -18,16 +18,15 @@ var UserController = {};
  *  @param {Function} callback Function to perform after record has (or not) been found
  */
 
-UserController.passwordLogin = function (email, password, callback) {
-  User.findByEmail(email).then(function (record) {
+UserController.passwordLogin = function(email, password, callback) {
+  User.findByEmail(email).then(function(record) {
     if (!record || !record.unhashPassword(password)) {
       var authError = {
         error: true,
         message: "Contraseña y/o correo incorrecto"
       };
       callback(authError);
-    }
-    else {
+    } else {
       var token = record.generateAuthToken();
       var user = record.toJSON();
       user.token = token;
@@ -41,42 +40,41 @@ UserController.passwordLogin = function (email, password, callback) {
  *  Function that fetches all the Event records from the database
  *  @param {Function} callback Function to perform after the records were fetched
  */
-UserController.fetchAllEventRecords = function (callback) {
+UserController.fetchAllEventRecords = function(callback) {
   Event.fetchAll()
-    .then(function (records) {
+    .then(function(records) {
       callback(records);
     })
-    .catch(function (error) {
+    .catch(function(error) {
       console.log(error);
     });
-}
+};
 
 /**
  *  Function that fetches the Questions records corresponding to an event given its id
  *  @param {String} eventId Id corresponding to the event whose questions we are trying to fetch
  *  @param {Function} callback Function to perform after records have been fetched
  */
-UserController.fetchEventQuestions = function (eventId, callback) {
+UserController.fetchEventQuestions = function(eventId, callback) {
   Event.fetchQuestions(eventId)
-    .then(function (eventDocuments) {
+    .then(function(eventDocuments) {
       var questionsIds = eventDocuments[0].questions;
-      Question.findManyInIds(questionsIds)
-        .then(function (questionsDocuments) {
-          callback(questionsDocuments);
-        })
+      Question.findManyInIds(questionsIds).then(function(questionsDocuments) {
+        callback(questionsDocuments);
+      });
     })
-    .catch(function (error) {
+    .catch(function(error) {
       console.log(error);
     });
-}
+};
 
 /**
  *  Function that creates a CSV template with the required, and non required, questions of an event
  *  @param {String} eventId Id corresponding to the event whose template we are trying to create
  *  @param {Function} callback Function to perform after the template has been created
  */
-UserController.createCSVTemplate = function (eventId, callback) {
-  this.fetchEventQuestions(eventId, function (questions) {
+UserController.createCSVTemplate = function(eventId, callback) {
+  this.fetchEventQuestions(eventId, function(questions) {
     const storagePath = `./server/public/templates/${eventId}.csv`;
     var csvHeaders = [];
     questions = fetchRequiredQuestions().concat(questions);
@@ -95,35 +93,34 @@ UserController.createCSVTemplate = function (eventId, callback) {
 
     csvwriter
       .writeRecords([])
-      .then(function () {
-        console.log('CSV file written successfully');
+      .then(function() {
+        console.log("CSV file written successfully");
         callback();
       })
-      .catch(function (error) {
-        console.log('ERROR with CSV file write');
+      .catch(function(error) {
+        console.log("ERROR with CSV file write");
         console.log(error);
-      })
-
-  })
-}
+      });
+  });
+};
 
 /**
  *  Function that reads a CVS file given the file itself
  *  @param {File} file File object obtained from the frontend
  *  @param {Function} callback Function to perform after the array of objects from the CVS file has been read
  */
-UserController.readCSVFile = function (file, callback) {
+UserController.readCSVFile = function(file, callback) {
   var path = file.path;
   var csvData = [];
   fs.createReadStream(path)
-   .pipe(parser())
-   .on('data', function(row) {
-     csvData.push(row);
-   })
-   .on('end', () => {
-    callback(csvData);
-  });
-}
+    .pipe(parser())
+    .on("data", function(row) {
+      csvData.push(row);
+    })
+    .on("end", () => {
+      callback(csvData);
+    });
+};
 
 /**
  *  Function that stores in bulk each row corresponding to a student, student is composed by the required questions
@@ -141,13 +138,13 @@ UserController.bulkCSVStudentStorage = function(fileData, eventId, callback) {
   });
 
   Student.insertMany(students)
-   .then(function(documents) {
-     callback(documents);
-   })
-   .catch(function(error){
-     console.log(error);
-   });
-}
+    .then(function(documents) {
+      callback(documents);
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+};
 
 /**
  *  Function that stores in bulk the answers of each question from each student
@@ -155,11 +152,15 @@ UserController.bulkCSVStudentStorage = function(fileData, eventId, callback) {
  *  @param {Array} questions Questions corresponding to the event
  *  @param {Function} callback Function to perform after the objects have been inserted
  */
-UserController.bulkCSVAnswersStorage = async function(fileData, questions, callback) {
+UserController.bulkCSVAnswersStorage = async function(
+  fileData,
+  questions,
+  callback
+) {
   var answers = [];
   var required = fetchRequiredQuestions();
 
-  for(const row of fileData) {
+  for (const row of fileData) {
     var student = buildUserFromCSVRow(row, required);
     const studentRecord = await Student.findByCURP(student.curp);
 
@@ -175,13 +176,13 @@ UserController.bulkCSVAnswersStorage = async function(fileData, questions, callb
   }
 
   Answer.insertMany(answers)
-   .then(function(documents) {
-      callback({success: true});
+    .then(function(documents) {
+      callback({ success: true });
     })
     .catch(function(error) {
-        console.log(error);
+      console.log(error);
     });
-}
+};
 
 /**
  *  Function that fetches all the Event records from the database
@@ -189,27 +190,29 @@ UserController.bulkCSVAnswersStorage = async function(fileData, questions, callb
  */
 UserController.fetchAllEventRecords = function(callback) {
   Event.fetchAll()
-    .then(function (records) {
+    .then(function(records) {
       callback(records);
     })
-    .catch(function (error) {
+    .catch(function(error) {
       console.log(error);
     });
-}
+};
 
 UserController.fetchAllStudents = function(callback) {
   Student.find({})
-   .then(function(documents) {
-     callback(documents);
-   })
-   .catch(function(error){console.log(error)});
-}
+    .then(function(documents) {
+      callback(documents);
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+};
 
 UserController.fetchStudentsAnswers = function(students, callback) {
   console.log(students);
-}
+};
 
-UserController.storeStudent = function (studentInfo, callback) {
+UserController.storeStudent = function(studentInfo, callback) {
   let student = new Student();
   student.name = studentInfo.name;
   student.last_name = studentInfo.last_name;
@@ -221,28 +224,30 @@ UserController.storeStudent = function (studentInfo, callback) {
   student.email = studentInfo.email;
   student.event = studentInfo.event;
 
-  student.save()
-    .then(function (record) {
+  student
+    .save()
+    .then(function(record) {
       callback(record);
     })
-    .catch(function (error) {
+    .catch(function(error) {
       console.log(error);
     });
-}
+};
 
-UserController.storeAnswer = function (questionId, text, studentId, callback) {
+UserController.storeAnswer = function(questionId, text, studentId, callback) {
   answer = new Answer();
   answer.text = text;
   answer.question_id = questionId;
   answer.student_id = studentId;
-  answer.save()
-    .then(function (record) {
+  answer
+    .save()
+    .then(function(record) {
       callback(record);
     })
-    .catch(function (error) {
+    .catch(function(error) {
       console.log(error);
     });
-}
+};
 
 /**
  * ************************************************************************
@@ -253,19 +258,27 @@ UserController.storeAnswer = function (questionId, text, studentId, callback) {
 /**
  * Function that creates an array, similar to a Question object, with all the required questions
  */
-fetchRequiredQuestions = function () {
-  var questions = ['Nombre(s)', 'Apellido paterno', 'Apellido materno', 'Fecha de nacimiento', 'Lugar de nacimiento', 'Sexo ', 'Email '];
+fetchRequiredQuestions = function() {
+  var questions = [
+    "Nombre(s)",
+    "Apellido paterno",
+    "Apellido materno",
+    "Fecha de nacimiento",
+    "Lugar de nacimiento",
+    "Sexo ",
+    "Email "
+  ];
   var response = [];
 
   questions.forEach(question => {
     response.push({
       _id: question,
       text: question
-    })
+    });
   });
 
   return response;
-}
+};
 
 buildUserFromCSVRow = function(row, requiredQuestions) {
   var student = new Student();
@@ -278,8 +291,8 @@ buildUserFromCSVRow = function(row, requiredQuestions) {
   student.gender = row[requiredQuestions[5].text];
   student.email = row[requiredQuestions[6].text];
   student.curp = student.generateCURP();
-  
+
   return student;
-}
+};
 
 module.exports = UserController;
