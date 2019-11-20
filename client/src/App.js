@@ -76,24 +76,28 @@ class App extends React.Component {
                 isAdmin={false}
               />
 
-              <ProtectedRoute path="/file-upload"
-                              component={CSV}
-                              isAdmin={false}
+              <ProtectedRoute
+                path="/file-upload"
+                component={CSV}
+                isAdmin={false}
               />
 
-              <ProtectedRoute path="/select-upload-method"
-                              component={UploadSelection}
-                              isAdmin={false}
+              <ProtectedRoute
+                path="/select-upload-method"
+                component={UploadSelection}
+                isAdmin={false}
               />
 
-              <ProtectedRoute path="/select-event"
-                              component={RegisterStudent}
-                              isAdmin={false}
+              <ProtectedRoute
+                path="/select-event"
+                component={RegisterStudent}
+                isAdmin={false}
               />
 
-              <ProtectedRoute path="/file-upload"
-                              component={CSV}
-                              isAdmin={false}
+              <ProtectedRoute
+                path="/file-upload"
+                component={CSV}
+                isAdmin={false}
               />
 
               <ProtectedRoute path="/data" component={Data} isAdmin={false} />
@@ -106,19 +110,21 @@ class App extends React.Component {
 
   renderNav() {
     const adminNavItems = [
-      {url: "/event", name: "Eventos"}, 
-      {url: "/questions", name: "Preguntas"}, 
-      {url: "/users", name: "Usuarios"},
+      { url: "/event", name: "Eventos" },
+      { url: "/questions", name: "Preguntas" },
+      { url: "/users", name: "Usuarios" },
+      { url: "/search", name: "Análisis de datos" }
     ];
     const userNavItems = [
-      {url: "/select-upload-method", name: "Registro"},
-      {url: "/search", name: "Busqueda"},
-      {url: "/", name: "Análisis"}
+      { url: "/select-upload-method", name: "Registro" },
+      { url: "/search", name: "Análisis de datos" },
+      { url: "/", name: "Análisis" }
     ];
 
-    if(sessionStorage.getItem(AUTHENTICATED)) {
-      if(sessionStorage.getItem(ADMIN) == "true") return(<Navigation navitems={adminNavItems}/>);
-      return(<Navigation navitems={userNavItems} />);
+    if (sessionStorage.getItem(AUTHENTICATED)) {
+      if (sessionStorage.getItem(ADMIN) == "true")
+        return <Navigation navitems={adminNavItems} />;
+      return <Navigation navitems={userNavItems} />;
     }
   }
 

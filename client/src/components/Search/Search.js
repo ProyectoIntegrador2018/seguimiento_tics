@@ -6,6 +6,9 @@ import {
 import DataTable from "./DataTable";
 import SearchInput from "./SearchInput";
 import { Row, Col } from "antd";
+import { API_URL } from "../../constants/apiurl";
+import axios from "axios";
+import { TOKEN } from "../../constants/sessionstorage";
 
 class Search extends React.Component {
   constructor(props) {
@@ -112,6 +115,28 @@ class Search extends React.Component {
   }
 
   render() {
+    var url = API_URL + "/user/students-data";
+    var token = sessionStorage.getItem(TOKEN);
+
+    axios
+      .get(url)
+      .then(response => {
+        /*var data = response.data;
+        if (data.error) {
+          this.setState({ isInvalid: true });
+        } else {
+          this.setState({
+            isInvalid: false,
+            user: data
+          });
+          this.props.rerender();
+        }*/
+        console.log(response);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
     return (
       <div style={limiter}>
         <div style={searchContainer}>
