@@ -4,8 +4,20 @@ import { Form, Button } from "react-bootstrap";
 import { Redirect } from "react-router-dom";
 import { AUTHENTICATED, ADMIN, TOKEN } from "../../constants/sessionstorage";
 import { API_URL } from "../../constants/apiurl";
-import { title, button100, buttonWrapper, button100Wrapper, invalidInput } from "../../assets/jss/sharedStyling";
-import { limiter, loginContainer, loginWrapper, inputWrapper, inputStyle } from "../../assets/jss/components/loginStyle";
+import {
+  title,
+  button100,
+  buttonWrapper,
+  button100Wrapper,
+  invalidInput
+} from "../../assets/jss/sharedStyling";
+import {
+  limiter,
+  loginContainer,
+  loginWrapper,
+  inputWrapper,
+  inputStyle
+} from "../../assets/jss/components/loginStyle";
 
 class Login extends React.Component {
   constructor(props) {
@@ -58,7 +70,7 @@ class Login extends React.Component {
 
               <div style={buttonWrapper}>
                 <div style={button100Wrapper}>
-                  <Button  type="submit" style={button100}>
+                  <Button type="submit" style={button100}>
                     Iniciar sesión
                   </Button>
                 </div>

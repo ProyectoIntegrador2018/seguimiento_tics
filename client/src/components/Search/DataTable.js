@@ -6,15 +6,26 @@ import {
   scrollContainer
 } from "../../assets/jss/components/searchStyle";
 import { Checkbox } from "antd";
+import {
+  button100,
+  buttonWrapper,
+  button100Wrapper
+} from "../../assets/jss/sharedStyling";
+import { Button } from "react-bootstrap";
+import { withRouter } from "react-router-dom";
 
 class DataTable extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      cellHeights: []
+      cellHeights: [],
+      selected: {},
+      rows: []
     };
 
+    const { rows } = this.props;
+    this.rows = rows;
     this.tableRef = React.createRef();
     this.onSelectRow.bind(this);
   }
@@ -47,9 +58,25 @@ class DataTable extends React.Component {
   };
 
   onSelectRow = (rowIndex, event) => {
-    event.target.checked
-      ? console.log("selected " + rowIndex)
-      : console.log("unselected " + rowIndex);
+    var aux = this.state.selected;
+    if (event.target.checked) {
+      aux[rowIndex] = 1;
+    } else {
+      aux[rowIndex] = 0;
+    }
+    this.setState({ ...this, selected: aux });
+  };
+
+  onAnalyze = rows => {
+    var ret = [];
+    for (var i in this.state.selected) {
+      ret.push(rows[i]);
+    }
+
+    this.props.history.push({
+      pathname: "/data",
+      state: { selected: ret }
+    });
   };
 
   renderRow = (_row, rowIndex) => {
@@ -127,16 +154,25 @@ class DataTable extends React.Component {
     const tbodyMarkup = rows.map(this.renderRow);
 
     return (
-      <div style={dataTable}>
-        <div style={scrollContainer}>
-          <table style={tableStyle} ref={this.tableRef}>
-            <thead>{theadMarkup}</thead>
-            <tbody>{tbodyMarkup}</tbody>
-          </table>
+      <div>
+        <div style={dataTable}>
+          <div style={scrollContainer}>
+            <table style={tableStyle} ref={this.tableRef}>
+              <thead>{theadMarkup}</thead>
+              <tbody>{tbodyMarkup}</tbody>
+            </table>
+          </div>
+        </div>
+        <div style={buttonWrapper}>
+          <div style={button100Wrapper}>
+            <Button onClick={this.onAnalyze.bind(this, rows)} style={button100}>
+              Analizar
+            </Button>
+          </div>
         </div>
       </div>
     );
   }
 }
 
-export default DataTable;
+export default withRouter(DataTable);

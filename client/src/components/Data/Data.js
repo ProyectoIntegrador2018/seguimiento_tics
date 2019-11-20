@@ -15,7 +15,10 @@ import {
 } from "recharts";
 import { Row, Col } from "react-bootstrap";
 
-const data2 = [{ name: "Group A", value: 14 }, { name: "Group B", value: 5 }];
+const data2 = [
+  { name: "Group A", value: 14 },
+  { name: "Group B", value: 5 }
+];
 const COLORS = ["#18b532", "#db2727"];
 
 const RADIAN = Math.PI / 180;
@@ -86,7 +89,7 @@ const data1 = [
 class Data extends PureComponent {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = { selected: this.props.location.state.selected };
   }
 
   getAgeGenderGraph = () => {
@@ -116,12 +119,14 @@ class Data extends PureComponent {
   };
 
   getYesNoITGraph = () => {
+    console.log(this.state.selected[0]);
     return (
       <div style={dataContainer}>
         <p>Personas que estudiaron TI</p>
         <ResponsiveContainer width="100%" height={400}>
           <PieChart onMouseEnter={this.onPieEnter}>
             <Pie
+              dataKey="value"
               data={data2}
               cx={150}
               cy={150}
