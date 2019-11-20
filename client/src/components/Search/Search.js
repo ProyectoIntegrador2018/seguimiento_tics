@@ -17,78 +17,15 @@ class Search extends React.Component {
       headers: [],
       rows: []
     };
-  }
-
-  getRows() {
-    return [
-      [
-        1,
-        "Pepe Madero",
-        28,
-        3,
-        "Secundaria",
-        "Segundo año",
-        0,
-        1,
-        "pepe@madero.com",
-        "checkbox"
-      ],
-      [
-        1,
-        "Pepe Madero",
-        28,
-        3,
-        "Secundaria",
-        "Segundo año",
-        0,
-        1,
-        "pepe@madero.com",
-        "checkbox"
-      ],
-      [
-        1,
-        "Pepe Madero",
-        28,
-        3,
-        "Secundaria",
-        "Segundo año",
-        0,
-        1,
-        "pepe@madero.com",
-        "checkbox"
-      ],
-      [
-        1,
-        "Pepe Madero",
-        28,
-        3,
-        "Secundaria",
-        "Segundo año",
-        0,
-        1,
-        "pepe@madero.com",
-        "checkbox"
-      ],
-      [
-        1,
-        "Oscar Juarez",
-        28,
-        3,
-        "Secundaria",
-        "Segundo año",
-        0,
-        1,
-        "pepe@madero.com",
-        "checkbox"
-      ]
-    ];
+    this.loadData = this.loadData.bind(this);
+    this.loadData();
   }
 
   handleUserInput(filterText) {
     this.setState({ ...this, filterText: filterText });
   }
 
-  render() {
+  loadData = () => {
     var url = API_URL + "/user/students-data";
 
     axios
@@ -99,18 +36,40 @@ class Search extends React.Component {
         var curps = [];
         var headers = [];
         var rows = [];
-        data.forEach(function(row) {
+        if (data.length > 0) {
+          var row = data[0];
           for (var prop in row) {
             if (prop != "_id") {
               headers.push(prop);
-              console.log(prop);
             }
           }
-          names.push(row[1]);
-          curps.push(row[4]);
+        }
+
+        headers.push("Seleccionar");
+
+        data.forEach(function(row) {
+          var nxtRow = [];
+          for (var prop in row) {
+            if (prop != "_id") {
+              nxtRow.push(row[prop]);
+              if (prop == "curp") {
+                curps.push(row[prop]);
+              } else if (prop == "name") {
+                names.push(row[prop]);
+              }
+            }
+          }
+          nxtRow.push("Seleccionar");
+          rows.push(nxtRow);
         });
 
-        this.setState({ ...this, headers: headers });
+        this.setState({
+          ...this,
+          headers: headers,
+          rows: rows,
+          names: names,
+          curps: curps
+        });
 
         this.state.names = names;
         this.state.curps = curps;
@@ -118,27 +77,33 @@ class Search extends React.Component {
       .catch(error => {
         console.log(error);
       });
+  };
 
+  render() {
     return (
       <div style={limiter}>
-        <div style={searchContainer}>
+        <div>
           <Row>
-            <Col xs={{ span: 5 }}>
-              <SearchInput
-                filterText={this.state.filtertext}
-                onUserInput={this.handleUserInput.bind(this)}
-              />
+            <Col span={24}>
+              <div style={searchContainer}>
+                <SearchInput
+                  filterText={this.state.filtertext}
+                  onUserInput={this.handleUserInput.bind(this)}
+                />
+              </div>
             </Col>
           </Row>
           <Row>
             <Col xs={{ span: 1 }}>
-              <DataTable
-                headers={this.state.headers}
-                rows={this.state.rows}
-                names={this.state.names}
-                curps={this.state.curps}
-                filterText={this.state.filterText}
-              />
+              <div style={searchContainer}>
+                <DataTable
+                  headers={this.state.headers}
+                  rows={this.state.rows}
+                  names={this.state.names}
+                  curps={this.state.curps}
+                  filterText={this.state.filterText}
+                />
+              </div>
             </Col>
           </Row>
         </div>
