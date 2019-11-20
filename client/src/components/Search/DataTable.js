@@ -100,10 +100,12 @@ class DataTable extends React.Component {
     const rows = Array.from(this.tableRef.current.getElementsByTagName("tr"));
     let { cellHeights } = this.state;
 
-    cellHeights = rows.map(row => {
-      const fixedCell = row.childNodes[1];
-      return Math.max(row.clientHeight, fixedCell.clientHeight);
-    });
+    if (rows.length > 1) {
+      cellHeights = rows.map(row => {
+        const fixedCell = row.childNodes[1];
+        return Math.max(row.clientHeight, fixedCell.clientHeight);
+      });
+    }
 
     return cellHeights;
   };
