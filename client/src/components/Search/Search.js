@@ -8,155 +8,102 @@ import SearchInput from "./SearchInput";
 import { Row, Col } from "antd";
 import { API_URL } from "../../constants/apiurl";
 import axios from "axios";
-import { TOKEN } from "../../constants/sessionstorage";
 
 class Search extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       filterText: "",
-      headers: this.getHeaders(),
-      rows: this.getRows()
+      headers: [],
+      rows: []
     };
-
-    var names = [];
-    var curps = [];
-    this.state.rows.forEach(function(row) {
-      names.push(row[1]);
-      curps.push(row[4]);
-    });
-
-    this.state.names = names;
-    this.state.curps = curps;
-  }
-
-  getHeaders() {
-    return [
-      "ID",
-      "Nombre",
-      "Edad",
-      "Cursos",
-      "Escuela actual",
-      "Grado actual",
-      "Carrera iniciada",
-      "Carrera TIC",
-      "Correo",
-      "Seleccionado"
-    ];
-  }
-
-  getRows() {
-    return [
-      [
-        1,
-        "Pepe Madero",
-        28,
-        3,
-        "Secundaria",
-        "Segundo año",
-        0,
-        1,
-        "pepe@madero.com",
-        "checkbox"
-      ],
-      [
-        1,
-        "Pepe Madero",
-        28,
-        3,
-        "Secundaria",
-        "Segundo año",
-        0,
-        1,
-        "pepe@madero.com",
-        "checkbox"
-      ],
-      [
-        1,
-        "Pepe Madero",
-        28,
-        3,
-        "Secundaria",
-        "Segundo año",
-        0,
-        1,
-        "pepe@madero.com",
-        "checkbox"
-      ],
-      [
-        1,
-        "Pepe Madero",
-        28,
-        3,
-        "Secundaria",
-        "Segundo año",
-        0,
-        1,
-        "pepe@madero.com",
-        "checkbox"
-      ],
-      [
-        1,
-        "Oscar Juarez",
-        28,
-        3,
-        "Secundaria",
-        "Segundo año",
-        0,
-        1,
-        "pepe@madero.com",
-        "checkbox"
-      ]
-    ];
+    this.loadData = this.loadData.bind(this);
+    this.loadData();
   }
 
   handleUserInput(filterText) {
-    this.setState({ filterText: filterText });
+    this.setState({ ...this, filterText: filterText });
   }
 
-  render() {
+  loadData = () => {
     var url = API_URL + "/user/students-data";
-    var token = sessionStorage.getItem(TOKEN);
 
     axios
       .get(url)
       .then(response => {
-        /*var data = response.data;
-        if (data.error) {
-          this.setState({ isInvalid: true });
-        } else {
-          this.setState({
-            isInvalid: false,
-            user: data
-          });
-          this.props.rerender();
-        }*/
-        console.log(response);
+        var data = response.data;
+        var names = [];
+        var curps = [];
+        var headers = [];
+        var rows = [];
+        if (data.length > 0) {
+          var row = data[0];
+          for (var prop in row) {
+            if (prop != "_id") {
+              headers.push(prop);
+            }
+          }
+        }
+
+        headers.push("Seleccionar");
+
+        data.forEach(function(row) {
+          var nxtRow = [];
+          for (var prop in row) {
+            if (prop != "_id") {
+              nxtRow.push(row[prop]);
+              if (prop == "curp") {
+                curps.push(row[prop]);
+              } else if (prop == "name") {
+                names.push(row[prop]);
+              }
+            }
+          }
+          nxtRow.push("Seleccionar");
+          rows.push(nxtRow);
+        });
+
+        this.setState({
+          ...this,
+          headers: headers,
+          rows: rows,
+          names: names,
+          curps: curps
+        });
+
+        this.state.names = names;
+        this.state.curps = curps;
       })
       .catch(error => {
         console.log(error);
       });
+  };
 
+  render() {
     return (
       <div style={limiter}>
-        <div style={searchContainer}>
+        <div>
           <Row>
-            <Col xs={{ span: 5 }}>
-              <SearchInput
-                filterText={this.state.filtertext}
-                onUserInput={this.handleUserInput.bind(this)}
-              />
+            <Col span={24}>
+              <div style={searchContainer}>
+                <SearchInput
+                  filterText={this.state.filtertext}
+                  onUserInput={this.handleUserInput.bind(this)}
+                />
+              </div>
             </Col>
           </Row>
           <Row>
             <Col xs={{ span: 1 }}>
-              <DataTable
-                headers={this.state.headers}
-                rows={this.state.rows}
-                names={this.state.names}
-                curps={this.state.curps}
-                filterText={this.state.filterText}
-              />
+              <div style={searchContainer}>
+                <DataTable
+                  headers={this.state.headers}
+                  rows={this.state.rows}
+                  names={this.state.names}
+                  curps={this.state.curps}
+                  filterText={this.state.filterText}
+                />
+              </div>
             </Col>
           </Row>
         </div>

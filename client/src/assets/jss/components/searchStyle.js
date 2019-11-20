@@ -30,7 +30,7 @@ const searchContainer = {
 
 const dataTable = {
   position: "relative",
-  maxWidth: "100vw"
+  maxWidth: "70vw"
 };
 
 const tableStyle = {
