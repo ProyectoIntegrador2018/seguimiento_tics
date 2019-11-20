@@ -16,7 +16,6 @@ import { API_URL } from "../../../constants/apiurl";
 import { TOKEN } from "../../../constants/sessionstorage";
 import { Button, Form, Toast } from "react-bootstrap";
 import { title } from "../../../assets/jss/sharedStyling";
-import Search from "../../Search/Search";
 
 class Users extends React.Component {
   constructor(props) {
@@ -81,7 +80,6 @@ class Users extends React.Component {
               </div>
             );
           })}
-          <Search></Search>
         </div>
       </div>
     );
