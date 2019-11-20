@@ -67,8 +67,16 @@ class DataTable extends React.Component {
     this.setState({ ...this, selected: aux });
   };
 
-  onAnalyze = () => {
-    this.props.history.push("/data");
+  onAnalyze = rows => {
+    var ret = [];
+    for (var i in this.state.selected) {
+      ret.push(rows[i]);
+    }
+
+    this.props.history.push({
+      pathname: "/data",
+      state: { selected: ret }
+    });
   };
 
   renderRow = (_row, rowIndex) => {
@@ -157,7 +165,7 @@ class DataTable extends React.Component {
         </div>
         <div style={buttonWrapper}>
           <div style={button100Wrapper}>
-            <Button onClick={this.onAnalyze} style={button100}>
+            <Button onClick={this.onAnalyze.bind(this, rows)} style={button100}>
               Analizar
             </Button>
           </div>
