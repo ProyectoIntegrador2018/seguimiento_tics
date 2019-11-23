@@ -27,7 +27,9 @@ class UploadSelection extends React.Component {
                 <span style={title}>¿Cómo quieres hacer el registro?</span>
                 <div style={buttonWrapper}>
                     <div style={button100Wrapper, submitBttn}>
+                        <br/>
                         <Button style={button100} onClick={this.handleCSVClick}>CSV</Button>
+                        <br/>
                         <Button style={button100} onClick={this.handleFormClick}>Formulario</Button>
                     </div>
                 </div>
