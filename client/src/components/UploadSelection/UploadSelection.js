@@ -2,7 +2,7 @@ import React from "react";
 import { Form, Button } from "react-bootstrap";
 import { Redirect } from "react-router-dom";
 import { title, button100, buttonWrapper, button100Wrapper } from "../../assets/jss/sharedStyling";
-import { pickerWidth, sectionContainer, submitBttn, mainContainter } from "../../assets/jss/components/selectEventStyle";
+import { submitBttn, mainContainter } from "../../assets/jss/components/selectEventStyle";
 
 class UploadSelection extends React.Component {
     constructor() {
