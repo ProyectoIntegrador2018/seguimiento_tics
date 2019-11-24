@@ -12,7 +12,6 @@ const limiter = {
 
 const searchContainer = {
   width: "100%",
-  minHeight: "60vh",
   justifyContent: "center",
   paddingTop: "50px",
   backgroundRepeat: "no-repeat",
