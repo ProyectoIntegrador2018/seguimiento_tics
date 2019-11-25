@@ -21,7 +21,8 @@ class DataTable extends React.Component {
     this.state = {
       cellHeights: [],
       selected: {},
-      rows: []
+      rows: [],
+      initState: true
     };
 
     const { rows } = this.props;
@@ -59,6 +60,7 @@ class DataTable extends React.Component {
 
   onSelectRow = (rowIndex, event) => {
     var aux = this.state.selected;
+    console.log(aux);
     if (event.target.checked) {
       aux[rowIndex] = 1;
     } else {
@@ -87,6 +89,15 @@ class DataTable extends React.Component {
     const { cellHeights } = this.state;
     const heightIndex = rowIndex + 1;
 
+    if(this.state.initState && rows.length > 0) {
+      var aux = {};
+      rows.forEach( (_, idx) => { aux[idx] = 1});
+      this.setState({
+        selected: aux,
+        initState: false
+      });
+    }
+
     if (
       names[rowIndex].indexOf(filterText) === -1 &&
       curps[rowIndex].indexOf(filterText) === -1
@@ -103,6 +114,7 @@ class DataTable extends React.Component {
               content={
                 cellIndex === rows[rowIndex].length - 1 ? (
                   <Checkbox onChange={e => this.onSelectRow(rowIndex, e)}
+                            selected={true}
                             defaultChecked={true}/>) 
                             : (rows[rowIndex][cellIndex])
               }
@@ -149,7 +161,6 @@ class DataTable extends React.Component {
     );
 
     const tbodyMarkup = rows.map(this.renderRow);
-    console.log(theadMarkup);
 
     return (
       <div>
