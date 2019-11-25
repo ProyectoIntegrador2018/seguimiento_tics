@@ -66,7 +66,7 @@ class Search extends React.Component {
 
         this.setState({
           ...this,
-          headers: ['Nombre(s)','Apellido paterno', 'Apellido materno', 'Fecha de nacimiento', 'Lugar de nacimiento', 'Sexo', 'Email', 'CURP'],
+          headers: ['Nombre(s)','Apellido paterno', 'Apellido materno', 'Fecha de nacimiento', 'Lugar de nacimiento', 'Sexo', 'Email', 'CURP', 'Seleccionar'],
           rows: rows,
           names: names,
           curps: curps

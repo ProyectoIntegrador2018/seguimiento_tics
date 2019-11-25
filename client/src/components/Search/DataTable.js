@@ -102,12 +102,9 @@ class DataTable extends React.Component {
               key={`${rowIndex}-${cellIndex}`}
               content={
                 cellIndex === rows[rowIndex].length - 1 ? (
-                  <Checkbox onChange={e => this.onSelectRow(rowIndex, e)}>
-                    Seleccionar
-                  </Checkbox>
-                ) : (
-                  rows[rowIndex][cellIndex]
-                )
+                  <Checkbox onChange={e => this.onSelectRow(rowIndex, e)}
+                            defaultChecked={true}/>) 
+                            : (rows[rowIndex][cellIndex])
               }
               isHeader={false}
               isFixed={cellIndex === 0}
