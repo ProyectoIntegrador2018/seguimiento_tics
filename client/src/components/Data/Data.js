@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import { limiter, dataContainer } from "../../assets/jss/components/dataStyle";
+import { graphsContainer } from "../../assets/jss/components/dataStyle";
 import {
   BarChart,
   Bar,
@@ -48,53 +48,65 @@ const renderCustomizedLabel = ({
   );
 };
 
-const data1 = [
-  {
-    age: "10",
-    hombres: 4,
-    mujeres: 2
-  },
-  {
-    age: "11",
-    hombres: 3,
-    mujeres: 1
-  },
-  {
-    age: "12",
-    hombres: 2,
-    mujeres: 9
-  },
-  {
-    age: "13",
-    hombres: 3,
-    mujeres: 4
-  },
-  {
-    age: "14",
-    hombres: 2,
-    mujeres: 5
-  },
-  {
-    age: "15",
-    hombres: 2,
-    mujeres: 4
-  },
-  {
-    age: "16",
-    hombres: 3,
-    mujeres: 4
-  }
-];
+var data1 = [];
 
 class Data extends PureComponent {
   constructor(props) {
     super(props);
     this.state = { selected: this.props.location.state.selected };
+    this.loadData = this.loadData.bind(this);
+    this.loadData();
   }
+
+  loadData = () => {
+    var rows = this.state.selected;
+    var m = {};
+    var f = {};
+    var ages = new Set();
+    for (var e in rows) {
+      var year = rows[e][3];
+      year = year.substring(6, 8);
+      var curYear = new Date().getFullYear();
+      if (year >= curYear) {
+        year = "19" + year;
+      } else {
+        year = "20" + year;
+      }
+
+      if (rows[e][4] == "m") {
+        m[curYear - year] = (m[curYear - year] || 0) + 1;
+      } else {
+        f[curYear - year] = (f[curYear - year] || 0) + 1;
+      }
+
+      ages.add(curYear - year);
+    }
+
+    ages = Array.from(ages);
+    for (var i in ages) {
+      var nxt = {};
+      var age = ages[i];
+      nxt["age"] = age;
+      if (m[age]) {
+        nxt["hombres"] = m[age];
+      } else {
+        nxt["hombres"] = 0;
+      }
+      if (f[age]) {
+        nxt["mujeres"] = f[age];
+      } else {
+        nxt["mujeres"] = 0;
+      }
+
+      data1.push(nxt);
+    }
+
+    console.log(data1);
+  };
 
   getAgeGenderGraph = () => {
     return (
-      <div style={dataContainer}>
+      <div>
         <ResponsiveContainer width="100%" height={300}>
           <BarChart
             data={data1}
@@ -119,9 +131,8 @@ class Data extends PureComponent {
   };
 
   getYesNoITGraph = () => {
-    console.log(this.state.selected[0]);
     return (
-      <div style={dataContainer}>
+      <div>
         <p>Personas que estudiaron TI</p>
         <ResponsiveContainer width="100%" height={400}>
           <PieChart onMouseEnter={this.onPieEnter}>
@@ -147,7 +158,7 @@ class Data extends PureComponent {
 
   render() {
     return (
-      <div style={limiter}>
+      <div style={graphsContainer}>
         <Row>
           <Col md={{ span: 5, offset: 1 }}>{this.getAgeGenderGraph()}</Col>
 

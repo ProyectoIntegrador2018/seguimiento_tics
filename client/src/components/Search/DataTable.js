@@ -51,8 +51,8 @@ class DataTable extends React.Component {
         key={`heading-${cellIndex}`}
         content={headers[cellIndex]}
         isHeader={true}
-        isFixed={cellIndex === 1}
-        height={cellHeights[1]}
+        isFixed={cellIndex === 0}
+        height={cellHeights[0]}
       />
     );
   };
@@ -110,7 +110,7 @@ class DataTable extends React.Component {
                 )
               }
               isHeader={false}
-              isFixed={cellIndex === 1}
+              isFixed={cellIndex === 0}
               height={cellHeights[heightIndex]}
             />
           );
