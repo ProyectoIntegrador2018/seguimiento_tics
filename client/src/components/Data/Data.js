@@ -68,13 +68,13 @@ class Data extends PureComponent {
       var year = rows[e][3];
       year = year.substring(6, 8);
       var curYear = new Date().getFullYear();
-      if (year >= curYear) {
+      if (year >= curYear % 100) {
         year = "19" + year;
       } else {
         year = "20" + year;
       }
 
-      if (rows[e][4] == "m") {
+      if (rows[e][5][0] == "m" || rows[e][5][0] == "M") {
         m[curYear - year] = (m[curYear - year] || 0) + 1;
       } else {
         f[curYear - year] = (f[curYear - year] || 0) + 1;
@@ -84,6 +84,7 @@ class Data extends PureComponent {
     }
 
     ages = Array.from(ages);
+    ages.sort();
     for (var i in ages) {
       var nxt = {};
       var age = ages[i];
@@ -101,8 +102,6 @@ class Data extends PureComponent {
 
       data1.push(nxt);
     }
-
-    console.log(data1);
   };
 
   getAgeGenderGraph = () => {
