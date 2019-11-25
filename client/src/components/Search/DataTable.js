@@ -45,7 +45,7 @@ class DataTable extends React.Component {
   renderHeadingRow = (_cell, cellIndex) => {
     const { headers } = this.props;
     const { cellHeights } = this.state;
-
+    
     return (
       <Cell
         key={`heading-${cellIndex}`}
@@ -143,8 +143,8 @@ class DataTable extends React.Component {
 
   render() {
     const { headers, rows } = this.props;
-
     this.renderHeadingRow = this.renderHeadingRow.bind(this);
+    
     this.renderRow = this.renderRow.bind(this);
 
     const theadMarkup = (
@@ -152,6 +152,7 @@ class DataTable extends React.Component {
     );
 
     const tbodyMarkup = rows.map(this.renderRow);
+    console.log(theadMarkup);
 
     return (
       <div>

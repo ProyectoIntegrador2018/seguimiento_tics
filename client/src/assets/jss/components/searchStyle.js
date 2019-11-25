@@ -7,7 +7,6 @@ import "./../../fonts/fonts.css";
 const limiter = {
   width: "100%",
   margin: "0 auto",
-  backgroundColor: "#d9d9d9"
 };
 
 const searchContainer = {
@@ -29,12 +28,10 @@ const searchContainer = {
 
 const dataTable = {
   position: "relative",
-  maxWidth: "70vw"
 };
 
 const tableStyle = {
   borderSpacing: "0px",
-  background: "#fff",
   boxShadow: "0 1px 0 0 rgba(22, 29, 37, 0.05)",
   width: "100%"
 };
