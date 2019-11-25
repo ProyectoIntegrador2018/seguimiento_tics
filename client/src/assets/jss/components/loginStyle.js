@@ -29,6 +29,7 @@ const loginContainer = {
 };
 
 const loginWrapper = {
+  marginLeft: "-225px",
   width: "500px",
   background: "#fff",
   borderRadius: "10px",

@@ -4,38 +4,50 @@ import { API_URL } from "../../../constants/apiurl";
 import { Button,Form } from "react-bootstrap";
 import "../../../assets/css/fileupload.css";
 import Axios from "axios";
+import { Redirect } from "react-router-dom";
 import { TOKEN } from "../../../constants/sessionstorage";
+import { title } from "../../../assets/jss/sharedStyling";
+import { storeQuestionBttn } from "../../../assets/jss/components/questionsStyle";
 
 class CSV extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            file: null
+            file: null,
+            eventId: "",
+            redirect: false
         };
         this.handleFileChange = this.handleFileChange.bind(this);
         this.onClickUpload = this.onClickUpload.bind(this);
-        this.handleDownload = this.handleFileChange.bind(this);
+        this.handleDownload = this.handleDownload.bind(this);
     }
 
     componentDidMount() {
+        if(!this.props.location.state) return( <Redirect to="/select-upload-method"/> );
+        this.setState({
+            eventId: this.props.location.state.eventId
+        });
         console.log(this.props.location.state)
     }
 
     render() {
+        if(this.state.redirect) {
+            window.alert("Registros guardados con éxito");
+            return( <Redirect to="/search"/>)
+        }
         return(
             <div>
                 <Form method="post" action="#" id="#">
+                    <span style={title}>Sube el archivo</span>
                     <div className="form-group files">
-                        <label>Upload Your File </label>
+                        <span className="download"><a href="#" onClick={this.handleDownload}>Descargar el template</a></span>
                         <input type="file" 
                                 className="form-control" 
                                 multiple=""
                                 onChange={this.handleFileChange}/>
                     </div>
                 </Form>
-
-                <Button onClick={this.handleDownload}>Descargar</Button>
-                <Button onClick={this.onClickUpload}>Subir archivo</Button>
+                <Button onClick={this.onClickUpload} style={storeQuestionBttn}>Subir archivo</Button>
             </div>
         );
     }
@@ -52,6 +64,7 @@ class CSV extends React.Component {
     }
 
     onClickUpload() {
+        if(!this.props.location.state) return( <Redirect to="/select-upload-method"/> );
         const url = API_URL + '/user/upload-csv/' + this.props.location.state.eventId;
         const headers = {
             "Content-Type": "application/json",
@@ -62,7 +75,7 @@ class CSV extends React.Component {
 
         Axios.post(url, data, {headers})
          .then(response => {
-             console.log(response);
+             this.setState({ redirect: true});
          })
          .catch(error => console.log(error));
     }

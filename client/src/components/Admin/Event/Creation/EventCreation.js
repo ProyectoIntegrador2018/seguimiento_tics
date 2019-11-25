@@ -119,7 +119,7 @@ class EventCreation extends React.Component {
         this.setState({
             isInvalid: invalid,
             errorMsg: "Fecha de inicio debe de ser antes de la fecha de fin",
-            endDate: date
+            startDate: date
         });
     }
 

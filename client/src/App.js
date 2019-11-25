@@ -117,8 +117,7 @@ class App extends React.Component {
     ];
     const userNavItems = [
       { url: "/select-upload-method", name: "Registro" },
-      { url: "/search", name: "Análisis de datos" },
-      { url: "/", name: "Análisis" }
+      { url: "/search", name: "Busqueda y análisis de datos" }
     ];
 
     if (sessionStorage.getItem(AUTHENTICATED)) {

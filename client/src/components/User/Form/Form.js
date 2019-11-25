@@ -7,6 +7,7 @@ import {
     button100Wrapper, inputStyle, invalidInput
 } from '../../../assets/jss/components/formStyle';
 import initialState from './InitialState';
+import { Redirect } from "react-router-dom";
 import { basicQuestions } from './BasicQuestions';
 import { API_URL } from '../../../constants/apiurl';
 import { TOKEN, ADMIN } from '../../../constants/sessionstorage';
@@ -28,6 +29,7 @@ class FormQuestions extends React.Component {
 
     componentWillMount() {
         // make the API call here...
+        if(!this.props.location.state) return( <Redirect to="/select-upload-method"/> );
         this.fetchEventQuestions(this.props.location.state.eventId)
     }
 

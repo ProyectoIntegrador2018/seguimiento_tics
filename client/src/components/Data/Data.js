@@ -14,6 +14,7 @@ import {
   Cell
 } from "recharts";
 import { Row, Col } from "react-bootstrap";
+import { title } from "../../assets/jss/sharedStyling";
 
 const data2 = [
   { name: "Group A", value: 14 },
@@ -133,7 +134,6 @@ class Data extends PureComponent {
   getYesNoITGraph = () => {
     return (
       <div>
-        <p>Personas que estudiaron TI</p>
         <ResponsiveContainer width="100%" height={400}>
           <PieChart onMouseEnter={this.onPieEnter}>
             <Pie
@@ -159,10 +159,16 @@ class Data extends PureComponent {
   render() {
     return (
       <div style={graphsContainer}>
+        <span style={title}>Edad de hombres y mujeres</span>
         <Row>
-          <Col md={{ span: 5, offset: 1 }}>{this.getAgeGenderGraph()}</Col>
-
-          <Col md={{ span: 5 }}>{this.getYesNoITGraph()}</Col>
+          <Col>{this.getAgeGenderGraph()}</Col>
+        </Row>
+        <br />
+        <br />
+        <br />
+        <span style={title}>Personas que estudian TI</span>
+        <Row>
+          <Col>{this.getYesNoITGraph()}</Col>
         </Row>
       </div>
     );

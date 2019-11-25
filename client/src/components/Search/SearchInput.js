@@ -1,5 +1,6 @@
 import React from "react";
 import TextInput from "../Basic Components/TextInput";
+import { Form } from "react-bootstrap";
 
 class SearchInput extends React.Component {
   constructor(props) {
@@ -15,12 +16,9 @@ class SearchInput extends React.Component {
   render() {
     return (
       <div>
-        <TextInput
-          name="Buscar por nombre o CURP"
-          value={this.props.filterText}
-          changeHandler={this.handleChange}
-          placeholder="Buscar por nombre o CURP"
-        />
+        <Form.Label>Buscar por nombre o CURP</Form.Label>
+        <Form.Control value={this.props.filterText}
+                      onChange={this.handleChange}/>
       </div>
     );
   }

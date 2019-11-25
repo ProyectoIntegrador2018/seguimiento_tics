@@ -4,7 +4,7 @@
 **/
 
 .files input {
-    outline: 2px dashed #92b0b3;
+    outline: 2px dashed #FF5A5F;
     outline-offset: -10px;
     -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
     transition: outline-offset .15s ease-in-out, background-color .15s linear;
@@ -13,11 +13,14 @@
     margin: 0;
     width: 100% !important;
 }
-.files input:focus{     outline: 2px dashed #92b0b3;  outline-offset: -10px;
+.files input:focus{     outline: 2px dashed #bd59d4;  outline-offset: -10px;
     -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
     transition: outline-offset .15s ease-in-out, background-color .15s linear; border:1px solid #92b0b3;
  }
-.files{ position:relative}
+.files{ 
+    position:relative;
+    margin-top: 9%;
+}
 .files:after {  pointer-events: none;
     position: absolute;
     top: 60px;
@@ -40,11 +43,17 @@
     width: 100%;
     right: 0;
     height: 57px;
-    content: " or drag it here. ";
+    content: " o arrastra aquí ";
     display: block;
     margin: 0 auto;
-    color: #2ea591;
+    color: #bd59d4;
     font-weight: 600;
-    text-transform: capitalize;
     text-align: center;
+}
+
+.download {
+    display: block;
+    text-align: center;
+    font-family: Poppins;
+    font-size: 18px;
 }

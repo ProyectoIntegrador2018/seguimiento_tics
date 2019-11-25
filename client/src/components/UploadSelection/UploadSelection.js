@@ -2,7 +2,7 @@ import React from "react";
 import { Form, Button } from "react-bootstrap";
 import { Redirect } from "react-router-dom";
 import { title, button100, buttonWrapper, button100Wrapper } from "../../assets/jss/sharedStyling";
-import { pickerWidth, sectionContainer, submitBttn, mainContainter } from "../../assets/jss/components/selectEventStyle";
+import { submitBttn, mainContainter } from "../../assets/jss/components/selectEventStyle";
 
 class UploadSelection extends React.Component {
     constructor() {
@@ -27,7 +27,9 @@ class UploadSelection extends React.Component {
                 <span style={title}>¿Cómo quieres hacer el registro?</span>
                 <div style={buttonWrapper}>
                     <div style={button100Wrapper, submitBttn}>
+                        <br/>
                         <Button style={button100} onClick={this.handleCSVClick}>CSV</Button>
+                        <br/>
                         <Button style={button100} onClick={this.handleFormClick}>Formulario</Button>
                     </div>
                 </div>

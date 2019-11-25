@@ -8,6 +8,7 @@ import SearchInput from "./SearchInput";
 import { Row, Col } from "antd";
 import { API_URL } from "../../constants/apiurl";
 import axios from "axios";
+import { title } from "../../assets/jss/sharedStyling";
 
 class Search extends React.Component {
   constructor(props) {
@@ -50,7 +51,7 @@ class Search extends React.Component {
         data.forEach(function(row) {
           var nxtRow = [];
           for (var prop in row) {
-            if (prop != "_id") {
+            if (prop != "_id" && prop != "answers" && prop != "event" && prop != "__v") {
               nxtRow.push(row[prop]);
               if (prop == "curp") {
                 curps.push(row[prop]);
@@ -65,7 +66,7 @@ class Search extends React.Component {
 
         this.setState({
           ...this,
-          headers: headers,
+          headers: ['Nombre(s)','Apellido paterno', 'Apellido materno', 'Fecha de nacimiento', 'Lugar de nacimiento', 'Sexo', 'Email', 'CURP', 'Seleccionar'],
           rows: rows,
           names: names,
           curps: curps
@@ -82,6 +83,7 @@ class Search extends React.Component {
   render() {
     return (
       <div style={limiter}>
+        <span style={title}> Busqueda y análisis</span>
         <div>
           <Row>
             <Col span={24}>

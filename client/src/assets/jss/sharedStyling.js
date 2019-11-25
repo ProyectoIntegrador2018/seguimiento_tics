@@ -48,7 +48,6 @@ const button100Wrapper = {
   width: "50%",
   display: "block",
   position: "relative",
-  zIndex: "1",
   borderRadius: "25px",
   overflow: "hidden",
   margin: "0 auto",
