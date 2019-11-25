@@ -4,8 +4,10 @@ import { TOKEN } from "../../../constants/sessionstorage";
 import { API_URL } from "../../../constants/apiurl";
 import Axios from "axios";
 import { title, invalidInput } from "../../../assets/jss/sharedStyling";
+import basicQuestions from "../../User/Form/BasicQuestions";
 import { addQuestionBttn, storeQuestionBttn, deleteBttn, toolBar, inputQuestion, questionContainer, textSpan } from "../../../assets/jss/components/questionsStyle";
 import remove from "../../../assets/img/remove.png";
+import { element } from "prop-types";
 
 class QuestionsCreation extends React.Component {
     constructor(props) {
@@ -36,16 +38,29 @@ class QuestionsCreation extends React.Component {
 
     // RENDER FUNCTIONS
     renderRequiredQuestions() {
+        let aux = basicQuestions.basicQuestions;
         return(
             <Form.Group>
                 <span style={invalidInput}>  * Preguntas requeridas</span>
                 {this.renderFirstChunk()}
+                {aux.map(q => this.renderEachRequiredQuestion(q))}
 
                 {this.renderSecondChunk()}                
                 
                 {this.renderThirdChunk()}
             </Form.Group>
         );
+    }
+
+    renderEachRequiredQuestion = function(question) {
+        console.log(question)
+        return(
+            <Form.Group>
+                <Form.Label>{question.label}</Form.Label>
+                <Form.Control  type={question.type}
+                                disabled/>
+            </Form.Group>
+        )
     }
 
     renderFirstChunk() {
