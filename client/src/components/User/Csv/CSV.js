@@ -14,7 +14,8 @@ class CSV extends React.Component {
         super(props);
         this.state = {
             file: null,
-            eventId: ""
+            eventId: "",
+            redirect: false
         };
         this.handleFileChange = this.handleFileChange.bind(this);
         this.onClickUpload = this.onClickUpload.bind(this);
@@ -30,7 +31,10 @@ class CSV extends React.Component {
     }
 
     render() {
-        
+        if(this.state.redirect) {
+            window.alert("Registros guardados con éxito");
+            return( <Redirect to="/search"/>)
+        }
         return(
             <div>
                 <Form method="post" action="#" id="#">
@@ -60,6 +64,7 @@ class CSV extends React.Component {
     }
 
     onClickUpload() {
+        if(!this.props.location.state) return( <Redirect to="/select-upload-method"/> );
         const url = API_URL + '/user/upload-csv/' + this.props.location.state.eventId;
         const headers = {
             "Content-Type": "application/json",
@@ -70,7 +75,7 @@ class CSV extends React.Component {
 
         Axios.post(url, data, {headers})
          .then(response => {
-             console.log(response);
+             this.setState({ redirect: true});
          })
          .catch(error => console.log(error));
     }
