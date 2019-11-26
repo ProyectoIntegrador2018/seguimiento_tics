@@ -53,14 +53,27 @@ class QuestionsCreation extends React.Component {
     }
 
     renderEachRequiredQuestion = function(question) {
-        console.log(question)
+        if(question.renderType === "select") return this.renderSelectType(question);
         return(
-            <Form.Group>
+            <Form.Group key={question.name}>
                 <Form.Label>{question.label}</Form.Label>
-                <Form.Control  type={question.type}
-                                disabled/>
+                <Form.Control type={question.type}
+                              as={question.renderType !== "phone" && question.renderType !== "date" ? question.renderType : "input"}
+                              disabled/>
             </Form.Group>
         )
+    }
+
+    renderSelectType = function(q) {
+        return(
+            <Form.Group key={q.name}>
+                <Form.Label>{q.label}</Form.Label>
+                <Form.Control   as={q.renderType}
+                                disabled>
+                    {q.options.map(opt => {return(<option>{opt.name}</option>)})}
+                </Form.Control>
+            </Form.Group>
+        );
     }
 
     renderFirstChunk() {

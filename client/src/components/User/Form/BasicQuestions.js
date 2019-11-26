@@ -1,6 +1,6 @@
 const basicQuestions = [
     {
-        label: 'Nombre',
+        label: 'Nombre(s)',
         type: 'text',
         name: 'name',
         placeHolder: 'Ingrese su(s) nombres.',
@@ -112,7 +112,7 @@ const basicQuestions = [
         renderType: 'select',
         options: [
             {
-                name: 'Publica',
+                name: 'Pública',
                 id: 'public'
             },
             {
