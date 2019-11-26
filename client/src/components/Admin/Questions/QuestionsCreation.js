@@ -42,12 +42,7 @@ class QuestionsCreation extends React.Component {
         return(
             <Form.Group>
                 <span style={invalidInput}>  * Preguntas requeridas</span>
-                {this.renderFirstChunk()}
                 {aux.map(q => this.renderEachRequiredQuestion(q))}
-
-                {this.renderSecondChunk()}                
-                
-                {this.renderThirdChunk()}
             </Form.Group>
         );
     }
