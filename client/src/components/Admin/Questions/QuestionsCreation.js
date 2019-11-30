@@ -3,11 +3,10 @@ import { Form, Button } from "react-bootstrap";
 import { TOKEN } from "../../../constants/sessionstorage";
 import { API_URL } from "../../../constants/apiurl";
 import Axios from "axios";
-import { title, invalidInput } from "../../../assets/jss/sharedStyling";
+import { title, invalidInput, divisor } from "../../../assets/jss/sharedStyling";
 import basicQuestions from "../../User/Form/BasicQuestions";
-import { addQuestionBttn, storeQuestionBttn, deleteBttn, toolBar, inputQuestion, questionContainer, textSpan } from "../../../assets/jss/components/questionsStyle";
+import { addQuestionBttn, storeQuestionBttn, deleteBttn, toolBar, inputQuestion, questionContainer, textSpan, requiredSection } from "../../../assets/jss/components/questionsStyle";
 import remove from "../../../assets/img/remove.png";
-import { element } from "prop-types";
 
 class QuestionsCreation extends React.Component {
     constructor(props) {
@@ -26,7 +25,11 @@ class QuestionsCreation extends React.Component {
         return(
             <div>
                 <span style={title}>Preguntas del evento</span>
-                {this.renderRequiredQuestions()}
+                <span style={invalidInput}>  * Preguntas requeridas</span>
+                <div style={requiredSection}> 
+                    {this.renderRequiredQuestions()}
+                </div>
+                <div style={divisor}></div>
                 <Form onSubmit={this.onQuestionsSubmission}>
                     {this.renderQuestionItems()}
                     <Button onClick={this.onAddQuestions} style={addQuestionBttn}>+ Agregar pregunta</Button>
@@ -38,95 +41,51 @@ class QuestionsCreation extends React.Component {
 
     // RENDER FUNCTIONS
     renderRequiredQuestions() {
-        let aux = basicQuestions.basicQuestions;
-        return(
-            <Form.Group>
-                <span style={invalidInput}>  * Preguntas requeridas</span>
-                {aux.map(q => this.renderEachRequiredQuestion(q))}
-            </Form.Group>
-        );
+        let questions = basicQuestions.basicQuestions;
+        let renderer = [];
+        for(let i = 3; i < questions.length; i++) {
+            if(i % 3 === 0) renderer = renderer.concat(this.renderQuestionsChunk(questions.slice(i - 3, i), i));
+        }
+        return renderer;
     }
 
-    renderEachRequiredQuestion = function(question) {
-        if(question.renderType === "select") return this.renderSelectType(question);
-        return(
-            <Form.Group key={question.name}>
-                <Form.Label>{question.label}</Form.Label>
-                <Form.Control type={question.type}
-                              as={question.renderType !== "phone" && question.renderType !== "date" ? question.renderType : "input"}
-                              disabled/>
-            </Form.Group>
-        )
+    renderQuestionsChunk = function(questions, idx) {
+        return[
+            <div key={idx} className="row"> 
+                { questions.map(q => {
+                    return q.renderType === "select" ? this.renderSelectType(q) 
+                                              : this.renderInputType(q)}) }
+            </div>
+        ];
+    }
+
+    renderInputType = function(q) {
+        return (
+            <div key={q.name} className="col">
+                <Form.Group key={q.name}>
+                    <Form.Label>{q.label}</Form.Label>
+                    <Form.Control type={q.type}
+                                as={q.renderType !== "phone" && q.renderType !== "date" ? q.renderType : "input"}
+                                disabled/>
+                </Form.Group>
+            </div>
+        );
     }
 
     renderSelectType = function(q) {
-        return(
-            <Form.Group key={q.name}>
+        return (
+            <div key={q.name} className="col">
+                <Form.Group key={q.name}>
                 <Form.Label>{q.label}</Form.Label>
                 <Form.Control   as={q.renderType}
                                 disabled>
-                    {q.options.map(opt => {return(<option>{opt.name}</option>)})}
+                    {q.options.map(opt => {return(<option key={opt.name}>{opt.name}</option>)})}
                 </Form.Control>
-            </Form.Group>
-        );
-    }
-
-    renderFirstChunk() {
-        return(
-            <div className="row">
-                    <div className="col">
-                        <Form.Label>Nombre(s)</Form.Label>
-                        <Form.Control   type="text"
-                                        disabled/>
-                    </div>
-                    <div className="col">
-                        <Form.Label>Apellido paterno</Form.Label>
-                        <Form.Control   type="text"
-                                        disabled/>
-                    </div>
-                    <div className="col">
-                        <Form.Label>Apellido materno</Form.Label>
-                        <Form.Control   type="text"
-                                        disabled/>
-                    </div>
+                </Form.Group>
             </div>
         );
     }
 
-    renderSecondChunk() {
-        return(
-            <div className="row">
-                    <div className="col">
-                        <Form.Label>Fecha de nacimiento</Form.Label>
-                        <Form.Control   type="text"
-                                        disabled/>
-                    </div>
-                    <div className="col">
-                        <Form.Label>Lugar de nacimiento</Form.Label>
-                        <Form.Control   type="text"
-                                        disabled/>
-                    </div>
-            </div>
-        );
-    }
-
-    renderThirdChunk() {
-        return(
-            <Form.Group>
-                <Form.Label>Genero</Form.Label>
-                <Form.Check     type="radio"
-                                label="Hombre"
-                                disabled/>
-                <Form.Check     type="radio"
-                                label="Mujer"
-                                disabled/>
-                <Form.Label>Correo electrónico</Form.Label>
-                <Form.Control   type="email"
-                                style={{width:'35%'}}
-                                disabled/>
-            </Form.Group>
-        );
-    }
 
     renderQuestionItems() {
         return(

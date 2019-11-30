@@ -62,4 +62,12 @@ const invalidInput = {
   textTransform: "uppercase"
 };
 
-export { title, button100, buttonWrapper, button100Wrapper, invalidInput };
+const divisor = {
+  display: "block",
+  backgroundColor: "#b565c8",
+  padding: "0.15%",
+  maxWidth: "50%",
+  margin: "0 auto"
+};
+
+export { title, button100, buttonWrapper, button100Wrapper, invalidInput, divisor };
