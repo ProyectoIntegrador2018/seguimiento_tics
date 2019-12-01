@@ -56,13 +56,6 @@ const basicQuestions = [
         renderType: 'input'
     },
     {
-        label: 'País',
-        type: 'text',
-        name: 'country',
-        placeHolder: 'País del domicilio',
-        renderType: 'input'
-    },
-    {
         label: 'Teléfono celular',
         type: 'number',
         name: 'mobileNumber',
@@ -74,6 +67,13 @@ const basicQuestions = [
         type: 'date',
         name: 'birthday',
         renderType: 'date'
+    },
+    {
+        label: 'Lugar de nacimiento',
+        type: 'text',
+        name: 'country',
+        placeHolder: 'Lugar de nacimiento',
+        renderType: 'input'
     },
     {
         label: 'Edad',

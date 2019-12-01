@@ -1,6 +1,7 @@
 const User = require("./../models/User");
 const Event = require("./../models/Event");
 const Question = require("./../models/Question");
+const required_questions = require("./../constants/required");
 
 var AdminController = {};
 
@@ -12,18 +13,26 @@ var AdminController = {};
  *  @param {Function} callback Function to perform after record has (or not) been recorded
  */
 AdminController.registerEvent = function(name, start_date, end_date, callback) {
-  var event = new Event();
-  event.name = name;
-  event.start_date = start_date;
-  event.end_date = end_date;
-  event
-    .save()
-    .then(function(record) {
-      callback(record);
-    })
-    .catch(function(error) {
-      console.log(error);
-    });
+  Question.findManyByText(required_questions)
+    .then(function(documents) {
+      let event = new Event();
+      event.name = name;
+      event.start_date = start_date;
+      event.end_date = end_date;
+      event.questions = recordsToIdArray(documents);
+      
+      event
+      .save()
+      .then(function(record) {
+        callback(record);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  })
+  .catch(function(error) {
+    console.log(error);
+  });
 };
 
 /**
@@ -62,11 +71,7 @@ AdminController.fetchAllEventRecords = function(callback) {
  * @param {String} event_id String of the event's id
  * @param {Function} callback Function to perform after the questions have been stored
  */
-AdminController.storeQuestionsForEvent = function(
-  questions,
-  event_id,
-  callback
-) {
+AdminController.storeQuestionsForEvent = function(questions, event_id, callback) {
   Question.findManyByText(questions)
     .then(function(repeatedQuestions) {
       var questionsToStore = fetchUniqueQuestionsFromQuestions(
@@ -79,11 +84,17 @@ AdminController.storeQuestionsForEvent = function(
           var allQuestions = repeatedQuestions.concat(newlyStoredQuestions);
           var questionsId = recordsToIdArray(allQuestions);
 
-          Event.update(
-            { _id: event_id },
-            { $set: { questions: questionsId } },
-            callback
-          );
+          Event.findById(event_id)
+           .then(function(curr_event) {
+             let event_q = curr_event.questions;
+             event_q = event_q.concat(questionsId);
+
+             Event.update(
+              { _id: event_id },
+              { $set: { questions: event_q } },
+              callback
+            );
+           })
         })
         .catch(function(error) {
           console.log(error);
