@@ -143,7 +143,8 @@ class Users extends React.Component {
     this.setState({
       displayForm: false,
       email: "",
-      password: ""
+      password: "",
+      hasError: false
     });
   }
 
