@@ -4,6 +4,7 @@ const Question = require("../models/Question");
 const Student = require("../models/Student");
 const Answer = require("../models/Answer");
 
+const path = require("path");
 const createCsvWriter = require("csv-writer").createObjectCsvWriter;
 const fs = require("fs");
 const parser = require("csv-parser");
@@ -75,7 +76,7 @@ UserController.fetchEventQuestions = function(eventId, callback) {
  */
 UserController.createCSVTemplate = function(eventId, callback) {
   this.fetchEventQuestions(eventId, function(questions) {
-    const storagePath = `./server/public/templates/${eventId}.csv`;
+    const storagePath = path.join(__dirname,'server','public','templates',`${eventId}.csv`);//`./server/public/templates/${eventId}.csv`;
     var csvHeaders = [];
     questions = fetchRequiredQuestions().concat(questions);
 
