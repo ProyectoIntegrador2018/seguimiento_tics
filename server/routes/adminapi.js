@@ -50,7 +50,7 @@ router.get('/all-events', adminmw, function(req, res) {
  * @param {Object} req Contains an array of questions and an event id
  * @param {Object} res Sends a success if everything went smoothly
  */
-router.post('/store-questions', function(req, res) {
+router.post('/store-questions', adminmw, function(req, res) {
     var questions = req.body.event_questions;
     var event = req.body.event_id;
     AdminController.storeQuestionsForEvent(questions, event, function(error, documents){
