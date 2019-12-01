@@ -129,7 +129,6 @@ AdminController.storeUser = function(email, password, callback) {
     });
 };
 
-//BORRAR ESTO
 /**
  *  Function that fetches the Questions records corresponding to an event given its id
  *  @param {String} eventId Id corresponding to the event whose questions we are trying to fetch
@@ -146,6 +145,22 @@ AdminController.fetchEventQuestions = function(eventId, callback) {
     .catch(function(error) {
       console.log(error);
     });
+};
+
+/**
+ *  Function that returns whether a user exists or not
+ *  @param {String} email Email corresponding to the user to search
+ *  @param {Function} callback Function to perform after record has been fetched
+ */
+AdminController.fetchUser = function(email, callback) {
+  User.findByEmail(email)
+   .then(function(document){
+     let response = { wasFound: document ? true : false};
+     callback(response);
+   })
+   .catch(function(error) {
+     console.log(error);
+   });
 };
 
 /**

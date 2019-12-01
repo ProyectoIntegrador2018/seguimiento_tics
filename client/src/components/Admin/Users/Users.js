@@ -15,7 +15,7 @@ import {
 import { API_URL } from "../../../constants/apiurl";
 import { TOKEN } from "../../../constants/sessionstorage";
 import { Button, Form, Toast } from "react-bootstrap";
-import { title } from "../../../assets/jss/sharedStyling";
+import { title, invalidInput } from "../../../assets/jss/sharedStyling";
 
 class Users extends React.Component {
   constructor(props) {
@@ -25,7 +25,8 @@ class Users extends React.Component {
       displayForm: false,
       email: "",
       password: "",
-      isFetching: true
+      isFetching: true,
+      hasError: false
     };
     this.renderRegistrationForm = this.renderRegistrationForm.bind(this);
     this.fetchUsersAPI = this.fetchUsersAPI.bind(this);
@@ -35,6 +36,7 @@ class Users extends React.Component {
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
     this.toggleDisplayForm = this.toggleDisplayForm.bind(this);
     this.renderTable = this.renderTable.bind(this);
+    this.findUserByEmail = this.findUserByEmail.bind(this);
   }
 
   componentDidMount() {
@@ -95,9 +97,12 @@ class Users extends React.Component {
           <Form onSubmit={this.onStoreRecordSubmit}>
             <Form.Group>
               <Form.Label>Correo electrónico</Form.Label>
+              {this.renderErrorMessage()}
               <Form.Control
                 type="email"
+                isInvalid={this.state.hasError}
                 onChange={this.handleEmailChange}
+                onBlur={this.findUserByEmail}
                 required={true}
               />
               <Form.Label>Contraseña</Form.Label>
@@ -108,13 +113,21 @@ class Users extends React.Component {
                 minLength={4}
               />
             </Form.Group>
-            <Button type="submit" style={formBttn}>
+            <Button type="submit" style={formBttn} disabled={this.state.hasError}>
               Guardar
             </Button>
           </Form>
         </Toast.Body>
       </Toast>
     );
+  }
+
+  renderErrorMessage() {
+    if(this.state.hasError) {
+        return(
+            <Form.Text style={invalidInput}> Existe un usuario registrado con ese correo </Form.Text>
+        );
+    }
   }
 
   // INPUT
@@ -188,6 +201,18 @@ class Users extends React.Component {
       "x-auth-token": token
     };
     return { headers };
+  }
+
+  //  AUXILIAR
+  findUserByEmail() {
+    var found = false;
+    for(var i = 0; i < this.state.users.length; i++) {
+      if(this.state.users[i].email == this.state.email) {
+        found = true;
+        break;
+      }
+    }
+    this.setState({ hasError: found })
   }
 }
 export default Users;
