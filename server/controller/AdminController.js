@@ -72,12 +72,11 @@ AdminController.fetchAllEventRecords = function(callback) {
  * @param {Function} callback Function to perform after the questions have been stored
  */
 AdminController.storeQuestionsForEvent = function(questions, event_id, callback) {
+  questions = cleanQuestionsTxt(questions);
+
   Question.findManyByText(questions)
     .then(function(repeatedQuestions) {
-      var questionsToStore = fetchUniqueQuestionsFromQuestions(
-        questions,
-        repeatedQuestions
-      );
+      var questionsToStore = fetchUniqueQuestionsFromQuestions(questions,repeatedQuestions);
 
       Question.insertMany(questionsToStore)
         .then(function(newlyStoredQuestions) {
@@ -213,5 +212,18 @@ recordsToIdArray = function(records) {
   }
   return ids;
 };
+
+
+/**
+ * Function that removes all special characters from the string, this is due to csv write problem
+ * @param {Array} questions Array of Strings with questions to store
+ */
+cleanQuestionsTxt = function(questions) {
+  for(let i = 0; i < questions.length; i++) {
+    questions[i] = questions[i].normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    questions[i] = questions[i].replace(/[^\w\s]/gi,'');
+  }
+  return questions;
+}
 
 module.exports = AdminController;

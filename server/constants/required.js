@@ -2,21 +2,21 @@ let required_questions = [
     'Domicilio',
     'Ciudad',
     'Estado',
-    'Código postal',
-    'Teléfono celular',
+    'Codigo postal',
+    'Telefono celular',
     'Edad',
     'Nombre de la escuela',
     'Tipo de escuela',
     'Grado escolar',
     'Nombre del tutor',
-    'Teléfono del tutor',
+    'Telefono del tutor',
     'Email del tutor',
-    '¿Has tomado alguna clase de programación, desarrollo de videojuegos o apps antes?',
+    'Has tomado alguna clase de programacion, desarrollo de videojuegos o apps antes',
     'Nombre de la empresa',
-    '¿Participaste en alguna edición anterior de ApportaTeen?',
-    '¿En tu escuela has tomado cursos del programa Diseño Escalable de Juegos: Chic@s Code?',
-    '¿Requieres beca?',
-    '¿Cómo te enteraste del evento?'
+    'Participaste en alguna edicion anterior de ApportaTeen',
+    'En tu escuela has tomado cursos del programa Diseno Escalable de Juegos: Chicos Code',
+    'Requieres beca',
+    'Como te enteraste del evento'
 ];
 
 module.exports =  required_questions;
