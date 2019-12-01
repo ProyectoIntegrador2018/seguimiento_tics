@@ -62,6 +62,10 @@ const textSpan = {
     fontWeight: 'bold'
 };
 
+const requiredSection = {
+    marginBottom: "3%"
+};
+
 export {
     addQuestionBttn,
     storeQuestionBttn,
@@ -69,5 +73,6 @@ export {
     toolBar,
     inputQuestion,
     questionContainer,
-    textSpan
+    textSpan,
+    requiredSection
 };

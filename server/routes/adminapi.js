@@ -70,6 +70,18 @@ router.get('/all-users', adminmw, function(req, res) {
 });
 
 /**
+ *  Route that fetches a user by its email
+ * @param {Object} req Contains email
+ * @param {Object} res Response of get
+ */
+router.get('/find-user', adminmw, function(req, res) {
+    let email = req.body.email;
+    AdminController.fetchUser(email, function(response) {
+        res.send(response);
+    });
+});
+
+/**
  *  Route that stores a user
  * @param {Object} req Contains the email and the password of the user to store
  * @param {Object} res Response of post
@@ -81,7 +93,6 @@ router.post('/store-user', adminmw, function(req, res) {
         res.send(document);
     });
 });
-
 
 /**
  *  Route for fetching the questions of an event

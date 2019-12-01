@@ -23,6 +23,7 @@ app.use(cors());
 
 // Initial Configuration
 var adminconfig = require("./server/config/admin");
+var questionsconfig = require('./server/config/requiredquestions');
 
 // Routers
 const authRouter = require('./server/routes/auth');
