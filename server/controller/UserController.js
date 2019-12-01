@@ -77,6 +77,21 @@ UserController.fetchEventQuestions = function(eventId, callback) {
 UserController.createCSVTemplate = function(eventId, callback) {
   this.fetchEventQuestions(eventId, function(questions) {
     console.log(__dirname,'!!!!!!!!');
+    fs.readdir(__dirname, function (err, files) {
+      //handling error
+      if (err) {
+          return console.log('Unable to scan directory: ' + err);
+      } 
+      //listing all files using forEach
+      files.forEach(function (file) {
+          // Do whatever you want to do with the file
+          console.log(file); 
+      });
+  });
+
+
+
+
     const storagePath = path.join(__dirname,'../','public','templates',`${eventId}.csv`);//`./server/public/templates/${eventId}.csv`;
     var csvHeaders = [];
     questions = fetchRequiredQuestions().concat(questions);
