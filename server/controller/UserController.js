@@ -76,6 +76,7 @@ UserController.fetchEventQuestions = function(eventId, callback) {
  */
 UserController.createCSVTemplate = function(eventId, callback) {
   this.fetchEventQuestions(eventId, function(questions) {
+    console.log(__dirname);
     const storagePath = path.join(__dirname,'../','public','templates',`${eventId}.csv`);//`./server/public/templates/${eventId}.csv`;
     var csvHeaders = [];
     questions = fetchRequiredQuestions().concat(questions);
