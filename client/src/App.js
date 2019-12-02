@@ -25,6 +25,10 @@ class App extends React.Component {
     this.rerenderAfterLogin = this.rerenderAfterLogin.bind(this);
   }
 
+  componentDidMount() {
+    document.title = 'Seguimiento TIC';
+  }
+
   render() {
     return (
       <div className="App">
