@@ -13,6 +13,7 @@ import {
 } from "../../assets/jss/sharedStyling";
 import { Button } from "react-bootstrap";
 import { withRouter } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 
 class DataTable extends React.Component {
   constructor(props) {
@@ -133,6 +134,7 @@ class DataTable extends React.Component {
   };
 
   getTallestCellHeights = () => {
+    if(!this.tableRef.current) return( <Redirect to="/search"/>);
     const rows = Array.from(this.tableRef.current.getElementsByTagName("tr"));
     let { cellHeights } = this.state;
 

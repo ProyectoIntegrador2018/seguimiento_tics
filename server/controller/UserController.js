@@ -266,7 +266,6 @@ fetchRequiredQuestions = function() {
     "Sexo ",
     "Email "
   ];
-  questions = questions.concat(required_questions);
   var response = [];
 
   questions.forEach(question => {

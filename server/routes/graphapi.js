@@ -8,4 +8,10 @@ router.get('/gender-demographic', function(req, res) {
     });
 });
 
+router.get('/age-demographic', function(req, res) {
+    GraphController.fetchAgeITGraph(function(data) {
+        res.send(data);
+    });
+});
+
 module.exports = router;

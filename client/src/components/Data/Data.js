@@ -13,15 +13,18 @@ import {
   Pie,
   Cell
 } from "recharts";
-import { Row, Col } from "react-bootstrap";
 import { title } from "../../assets/jss/sharedStyling";
+import { API_URL } from "../../constants/apiurl";
+import Axios from "axios";
 
-const data2 = [
-  { name: "Group A", value: 14 },
-  { name: "Group B", value: 5 }
-];
-const COLORS = ["#18b532", "#db2727"];
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import IconButton from '@material-ui/core/IconButton';
+import Chip from '@material-ui/core/Chip';
+import MoreIcon from '@material-ui/icons/MoreVert';
+import FaceIcon from '@material-ui/icons/Face';
 
+const COLORS = ["#33A8FF", "#FF3386"];
 const RADIAN = Math.PI / 180;
 const renderCustomizedLabel = ({
   cx,
@@ -48,104 +51,123 @@ const renderCustomizedLabel = ({
     </text>
   );
 };
+const GRAPH_MENU = [
+  "Género en TI",
+  "Edad de género en TI"
+];
 
-var data1 = [];
 
 class Data extends PureComponent {
   constructor(props) {
     super(props);
-    this.state = { selected: this.props.location.state.selected };
-    this.loadData = this.loadData.bind(this);
-    this.loadData();
+    this.state = { 
+      selected: this.props.location.state.selected,
+      genderData: {},
+      ageData: {},
+      selected: 0,
+    };
+    this.onMenuPickChange = this.onMenuPickChange.bind(this);
+    this.getGenderDataAPI = this.getGenderDataAPI.bind(this);
+    this.getGenderDataAPI();
+    this.getAgeGenderDataAPI = this.getAgeGenderDataAPI.bind(this);
+    this.getAgeGenderDataAPI();
   }
 
-  loadData = () => {
-    var rows = this.state.selected;
-    var m = {};
-    var f = {};
-    var ages = new Set();
-    for (var e in rows) {
-      var year = rows[e][3];
-      year = year.substring(6, 8);
-      var curYear = new Date().getFullYear();
-      if (year >= curYear % 100) {
-        year = "19" + year;
-      } else {
-        year = "20" + year;
-      }
-
-      if (rows[e][5][0] == "m" || rows[e][5][0] == "M") {
-        m[curYear - year] = (m[curYear - year] || 0) + 1;
-      } else {
-        f[curYear - year] = (f[curYear - year] || 0) + 1;
-      }
-
-      ages.add(curYear - year);
-    }
-
-    ages = Array.from(ages);
-    ages.sort();
-    for (var i in ages) {
-      var nxt = {};
-      var age = ages[i];
-      nxt["age"] = age;
-      if (m[age]) {
-        nxt["hombres"] = m[age];
-      } else {
-        nxt["hombres"] = 0;
-      }
-      if (f[age]) {
-        nxt["mujeres"] = f[age];
-      } else {
-        nxt["mujeres"] = 0;
-      }
-
-      data1.push(nxt);
-    }
-  };
-
-  getAgeGenderGraph = () => {
+  render() {
     return (
-      <div>
-        <ResponsiveContainer width="100%" height={300}>
-          <BarChart
-            data={data1}
-            margin={{
-              top: 5,
-              right: 30,
-              left: 20,
-              bottom: 5
-            }}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="age" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="hombres" fill="#4459e3" />
-            <Bar dataKey="mujeres" fill="#f569f0" />
-          </BarChart>
-        </ResponsiveContainer>
+      <div style={graphsContainer}>
+        <AppBar position="static"  color="default">
+          <Toolbar>
+            <IconButton aria-label="display more actions" 
+                        edge="end" 
+                        onClick={this.onMenuToggle}
+                        color="inherit">
+              <MoreIcon />
+            </IconButton>
+            {GRAPH_MENU.map((lbl, idx) => {
+              return(
+                <Chip
+                  key={lbl}
+                  icon={<FaceIcon />}
+                  onClick={() => this.onMenuPickChange(idx)}
+                  label={lbl}
+                  color= {idx === this.state.selected ? "secondary" : "primary" }
+                  variant = {idx === this.state.selected ? "default" : "outlined"}
+                  clickable
+                />
+              )
+            })}
+            
+          </Toolbar>
+        </AppBar>
+        
+        {this.renderMenuOption()}
+       
       </div>
     );
-  };
+  }
 
-  getYesNoITGraph = () => {
+  renderMenuOption() {
+    switch(this.state.selected) {
+      case 0:
+        return this.getGenderITGraph();
+      case 1:
+        return this.getAgeGenderITGraph();
+    }
+  }
+
+  //  INPUT FUNCTIONS
+  onMenuPickChange(idx) {
+    this.setState({ selected: idx });
+  }
+
+  //  API CALLS
+  getGenderDataAPI = function() {
+    let url = API_URL + '/graph/gender-demographic';
+    Axios.get(url)
+     .then((data) => {
+       this.setState({ genderData: data.data })
+     })
+     .catch((error) => console.log(error));
+  }
+
+  getAgeGenderDataAPI = function() {
+    let url = API_URL + '/graph/age-demographic';
+    Axios.get(url)
+     .then(data => {
+       this.setState({ ageData: data.data });
+       console.log(this.state.ageData);
+     })
+     .catch(error => console.log(error));
+  }
+
+  //  GRAPH FUNCTIONS
+  getGenderITGraph = () => {
+    let graph_data = [
+      {
+        "name": "Hombres",
+        "value": this.state.genderData.male
+      },
+      {
+        "name": "Mujeres",
+        "value": this.state.genderData.female
+      }
+    ];
+
     return (
       <div>
+        <span style={title}>Hombres y Mujeres en TI</span>
         <ResponsiveContainer width="100%" height={400}>
           <PieChart onMouseEnter={this.onPieEnter}>
             <Pie
               dataKey="value"
-              data={data2}
-              cx={150}
-              cy={150}
+              data={graph_data}
               labelLine={false}
               label={renderCustomizedLabel}
               outerRadius={80}
               fill="#8884d8"
             >
-              {data2.map((entry, index) => (
+              {graph_data.map((entry, index) => (
                 <Cell fill={COLORS[index % COLORS.length]} />
               ))}
             </Pie>
@@ -153,25 +175,39 @@ class Data extends PureComponent {
         </ResponsiveContainer>
       </div>
     );
-  };
+  }
 
-  render() {
+  getAgeGenderITGraph = () => {
+    const graph_data = [];
+    for(let item in this.state.ageData) {
+      for(let ages in this.state.ageData[item]) {
+        let obj = {};
+        obj["name"] = ages;
+        obj[item] = this.state.ageData[item][ages]
+        graph_data.push(obj);
+      }
+    }
+
+    console.log(graph_data);
+
     return (
-      <div style={graphsContainer}>
-        <span style={title}>Edad de hombres y mujeres</span>
-        <Row>
-          <Col>{this.getAgeGenderGraph()}</Col>
-        </Row>
-        <br />
-        <br />
-        <br />
-        <span style={title}>Personas que estudian TI</span>
-        <Row>
-          <Col>{this.getYesNoITGraph()}</Col>
-        </Row>
+      <div>
+        <span style={title}>Edad de Hombres y Mujeres en TI</span>
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart data={graph_data}
+                    margin={{ top: 5, right: 30, left: 20, bottom: 5}}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="Mujeres" fill="#FF3386" />
+            <Bar dataKey="Hombres" fill="#4287f5" />
+          </BarChart>
+        </ResponsiveContainer>
       </div>
     );
   }
-}
 
+}
 export default Data;
