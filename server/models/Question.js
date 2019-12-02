@@ -14,7 +14,7 @@ var schema = new mongoose.Schema({
  * @return {Promise} Promise that cointains every record stored in the database
  */
 schema.statics.findManyByText = function(questions) {
-    return this.find({ 'text': { '$in': questions } }).select({'text':0}).exec();
+    return this.find({ 'text': { '$in': questions } }).exec();
 };
 
 /**
