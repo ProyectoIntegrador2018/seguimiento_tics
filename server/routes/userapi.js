@@ -33,6 +33,19 @@ router.get("/questions/:id", umw, function(req, res) {
 });
 
 /**
+ *  Route for fetching the non required questions of an event
+ * @implements {UserMiddleware} Middleware to make sure the user is the one making the request
+ * @param {Object} req Request of get with the id of the event stored in its parameters
+ * @param {Object} res Response of get
+ */
+router.get("/nonrequired-questions/:id", function(req, res) {
+  var event = req.params.id;
+  UserController.fetchNonRequiredEventQuestions(event, function(questions) {
+    res.send(questions);
+  });
+});
+
+/**
  *  Route that fetches all the stored events
  * @implements {AdminMiddleware} Makes sure that the admin is the one making the get request
  * @param {Object} req Contains nothing

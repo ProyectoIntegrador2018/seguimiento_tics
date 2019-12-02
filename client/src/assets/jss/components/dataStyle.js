@@ -3,4 +3,9 @@ const graphsContainer = {
   paddingTop: "10vh"
 };
 
-export { graphsContainer };
+const dataContainer = {
+  margin: "0 auto",
+  maxWidth: "20%"
+};
+
+export { graphsContainer, dataContainer };
