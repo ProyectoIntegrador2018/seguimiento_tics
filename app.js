@@ -29,10 +29,12 @@ var questionsconfig = require('./server/config/requiredquestions');
 const authRouter = require('./server/routes/auth');
 const apiRouter = require('./server/routes/adminapi');
 const userRouter = require('./server/routes/userapi');
+const graphRouter = require('./server/routes/graphapi');
 
 app.use('/auth', authRouter);
 app.use('/admin', apiRouter);
 app.use('/user', userRouter);
+app.use('/graph', graphRouter);
 
 // Front-end production configuration
 if(process.env.NODE_ENV === 'production'){

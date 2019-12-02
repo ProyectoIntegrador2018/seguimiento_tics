@@ -90,7 +90,8 @@ class FormQuestions extends React.Component {
     }
 
     fetchEventQuestions(questionId) {
-        let questionsUrl = sessionStorage.getItem(ADMIN) === "true" ? API_URL + '/admin/questions/' : API_URL + '/user/questions/';
+        let questionsUrl = sessionStorage.getItem(ADMIN) === "true" ? API_URL + '/admin/questions/' : API_URL + '/user/nonrequired-questions/';
+        console.log(questionsUrl);
         axios.get(questionsUrl + questionId, { headers })
             .then(res => {
                 const questions = res.data;

@@ -123,10 +123,27 @@ const basicQuestions = [
     },
     {
         label: 'Grado escolar',
-        type: 'text',
         name: 'schoolGrade',
-        placeHolder: 'Ingrese su grado escolar',
-        renderType: 'input'
+        id: 'schoolGrade',
+        renderType: 'select',
+        options: [
+            {
+                name: 'Primaria',
+                id: 'primaria'
+            },
+            {
+                name: 'Secundaria',
+                id: 'secundaria'
+            },
+            {
+                name: 'Preparatoria',
+                id: 'preparatoria'
+            },
+            {
+                name: 'Universidad',
+                id: 'universidad'
+            }
+        ]
     },
     {
         label: 'Nombre del tutor',

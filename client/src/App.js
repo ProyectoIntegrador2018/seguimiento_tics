@@ -1,6 +1,5 @@
 import React from "react";
 import Login from "./components/Login/Login";
-import AdminDashboard from "./components/Admin/Dashboard/AdminDashboard";
 import UserDashboard from "./components/User/Dashboard/UserDashboard";
 import Search from "./components/Search/Search";
 import EventCreation from "./components/Admin/Event/Creation/EventCreation";
@@ -26,6 +25,10 @@ class App extends React.Component {
     this.rerenderAfterLogin = this.rerenderAfterLogin.bind(this);
   }
 
+  componentDidMount() {
+    document.title = 'Seguimiento TIC';
+  }
+
   render() {
     return (
       <div className="App">
@@ -37,12 +40,6 @@ class App extends React.Component {
                 path="/"
                 component={() => <Login rerender={this.rerenderAfterLogin} />}
                 exact
-              />
-
-              <ProtectedRoute
-                path="/admin"
-                component={AdminDashboard}
-                isAdmin={true}
               />
 
               <ProtectedRoute

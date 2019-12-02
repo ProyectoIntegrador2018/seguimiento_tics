@@ -26,4 +26,8 @@ schema.statics.findManyInIds = function(ids) {
     return this.find({ '_id': { '$in': ids } }).exec();
 };
 
+schema.statics.findManyInIdsNotRequired = function(ids, required) {
+    return this.find({ '_id': { '$in': ids}, 'text': { '$nin': required }});
+};
+
 module.exports = mongoose.model('Question', schema);
