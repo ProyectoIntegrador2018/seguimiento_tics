@@ -3,7 +3,9 @@ const Event = require("../models/Event");
 const Question = require("../models/Question");
 const Student = require("../models/Student");
 const Answer = require("../models/Answer");
+const required_questions = require("../constants/required");
 
+const path = require("path");
 const createCsvWriter = require("csv-writer").createObjectCsvWriter;
 const fs = require("fs");
 const parser = require("csv-parser");
@@ -75,7 +77,7 @@ UserController.fetchEventQuestions = function(eventId, callback) {
  */
 UserController.createCSVTemplate = function(eventId, callback) {
   this.fetchEventQuestions(eventId, function(questions) {
-    const storagePath = `./server/public/templates/${eventId}.csv`;
+    const storagePath = path.join(__dirname,'../','public','templates',`${eventId}.csv`);//`./server/public/templates/${eventId}.csv`;
     var csvHeaders = [];
     questions = fetchRequiredQuestions().concat(questions);
 
@@ -88,7 +90,7 @@ UserController.createCSVTemplate = function(eventId, callback) {
 
     const csvwriter = createCsvWriter({
       path: storagePath,
-      header: csvHeaders
+      header: csvHeaders,
     });
 
     csvwriter
@@ -152,11 +154,7 @@ UserController.bulkCSVStudentStorage = function(fileData, eventId, callback) {
  *  @param {Array} questions Questions corresponding to the event
  *  @param {Function} callback Function to perform after the objects have been inserted
  */
-UserController.bulkCSVAnswersStorage = async function(
-  fileData,
-  questions,
-  callback
-) {
+UserController.bulkCSVAnswersStorage = async function(fileData, questions, callback) {
   var answers = [];
   var required = fetchRequiredQuestions();
 
@@ -268,6 +266,7 @@ fetchRequiredQuestions = function() {
     "Sexo ",
     "Email "
   ];
+  questions = questions.concat(required_questions);
   var response = [];
 
   questions.forEach(question => {

@@ -3,6 +3,6 @@
 # Dependencies
 node_modules/
 # Misc
-server/public/templates/
-server/public/uploads/
+server/public/templates/*
+server/public/uploads/*
 .DS_Store
