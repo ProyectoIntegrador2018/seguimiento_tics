@@ -42,6 +42,17 @@ GraphController.fetchAgeITGraph = function(callback) {
      });
 };
 
+GraphController.fetchAgeGraph = function(callback) {
+    Student.findByAge()
+     .then(function(documents) {
+         let ageDict = dictAgeFromArray(documents);
+         callback(ageDict);
+     })
+     .catch(function(error) {
+         console.log(error);
+     });
+};
+
 /******************************************************************
  *                    AUXILIAR    FUNCTIONS
  *******************************************************************/

@@ -8,8 +8,14 @@ router.get('/gender-demographic', function(req, res) {
     });
 });
 
-router.get('/age-demographic', function(req, res) {
+router.get('/agegender-demographic', function(req, res) {
     GraphController.fetchAgeITGraph(function(data) {
+        res.send(data);
+    });
+});
+
+router.get('/age-demographic', function(req, res) {
+    GraphController.fetchAgeGraph(function(data) {
         res.send(data);
     });
 });

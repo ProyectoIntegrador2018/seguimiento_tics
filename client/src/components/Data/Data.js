@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import { graphsContainer } from "../../assets/jss/components/dataStyle";
+import { graphsContainer, dataContainer } from "../../assets/jss/components/dataStyle";
 import {
   BarChart,
   Bar,
@@ -23,6 +23,13 @@ import IconButton from '@material-ui/core/IconButton';
 import Chip from '@material-ui/core/Chip';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import FaceIcon from '@material-ui/icons/Face';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import Avatar from '@material-ui/core/Avatar';
+import FilterVintageIcon from '@material-ui/icons/FilterVintage';
+import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
 
 const COLORS = ["#33A8FF", "#FF3386"];
 const RADIAN = Math.PI / 180;
@@ -53,7 +60,8 @@ const renderCustomizedLabel = ({
 };
 const GRAPH_MENU = [
   "Género en TI",
-  "Edad de género en TI"
+  "Edad de género en TI",
+  "Edad en TI"
 ];
 
 
@@ -63,6 +71,7 @@ class Data extends PureComponent {
     this.state = { 
       selected: this.props.location.state.selected,
       genderData: {},
+      ageGenderData: {},
       ageData: {},
       selected: 0,
     };
@@ -71,6 +80,8 @@ class Data extends PureComponent {
     this.getGenderDataAPI();
     this.getAgeGenderDataAPI = this.getAgeGenderDataAPI.bind(this);
     this.getAgeGenderDataAPI();
+    this.getAgeDataAPI = this.getAgeDataAPI.bind(this);
+    this.getAgeDataAPI();
   }
 
   render() {
@@ -113,6 +124,8 @@ class Data extends PureComponent {
         return this.getGenderITGraph();
       case 1:
         return this.getAgeGenderITGraph();
+      case 2:
+        return this.getAgeITGraph();
     }
   }
 
@@ -132,11 +145,20 @@ class Data extends PureComponent {
   }
 
   getAgeGenderDataAPI = function() {
+    let url = API_URL + '/graph/agegender-demographic';
+    Axios.get(url)
+     .then(data => {
+       this.setState({ ageGenderData: data.data });
+       console.log(this.state.ageGenderData);
+     })
+     .catch(error => console.log(error));
+  }
+
+  getAgeDataAPI = function() {
     let url = API_URL + '/graph/age-demographic';
     Axios.get(url)
      .then(data => {
-       this.setState({ ageData: data.data });
-       console.log(this.state.ageData);
+       this.setState({ ageData: data.data});
      })
      .catch(error => console.log(error));
   }
@@ -146,16 +168,18 @@ class Data extends PureComponent {
     let graph_data = [
       {
         "name": "Hombres",
-        "value": this.state.genderData.male
+        "value": this.state.genderData.male,
+        "icon": <FitnessCenterIcon/>
       },
       {
         "name": "Mujeres",
-        "value": this.state.genderData.female
+        "value": this.state.genderData.female,
+        "icon": <FilterVintageIcon/>
       }
     ];
 
     return (
-      <div>
+      <div style={{marginTop: '3%'}}>
         <span style={title}>Hombres y Mujeres en TI</span>
         <ResponsiveContainer width="100%" height={400}>
           <PieChart onMouseEnter={this.onPieEnter}>
@@ -173,25 +197,32 @@ class Data extends PureComponent {
             </Pie>
           </PieChart>
         </ResponsiveContainer>
+
+        <div style={dataContainer}>
+          <List>
+            {graph_data.map(gender => {
+              return (this.getListItems(gender.name, `Hay ${gender.value} registrad@s`, gender.icon))
+            })}
+          </List>
+        </div>
+
       </div>
     );
   }
 
   getAgeGenderITGraph = () => {
     const graph_data = [];
-    for(let item in this.state.ageData) {
-      for(let ages in this.state.ageData[item]) {
+    for(let item in this.state.ageGenderData) {
+      for(let ages in this.state.ageGenderData[item]) {
         let obj = {};
         obj["name"] = ages;
-        obj[item] = this.state.ageData[item][ages]
+        obj[item] = this.state.ageGenderData[item][ages]
         graph_data.push(obj);
       }
     }
 
-    console.log(graph_data);
-
     return (
-      <div>
+      <div style={{marginTop: '3%'}}>
         <span style={title}>Edad de Hombres y Mujeres en TI</span>
         <ResponsiveContainer width="100%" height={300}>
           <BarChart data={graph_data}
@@ -206,6 +237,48 @@ class Data extends PureComponent {
           </BarChart>
         </ResponsiveContainer>
       </div>
+    );
+  }
+
+  getAgeITGraph = () => {
+    const graph_data = [];
+    for(let item in this.state.ageData) {
+      let obj = {};
+      obj["name"] = item;
+      obj[item] = this.state.ageData[item];
+      graph_data.push(obj);
+    }
+
+    return(
+      <div style={{marginTop: '3%'}}>
+        <span style={title}>Edad de jóvenes en TI</span>
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart data={graph_data}
+                    margin={{ top: 5, right: 30, left: 20, bottom: 5}}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            {graph_data.map( value => {
+              return(<Bar key={value.name} dataKey={value.name} fill="#3f51b5" />);
+            })}
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+    )
+  }
+
+  getListItems = (title, legend, icon) => {
+    return (
+      <ListItem>
+        <ListItemAvatar>
+          <Avatar>
+            {icon}
+          </Avatar>
+        </ListItemAvatar>
+        <ListItemText primary={title} secondary={legend} />
+      </ListItem>
     );
   }
 

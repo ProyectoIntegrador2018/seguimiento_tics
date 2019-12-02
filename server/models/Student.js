@@ -46,6 +46,10 @@ schema.statics.findByAgeGender = function(gender) {
     return this.find({ gender: gender}).select({'birth_date': 1, 'gender': 1, '_id': 0}).exec();
 }
 
+schema.statics.findByAge = function() {
+    return this.find({}).select({'birth_date' : 1, '_id': 0}).exec();
+}
+
 schema.statics.findByCURP = function(curp) {
     return this.findOne({ curp: curp }).select({ '_id': 1 }).exec();
 }
