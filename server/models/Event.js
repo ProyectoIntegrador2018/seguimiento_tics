@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 var schema = new mongoose.Schema({
     name: {
         type: String,
-        unique: true,
         required: true,
     },
     start_date: {
@@ -45,6 +44,6 @@ schema.statics.fetchAll = function() {
  */
 schema.statics.fetchQuestions = function(eventId) {
     return this.find({ _id: eventId }).select({'questions': 1, '_id': 0}).exec();
-}
+};
 
 module.exports = mongoose.model('Event', schema);

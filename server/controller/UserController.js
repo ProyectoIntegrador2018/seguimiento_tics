@@ -52,6 +52,16 @@ UserController.fetchAllEventRecords = function(callback) {
     });
 };
 
+UserController.fetchNonRequiredEventQuestions = function(eventId, callback) {
+  Event.fetchQuestions(eventId)
+   .then(function(documents) {
+      var questionsIds = documents[0].questions;
+      Question.findManyInIdsNotRequired(questionsIds, required_questions).then(function(questionsDocuments) {
+        callback(questionsDocuments);
+      });
+   })
+};
+
 /**
  *  Function that fetches the Questions records corresponding to an event given its id
  *  @param {String} eventId Id corresponding to the event whose questions we are trying to fetch
@@ -163,6 +173,7 @@ UserController.bulkCSVAnswersStorage = async function(fileData, questions, callb
     const studentRecord = await Student.findByCURP(student.curp);
 
     questions.forEach(function(eventQuestion) {
+      if(!row[eventQuestion.text]) return;
       var answertxt = row[eventQuestion.text];
       var answer = new Answer();
       answer.text = answertxt;
@@ -281,13 +292,13 @@ fetchRequiredQuestions = function() {
 buildUserFromCSVRow = function(row, requiredQuestions) {
   var student = new Student();
 
-  student.name = row[requiredQuestions[0].text];
-  student.last_name = row[requiredQuestions[1].text];
-  student.second_last_name = row[requiredQuestions[2].text];
-  student.birth_date = row[requiredQuestions[3].text];
-  student.birth_place = row[requiredQuestions[4].text];
-  student.gender = row[requiredQuestions[5].text];
-  student.email = row[requiredQuestions[6].text];
+  student.name = row[requiredQuestions[0].text] ? row[requiredQuestions[0].text]: "";
+  student.last_name = row[requiredQuestions[1].text] ? row[requiredQuestions[1].text] : "";
+  student.second_last_name = row[requiredQuestions[2].text] ? row[requiredQuestions[2].text]: "";
+  student.birth_date = row[requiredQuestions[3].text] ? row[requiredQuestions[3].text]: "";
+  student.birth_place = row[requiredQuestions[4].text] ? row[requiredQuestions[4].text]: "";
+  student.gender = row[requiredQuestions[5].text] ? row[requiredQuestions[5].text]: "";
+  student.email = row[requiredQuestions[6].text] ? row[requiredQuestions[6].text]: "";
   student.curp = student.generateCURP();
 
   return student;

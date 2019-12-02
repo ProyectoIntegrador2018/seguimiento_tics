@@ -27,7 +27,6 @@ class CSV extends React.Component {
         this.setState({
             eventId: this.props.location.state.eventId
         });
-        console.log(this.props.location.state)
     }
 
     render() {
@@ -53,7 +52,7 @@ class CSV extends React.Component {
     }
 
     handleDownload = async function() {
-        const url = API_URL + '/user/csv-template/' + this.props.location.state.eventId
+        const url = API_URL + '/user/csv-template/' + this.state.eventId;
         const res = await fetch(url);
         const blob = await res.blob();
         download(blob, 'template.csv');
@@ -64,8 +63,9 @@ class CSV extends React.Component {
     }
 
     onClickUpload() {
-        if(!this.props.location.state) return( <Redirect to="/select-upload-method"/> );
-        const url = API_URL + '/user/upload-csv/' + this.props.location.state.eventId;
+        if(!this.state.eventId) return( <Redirect to="/select-upload-method"/> );
+        console.log(this.state.eventId);
+        const url = API_URL + '/user/upload-csv/' + this.state.eventId;
         const headers = {
             "Content-Type": "application/json",
             "x-auth-token": sessionStorage.getItem(TOKEN)

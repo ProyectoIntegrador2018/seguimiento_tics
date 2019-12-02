@@ -74,7 +74,7 @@ class EventCreation extends React.Component {
                                 placeholder="Nombre" 
                                 onChange={this.handleNameChange}
                                 isInvalid={this.state.isInvalid}
-                                onBlur={this.checkNameAvailabilityAPI}
+                                // onBlur={this.checkNameAvailabilityAPI}
                                 minLength={3}
                                 required={true}
                                 value={this.state.name}/>
