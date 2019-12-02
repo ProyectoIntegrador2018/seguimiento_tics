@@ -89,7 +89,7 @@ UserController.createCSVTemplate = function(eventId, callback) {
   this.fetchEventQuestions(eventId, function(questions) {
     const storagePath = path.join(__dirname,'../','public','templates',`${eventId}.csv`);//`./server/public/templates/${eventId}.csv`;
     var csvHeaders = [];
-    questions = fetchRequiredQuestions().concat(questions);
+    questions = fetchRequiredQuestions(false).concat(questions);
 
     questions.forEach(question => {
       csvHeaders.push({
@@ -142,7 +142,7 @@ UserController.readCSVFile = function(file, callback) {
  */
 UserController.bulkCSVStudentStorage = function(fileData, eventId, callback) {
   var students = [];
-  var requiredQuestions = fetchRequiredQuestions();
+  var requiredQuestions = fetchRequiredQuestions(false);
   fileData.forEach(function(row) {
     var student = buildUserFromCSVRow(row, requiredQuestions);
     student.event = eventId;
@@ -166,7 +166,7 @@ UserController.bulkCSVStudentStorage = function(fileData, eventId, callback) {
  */
 UserController.bulkCSVAnswersStorage = async function(fileData, questions, callback) {
   var answers = [];
-  var required = fetchRequiredQuestions();
+  var required = fetchRequiredQuestions(true);
 
   for (const row of fileData) {
     var student = buildUserFromCSVRow(row, required);
@@ -267,7 +267,7 @@ UserController.storeAnswer = function(questionId, text, studentId, callback) {
 /**
  * Function that creates an array, similar to a Question object, with all the required questions
  */
-fetchRequiredQuestions = function() {
+fetchRequiredQuestions = function(required) {
   var questions = [
     "Nombre(s)",
     "Apellido paterno",
@@ -277,7 +277,7 @@ fetchRequiredQuestions = function() {
     "Sexo ",
     "Email "
   ];
-  questions = questions.concat(required_questions);
+  if(required)questions = questions.concat(required_questions);
   var response = [];
 
   questions.forEach(question => {
