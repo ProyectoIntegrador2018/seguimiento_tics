@@ -12,11 +12,11 @@ var AdminController = {};
  *  @param {Date} end_date Date of the end of the event
  *  @param {Function} callback Function to perform after record has (or not) been recorded
  */
-AdminController.registerEvent = function(name, start_date, end_date, callback) {
+AdminController.registerEvent = function(name, edition, start_date, end_date, callback) {
   Question.findManyByText(required_questions)
     .then(function(documents) {
       let event = new Event();
-      event.name = name;
+      event.name = `${name} ${edition}`;
       event.start_date = start_date;
       event.end_date = end_date;
       event.questions = recordsToIdArray(documents);
