@@ -21,6 +21,7 @@ class EventCreation extends React.Component {
         this.state = {
             name: "",
             startDate: current,
+            edition: "",
             endDate: new Date(current.getFullYear(), current.getMonth(), current.getDate()+1),
             isInvalid: false,
             redirect: false,
@@ -32,6 +33,7 @@ class EventCreation extends React.Component {
         this.handleNameChange = this.handleNameChange.bind(this);
         this.handleStartDateChange = this.handleStartDateChange.bind(this);
         this.handleEndDateChange = this.handleEndDateChange.bind(this);
+        this.handleEditionChange = this.handleEditionChange.bind(this);
         // Button click
         this.onRegisterSubmit = this.onRegisterSubmit.bind(this);
         // API Requests
@@ -44,7 +46,10 @@ class EventCreation extends React.Component {
                 {this.renderRedirect()}
                 <span style={title}>Crear nuevo evento</span>
                 <Form style={eventForm} onSubmit={this.onRegisterSubmit}>
-                    {this.renderNameFormGroup()}
+
+                    {this.renderInputFormGroup("text", "Nombre del evento", "Nombre", this.state.name, this.handleNameChange)}
+
+                    {this.renderInputFormGroup("number", "Edición del evento", "2019", this.state.edition, this.handleEditionChange)}
 
                     {this.renderDateFormGroup("Fecha de inicio", this.state.startDate, this.handleStartDateChange)}
 
@@ -65,19 +70,15 @@ class EventCreation extends React.Component {
 
     //      RENDER FUNCTIONS
 
-    renderNameFormGroup() {
+    renderInputFormGroup(type, label, placeholder, value, onChange) {
         return(
             <Form.Group>
-                <Form.Label>Nombre del evento</Form.Label>
-                {this.renderErrorMessage()}
-                <Form.Control   type="text" 
-                                placeholder="Nombre" 
-                                onChange={this.handleNameChange}
-                                isInvalid={this.state.isInvalid}
-                                // onBlur={this.checkNameAvailabilityAPI}
-                                minLength={3}
+                <Form.Label>{label}</Form.Label>
+                <Form.Control   type={type}
+                                placeholder={placeholder} 
+                                onChange={onChange}
                                 required={true}
-                                value={this.state.name}/>
+                                value={value}/>
             </Form.Group>
         );
     }
@@ -111,6 +112,12 @@ class EventCreation extends React.Component {
     handleNameChange(event) {
         this.setState({
             name: event.target.value
+        });
+    }
+
+    handleEditionChange(event) {
+        this.setState({
+            edition: event.target.value
         });
     }
 
@@ -157,6 +164,7 @@ class EventCreation extends React.Component {
     storeEventAPI() {
         const reqBody = {
             name : this.state.name,
+            edition : this.state.edition,
             start_date: this.dateToString(this.state.startDate),
             end_date: this.dateToString(this.state.endDate)
         };

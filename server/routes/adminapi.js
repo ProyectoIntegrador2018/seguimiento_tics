@@ -12,9 +12,10 @@ const router = express.Router();
  */
 router.post('/register-event', adminmw, function(req, res) {
     var name = req.body.name;
+    var edition = req.body.edition;
     var start_date = req.body.start_date;
     var end_date = req.body.end_date;
-    AdminController.registerEvent(name, start_date, end_date, function(response){
+    AdminController.registerEvent(name, edition, start_date, end_date, function(response){
         res.send(response);
     });
 });
